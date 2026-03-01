@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лаб. 1 — Шифри заміни і перестановки | CryptoLab</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="../index.html" class="logo">
+    <span class="logo-bracket">{</span>
+    <span class="logo-text">CryptoLab</span>
+    <span class="logo-bracket">}</span>
+  </a>
+  <div class="breadcrumb">
+    <a href="../index.html">Головна</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Лаб. 01</span>
+  </div>
+  <div class="header-right">
+    <span><span class="status-dot"></span>активна лаба</span>
+  </div>
+</header>
+
+<div class="lab-page">
+
+  <!-- LAB HERO -->
+  <div class="lab-hero">
+    <div class="lab-hero-inner">
+      <div class="lab-hero-meta">
+        <span class="lab-index-badge">ЛАБ 01</span>
+        <span style="font-size:0.65rem;color:var(--text-dim);letter-spacing:0.15em;">КЛАСИЧНА КРИПТОГРАФІЯ</span>
+      </div>
+      <h1 class="lab-hero-title">Шифри заміни<br>і перестановки</h1>
+      <p class="lab-hero-sub">
+        Практичне освоєння основ побудови шифрів заміни та перестановки.
+        Вибір ключів, процедура зашифрування-розшифрування, покрокова візуалізація.
+      </p>
+      <div class="lab-hero-chips">
+        <span class="tag">Цезар</span>
+        <span class="tag">Атбаш</span>
+        <span class="tag">Виженер</span>
+        <span class="tag">Перестановка</span>
+        <span class="tag">Вертикальна перестановка</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="lab-content">
+    <div class="lab-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="lab-sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-nav-title">// навігація</div>
+          <div class="sidebar-nav-item active" data-section="theory">
+            <span class="sidebar-nav-num">01</span> Теорія
+          </div>
+          <div class="sidebar-nav-item" data-section="caesar">
+            <span class="sidebar-nav-num">02</span> Шифр Цезаря
+          </div>
+          <div class="sidebar-nav-item" data-section="atbash">
+            <span class="sidebar-nav-num">03</span> Атбаш
+          </div>
+          <div class="sidebar-nav-item" data-section="vigenere">
+            <span class="sidebar-nav-num">04</span> Виженер
+          </div>
+          <div class="sidebar-nav-item" data-section="transposition">
+            <span class="sidebar-nav-num">05</span> Перестановка
+          </div>
+          <div class="sidebar-nav-item" data-section="vertical">
+            <span class="sidebar-nav-num">06</span> Вертикальна
+          </div>
+        </nav>
+      </aside>
+
+      <!-- MAIN -->
+      <main>
+
+        <!-- ── THEORY ─────────────────────────────────────── -->
+        <section id="theory">
+          <div class="theory-block">
+            <div class="theory-header">
+              <span class="theory-title">Короткі теоретичні відомості</span>
+              <span class="theory-toggle">▼</span>
+            </div>
+            <div class="theory-body open">
+              <p><strong>Шифр заміни (підстановки)</strong> — метод, при якому кожен елемент початкового тексту замінюється одним або декількома знаками деякого алфавіту.</p>
+              <div class="formula">b<sub>i</sub> = (a<sub>i</sub> + k) mod n — шифр Цезаря</div>
+              <p><strong>Шифр Виженера</strong> — багатоалфавітна заміна з ключем-словом. Кожна буква зсувається на кількість позицій, яку задає відповідна буква ключа.</p>
+              <div class="formula">b<sub>i</sub> = (a<sub>i</sub> + k<sub>i</sub>) mod n — Виженер, де k<sub>i</sub> — i-та буква ключа</div>
+              <p><strong>Шифр перестановки</strong> — букви відкритого тексту переставляються (але не замінюються). Ключ визначає новий порядок символів.</p>
+              <p><strong>Вертикальна перестановка</strong> — текст записується рядками в прямокутник, а зчитується по стовпцях в порядку, заданому ключем.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── CAESAR ─────────────────────────────────────── -->
+        <section id="caesar">
+          <div class="cipher-workspace" style="margin-bottom:2rem;">
+            <div class="workspace-tabs">
+              <div class="workspace-tab active" style="cursor:default;color:var(--green);border-bottom-color:var(--green);background:var(--green-subtle);">
+                // шифр цезаря
+              </div>
+            </div>
+            <div class="workspace-panel active" style="display:block;">
+              <div class="info-chips">
+                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Проста заміна</span></div>
+                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">зсув (0–25)</span></div>
+                <div class="info-chip"><span class="chip-label">Формула:</span><span class="chip-val">b=(a+k) mod n</span></div>
+              </div>
+
+              <div class="workspace-grid">
+                <div class="workspace-col">
+                  <div class="input-group">
+                    <label class="input-label">Відкритий текст</label>
+                    <textarea class="input-field" id="caesar-text" placeholder="Введіть повідомлення...">HELLO WORLD</textarea>
+                  </div>
+                  <div class="input-row">
+                    <div class="input-group">
+                      <label class="input-label">Зсув (0–25)</label>
+                      <input class="input-field-sm" id="caesar-shift" type="number" min="0" max="25" value="3">
+                    </div>
+                    <div class="input-group">
+                      <label class="input-label">Алфавіт</label>
+                      <select class="input-field-sm" id="caesar-lang">
+                        <option value="en">English (A–Z)</option>
+                        <option value="uk">Українська</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="action-row">
+                    <button class="encrypt-btn" onclick="runCaesar(false)">⟶ Зашифрувати</button>
+                    <button class="decrypt-btn" onclick="runCaesar(true)">⟵ Розшифрувати</button>
+                  </div>
+                </div>
+
+                <div class="workspace-col">
+                  <label class="input-label">Результат</label>
+                  <div class="result-box" id="caesar-output">
+                    <span class="result-empty">Результат з'явиться тут...</span>
+                  </div>
+                  <div class="steps-log">
+                    <div class="steps-log-header">// кроки виконання</div>
+                    <div class="steps-log-body" id="caesar-steps">
+                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── ATBASH ──────────────────────────────────────── -->
+        <section id="atbash">
+          <div class="cipher-workspace" style="margin-bottom:2rem;">
+            <div class="workspace-tabs">
+              <div class="workspace-tab active" style="cursor:default;color:var(--cyan);border-bottom-color:var(--cyan);background:var(--cyan-dim);">
+                // атбаш
+              </div>
+            </div>
+            <div class="workspace-panel active" style="display:block;">
+              <div class="info-chips">
+                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Дзеркальна заміна</span></div>
+                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">не потрібен</span></div>
+                <div class="info-chip"><span class="chip-label">Формула:</span><span class="chip-val">b = (n−1) − a</span></div>
+              </div>
+
+              <div class="workspace-grid">
+                <div class="workspace-col">
+                  <div class="input-group">
+                    <label class="input-label">Текст (шифр/розшифр — одна кнопка)</label>
+                    <textarea class="input-field" id="atbash-text" placeholder="Введіть повідомлення...">HELLO WORLD</textarea>
+                  </div>
+                  <div class="input-group">
+                    <label class="input-label">Алфавіт</label>
+                    <select class="input-field-sm" id="atbash-lang">
+                      <option value="en">English (A–Z)</option>
+                      <option value="uk">Українська</option>
+                    </select>
+                  </div>
+                  <div class="action-row">
+                    <button class="encrypt-btn" onclick="runAtbash()">⟶ Застосувати Атбаш</button>
+                  </div>
+                </div>
+                <div class="workspace-col">
+                  <label class="input-label">Результат</label>
+                  <div class="result-box" id="atbash-output"><span class="result-empty">Результат з'явиться тут...</span></div>
+                  <div class="steps-log">
+                    <div class="steps-log-header">// кроки виконання</div>
+                    <div class="steps-log-body" id="atbash-steps">
+                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Застосувати Атбаш»</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── VIGENERE ────────────────────────────────────── -->
+        <section id="vigenere">
+          <div class="cipher-workspace" style="margin-bottom:2rem;">
+            <div class="workspace-tabs">
+              <div class="workspace-tab active" style="cursor:default;color:var(--yellow);border-bottom-color:var(--yellow);background:var(--yellow-dim);">
+                // шифр виженера
+              </div>
+            </div>
+            <div class="workspace-panel active" style="display:block;">
+              <div class="info-chips">
+                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Багатоалфавітна заміна</span></div>
+                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">слово</span></div>
+                <div class="info-chip"><span class="chip-label">Формула:</span><span class="chip-val">b=(a+k) mod n</span></div>
+              </div>
+
+              <div class="workspace-grid">
+                <div class="workspace-col">
+                  <div class="input-group">
+                    <label class="input-label">Відкритий текст</label>
+                    <textarea class="input-field" id="vigenere-text" placeholder="Введіть повідомлення...">ATTACKATDAWN</textarea>
+                  </div>
+                  <div class="input-row">
+                    <div class="input-group">
+                      <label class="input-label">Ключ (слово)</label>
+                      <input class="input-field-sm" id="vigenere-key" value="LEMON" placeholder="Ключ...">
+                    </div>
+                    <div class="input-group">
+                      <label class="input-label">Алфавіт</label>
+                      <select class="input-field-sm" id="vigenere-lang">
+                        <option value="en">English (A–Z)</option>
+                        <option value="uk">Українська</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="action-row">
+                    <button class="encrypt-btn" onclick="runVigenere(false)">⟶ Зашифрувати</button>
+                    <button class="decrypt-btn" onclick="runVigenere(true)">⟵ Розшифрувати</button>
+                  </div>
+                </div>
+                <div class="workspace-col">
+                  <label class="input-label">Результат</label>
+                  <div class="result-box" id="vigenere-output"><span class="result-empty">Результат з'явиться тут...</span></div>
+                  <div class="steps-log">
+                    <div class="steps-log-header">// кроки виконання</div>
+                    <div class="steps-log-body" id="vigenere-steps">
+                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── TRANSPOSITION ──────────────────────────────── -->
+        <section id="transposition">
+          <div class="cipher-workspace" style="margin-bottom:2rem;">
+            <div class="workspace-tabs">
+              <div class="workspace-tab active" style="cursor:default;color:var(--purple);border-bottom-color:var(--purple);background:var(--purple-dim);">
+                // проста перестановка
+              </div>
+            </div>
+            <div class="workspace-panel active" style="display:block;">
+              <div class="info-chips">
+                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Перестановка символів</span></div>
+                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">"3 1 4 2" або "3,1,4,2"</span></div>
+                <div class="info-chip"><span class="chip-label">Блок:</span><span class="chip-val">= довжина ключа</span></div>
+              </div>
+
+              <div class="workspace-grid">
+                <div class="workspace-col">
+                  <div class="input-group">
+                    <label class="input-label">Відкритий текст</label>
+                    <textarea class="input-field" id="transp-text" placeholder="Введіть повідомлення...">СВЯЩ ЕННАЯРИМСКАЯИМПЕРИЯ</textarea>
+                  </div>
+                  <div class="input-group">
+                    <label class="input-label">Ключ (порядок позицій через пробіл або кому)</label>
+                    <input class="input-field-sm" id="transp-key" value="3 1 4 2 5" placeholder="напр. 3 1 4 2">
+                  </div>
+                  <div class="action-row">
+                    <button class="encrypt-btn" onclick="runTransp(false)">⟶ Зашифрувати</button>
+                    <button class="decrypt-btn" onclick="runTransp(true)">⟵ Розшифрувати</button>
+                  </div>
+                </div>
+                <div class="workspace-col">
+                  <label class="input-label">Результат</label>
+                  <div class="result-box" id="transp-output"><span class="result-empty">Результат з'явиться тут...</span></div>
+                  <div class="steps-log">
+                    <div class="steps-log-header">// кроки виконання</div>
+                    <div class="steps-log-body" id="transp-steps">
+                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── VERTICAL TRANSPOSITION ──────────────────────── -->
+        <section id="vertical">
+          <div class="cipher-workspace" style="margin-bottom:2rem;">
+            <div class="workspace-tabs">
+              <div class="workspace-tab active" style="cursor:default;color:var(--red);border-bottom-color:var(--red);background:var(--red-dim);">
+                // вертикальна перестановка
+              </div>
+            </div>
+            <div class="workspace-panel active" style="display:block;">
+              <div class="info-chips">
+                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Маршрутна перестановка</span></div>
+                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">числа або слово</span></div>
+                <div class="info-chip"><span class="chip-label">Запис:</span><span class="chip-val">рядками → зчитування стовпцями</span></div>
+              </div>
+
+              <div class="workspace-grid">
+                <div class="workspace-col">
+                  <div class="input-group">
+                    <label class="input-label">Відкритий текст</label>
+                    <textarea class="input-field" id="vert-text" placeholder="Введіть повідомлення...">WEAREDISCOVERED</textarea>
+                  </div>
+                  <div class="input-group">
+                    <label class="input-label">Ключ (числа або слово: "SECRET" → сортується за алфавітом)</label>
+                    <input class="input-field-sm" id="vert-key" value="3 1 4 2" placeholder="напр. 3 1 4 2 або SECRET">
+                  </div>
+                  <div class="action-row">
+                    <button class="encrypt-btn" onclick="runVert(false)">⟶ Зашифрувати</button>
+                    <button class="decrypt-btn" onclick="runVert(true)">⟵ Розшифрувати</button>
+                  </div>
+                </div>
+                <div class="workspace-col">
+                  <label class="input-label">Результат</label>
+                  <div class="result-box" id="vert-output"><span class="result-empty">Результат з'явиться тут...</span></div>
+                  <div class="steps-log">
+                    <div class="steps-log-header">// кроки виконання</div>
+                    <div class="steps-log-body" id="vert-steps">
+                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- NAV BETWEEN LABS -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--border);">
+          <a href="../index.html" class="btn-secondary">← Всі лаби</a>
+          <a href="lab02.html" class="btn-primary">Лаб. 02 →</a>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 CryptoLab — Лаб. 01 / Шифри заміни і перестановки</span>
+  <div class="footer-links">
+    <a href="../index.html" class="footer-link">← Головна</a>
+    <a href="lab02.html" class="footer-link">Лаб. 02 →</a>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="../js/common.js"></script>
+<script src="../js/ciphers/classical.js"></script>
+<script>
+
+function getVal(id) { return document.getElementById(id).value; }
+
+function displayResult(outputId, stepsId, data) {
+  renderOutput(outputId, data.result);
+  renderSteps(stepsId, data.steps);
+}
+
+/* ── Caesar ─────────────────────────────────────────── */
+function runCaesar(decrypt) {
+  const text  = getVal('caesar-text');
+  const shift = parseInt(getVal('caesar-shift')) || 3;
+  const lang  = getVal('caesar-lang');
+  const data  = CL.Caesar.run(text, shift, decrypt, lang);
+  displayResult('caesar-output', 'caesar-steps', data);
+}
+
+/* ── Atbash ─────────────────────────────────────────── */
+function runAtbash() {
+  const text = getVal('atbash-text');
+  const lang = getVal('atbash-lang');
+  const data = CL.Atbash.run(text, lang);
+  displayResult('atbash-output', 'atbash-steps', data);
+}
+
+/* ── Vigenere ───────────────────────────────────────── */
+function runVigenere(decrypt) {
+  const text = getVal('vigenere-text');
+  const key  = getVal('vigenere-key');
+  const lang = getVal('vigenere-lang');
+  const data = CL.Vigenere.run(text, key, decrypt, lang);
+  displayResult('vigenere-output', 'vigenere-steps', data);
+}
+
+/* ── Simple Transposition ───────────────────────────── */
+function runTransp(decrypt) {
+  const text = getVal('transp-text');
+  const key  = getVal('transp-key');
+  const data = CL.SimpleTransposition.run(text, key, decrypt);
+  displayResult('transp-output', 'transp-steps', data);
+}
+
+/* ── Vertical Transposition ─────────────────────────── */
+function runVert(decrypt) {
+  const text = getVal('vert-text');
+  const key  = getVal('vert-key');
+  const data = CL.VerticalTransposition.run(text, key, decrypt);
+  displayResult('vert-output', 'vert-steps', data);
+}
+
+/* ── ScrollSpy ──────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  initScrollSpy(['theory','caesar','atbash','vigenere','transposition','vertical']);
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoLab — Лабораторні роботи</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0d1117;
+    --surface2: #161b22;
+    --border: #21262d;
+    --green: #39d353;
+    --green-dim: #1a6b2a;
+    --green-glow: rgba(57, 211, 83, 0.15);
+    --cyan: #58d4f5;
+    --cyan-dim: rgba(88, 212, 245, 0.12);
+    --yellow: #e3b341;
+    --red: #f85149;
+    --text: #e6edf3;
+    --text-muted: #7d8590;
+    --text-dim: #484f58;
+    --font-mono: 'Space Mono', monospace;
+    --font-sans: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* SCANLINES */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  /* ============ HEADER ============ */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(8, 12, 16, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .logo-bracket {
+    color: var(--green);
+    font-size: 1.3rem;
+  }
+
+  .logo-text { color: var(--text); }
+
+  .header-status {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s infinite;
+    display: inline-block;
+    margin-right: 0.4rem;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 3rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(57,211,83,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(57,211,83,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(57,211,83,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-size: 0.7rem;
+    color: var(--green);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: fadeIn 0.6s ease both;
+  }
+
+  .hero-label::before {
+    content: '';
+    width: 2rem; height: 1px;
+    background: var(--green);
+  }
+
+  .hero-title {
+    font-family: var(--font-sans);
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+
+  .hero-title .accent { color: var(--green); }
+
+  .hero-title .dim {
+    color: var(--text-dim);
+    display: block;
+  }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 480px;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .hero-actions {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .btn-primary {
+    padding: 0.75rem 1.75rem;
+    background: var(--green);
+    color: #000;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .btn-primary:hover {
+    background: #5eff87;
+    box-shadow: 0 0 30px rgba(57,211,83,0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    padding: 0.75rem 1.75rem;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--green-dim);
+    color: var(--green);
+  }
+
+  /* TERMINAL PREVIEW */
+  .terminal-preview {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 380px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(57,211,83,0.05);
+    animation: fadeIn 1s ease 0.4s both;
+  }
+
+  .terminal-bar {
+    padding: 0.6rem 1rem;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+
+  .terminal-title {
+    margin-left: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .terminal-body {
+    padding: 1.25rem;
+    font-size: 0.72rem;
+    line-height: 2;
+  }
+
+  .t-comment { color: var(--text-dim); }
+  .t-cmd { color: var(--green); }
+  .t-key { color: var(--cyan); }
+  .t-val { color: var(--yellow); }
+  .t-out { color: var(--text-muted); }
+  .t-cursor {
+    display: inline-block;
+    width: 7px; height: 1em;
+    background: var(--green);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ============ LABS SECTION ============ */
+  .section {
+    padding: 6rem 3rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .section-tag {
+    font-size: 0.65rem;
+    color: var(--green);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--font-sans);
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .section-count {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    padding-bottom: 0.25rem;
+  }
+
+  /* LABS GRID */
+  .labs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .lab-card {
+    background: var(--surface);
+    padding: 1.75rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+
+  .lab-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--green-glow);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .lab-card:hover { background: var(--surface2); }
+  .lab-card:hover::before { opacity: 1; }
+
+  .lab-card:hover .lab-arrow { transform: translate(3px, -3px); color: var(--green); }
+
+  .lab-num {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .lab-num::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .lab-title {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  .lab-desc {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .lab-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tag {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .lab-card:hover .tag {
+    border-color: var(--green-dim);
+    color: var(--green);
+  }
+
+  .lab-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .lab-difficulty {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .diff-bars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .diff-bar {
+    width: 12px; height: 3px;
+    background: var(--border);
+    transition: background 0.2s;
+  }
+
+  .diff-bar.active { background: var(--green); }
+  .diff-bar.medium { background: var(--yellow); }
+  .diff-bar.hard { background: var(--red); }
+
+  .lab-arrow {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    transition: all 0.2s;
+  }
+
+  /* FEATURED LAB */
+  .lab-card.featured {
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(57,211,83,0.05) 100%);
+    border-left: 2px solid var(--green);
+  }
+
+  /* ============ DEMO SECTION ============ */
+  .demo-section {
+    padding: 4rem 3rem 6rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .demo-wrapper {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .demo-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  .demo-panel {
+    background: var(--surface);
+    padding: 2rem;
+  }
+
+  .demo-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .demo-panel-title {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .demo-badge {
+    font-size: 0.6rem;
+    padding: 0.15rem 0.5rem;
+    background: var(--green-glow);
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+    letter-spacing: 0.1em;
+  }
+
+  .cipher-selector {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .cipher-btn {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 0.4rem 0.9rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .cipher-btn.active, .cipher-btn:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-glow);
+  }
+
+  .input-group { margin-bottom: 1.25rem; }
+
+  .input-label {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .input-field {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .input-field:focus { border-color: var(--green-dim); }
+
+  .input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .input-field-sm {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 0.6rem 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .input-field-sm:focus { border-color: var(--green-dim); }
+
+  .encrypt-btn {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--green);
+    color: #000;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+
+  .encrypt-btn:hover {
+    background: #5eff87;
+    box-shadow: 0 0 25px rgba(57,211,83,0.35);
+  }
+
+  /* OUTPUT PANEL */
+  .output-area {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+    font-size: 0.78rem;
+    line-height: 1.9;
+    min-height: 120px;
+    color: var(--green);
+    word-break: break-all;
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .output-placeholder {
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  .steps-area {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.68rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    align-items: flex-start;
+  }
+
+  .step-item:last-child { border-bottom: none; }
+
+  .step-num {
+    color: var(--green);
+    min-width: 20px;
+    font-weight: 700;
+  }
+
+  .step-detail { color: var(--cyan); }
+
+  /* COPY BTN */
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem; right: 0.5rem;
+    font-size: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover { color: var(--green); border-color: var(--green-dim); }
+
+  /* ============ STATS BAR ============ */
+  .stats-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 3rem;
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
+
+  .stat-val {
+    font-family: var(--font-sans);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--green);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-link { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .footer-link:hover { color: var(--green); }
+
+  /* ============ ANIMATIONS ============ */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .lab-card {
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .lab-card:nth-child(1) { animation-delay: 0.05s; }
+  .lab-card:nth-child(2) { animation-delay: 0.1s; }
+  .lab-card:nth-child(3) { animation-delay: 0.15s; }
+  .lab-card:nth-child(4) { animation-delay: 0.2s; }
+  .lab-card:nth-child(5) { animation-delay: 0.25s; }
+  .lab-card:nth-child(6) { animation-delay: 0.3s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .terminal-preview { display: none; }
+    .demo-container { grid-template-columns: 1fr; }
+    .hero { padding: 100px 1.5rem 3rem; }
+    .section { padding: 4rem 1.5rem; }
+    .stats-bar { padding: 1.5rem; gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <span class="logo-bracket">{</span>
+    <span class="logo-text">CryptoLab</span>
+    <span class="logo-bracket">}</span>
+  </div>
+  <div class="header-status">
+    <span><span class="status-dot"></span>система активна</span>
+    <span>v2.0 — ІБ Лаби</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-label">Інформаційна безпека / Криптографія</div>
+
+  <h1 class="hero-title">
+    <span class="accent">Шифри</span><br>
+    та протоколи<br>
+    <span class="dim">безпеки</span>
+  </h1>
+
+  <p class="hero-sub">
+    Інтерактивні реалізації класичних та сучасних криптографічних алгоритмів. 
+    Від шифру Цезаря до RSA — все в одному місці.
+  </p>
+
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="document.querySelector('.section').scrollIntoView({behavior:'smooth'})">
+      → Відкрити лаби
+    </button>
+    <button class="btn-secondary" onclick="document.querySelector('.demo-section').scrollIntoView({behavior:'smooth'})">
+      Спробувати демо
+    </button>
+  </div>
+
+  <!-- TERMINAL -->
+  <div class="terminal-preview">
+    <div class="terminal-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <span class="terminal-title">caesar_cipher.js</span>
+    </div>
+    <div class="terminal-body">
+      <div class="t-comment">// Шифр Цезаря — Лаб. 1</div>
+      <div><span class="t-cmd">function</span> <span class="t-key">encrypt</span>(text, key) {</div>
+      <div>&nbsp;&nbsp;<span class="t-cmd">return</span> text.<span class="t-key">split</span>(<span class="t-val">''</span>)</div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;.map(c => <span class="t-key">shift</span>(c, key))</div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;.join(<span class="t-val">''</span>);</div>
+      <div>}</div>
+      <div>&nbsp;</div>
+      <div class="t-comment">// Виклик:</div>
+      <div><span class="t-key">encrypt</span>(<span class="t-val">"HELLO"</span>, <span class="t-val">3</span>);</div>
+      <div><span class="t-out">▶ "KHOOR"</span></div>
+      <div>&nbsp;</div>
+      <div><span class="t-key">encrypt</span>(<span class="t-val">"CRYPTO"</span>, <span class="t-val">13</span>);</div>
+      <div><span class="t-out">▶ "PELCGB"</span> <span class="t-cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-val">8</span>
+    <span class="stat-label">Лабораторних робіт</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <span class="stat-val">12+</span>
+    <span class="stat-label">Алгоритмів</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <span class="stat-val">100%</span>
+    <span class="stat-label">Інтерактивно</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <span class="stat-val">live</span>
+    <span class="stat-label">Шифрування в браузері</span>
+  </div>
+</div>
+
+<!-- LABS -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-tag">// лабораторні роботи</div>
+      <h2 class="section-title">Всі модулі</h2>
+    </div>
+    <span class="section-count">08 робіт / 12 алгоритмів</span>
+  </div>
+
+  <div class="labs-grid">
+
+    <a href="labs/lab01.html" class="lab-card featured">
+      <div class="lab-num">ЛАБ 01</div>
+      <div class="lab-title">Шифри заміни і перестановки</div>
+      <div class="lab-desc">Шифр Цезаря, Атбаш, Віженер та перестановки. Базові принципи класичної криптографії.</div>
+      <div class="lab-tags">
+        <span class="tag">Цезар</span>
+        <span class="tag">Віженер</span>
+        <span class="tag">Перестановка</span>
+        <span class="tag">Атбаш</span>
+      </div>
+      <div class="lab-footer">
+        <div class="lab-difficulty">
+          <span>Складність</span>
+          <div class="diff-bars">
+            <div class="diff-bar active"></div>
+            <div class="diff-bar active"></div>
+            <div class="diff-bar"></div>
+            <div class="diff-bar"></div>
+          </div>
+        </div>
+        <span class="lab-arrow">↗</span>
+      </div>
+    </a>
+
+    <a href="labs/lab2.html" class="lab-card">
+      <div class="lab-num">ЛАБ 02</div>
+      <div class="lab-title">Шифр Полібія та Гронсфельда</div>
+      <div class="lab-desc">Квадрат Полібія з ключовим словом. Числовий ключ Гронсфельда для зсуву алфавіту.</div>
+      <div class="lab-tags">
+        <span class="tag">Полібій</span>
+        <span class="tag">Гронсфельд</span>
+        <span class="tag">Квадрат</span>
+      </div>
+      <div class="lab-footer">
+        <div class="lab-difficulty">
+          <span>Складність</span>
+          <div class="diff-bars">
+            <div class="diff-bar active"></div>
+            <div class="diff-bar active"></div>
+            <div class="diff-bar"></div>
+            <div class="diff-bar"></div>
+          </div>
+        </div>
+        <span class="lab-arrow">↗</span>
+      </div>
+    </a>
+
+    <a href="labs/lab3.html" class="lab-card">
+      <div class="lab-num">ЛАБ 03</div>
+      <div class="lab-title">Біграмні шифри та шифр Вернама</div>
+      <div class="lab-desc">Playfair на квадраті Полібія. Double Playfair. XOR шифр Вернама — абсолютно стійкий.</div>
+      <div class="lab-tags">
+        <span class="tag">Playfair</span>
+        <span class="tag">Вернам</span>
+        <span class="tag">XOR</span>
+        <span class="tag">OTP</span>
+      </div>
+      <div class="lab-footer">
+        <div class="lab-difficulty">
+          <span>Складність</span>
+          <div class="diff-bars">
+            <div class="diff-bar active"></div>
+            <div class="diff-bar active"></div>
+            <div class="diff-bar medium"></div>
+            <div class="diff-bar"></div>
+          </div>
+        </div>
+        <span class="lab-arrow">↗</span>
+      </div>
+    </a>
+
+    <a href="labs/lab4.html" class="lab-card">
+      <div class="lab-num">ЛАБ 04</div>
+      <div class="lab-title">Алгоритм шифрування DES</div>
+      <div class="lab-desc">Мережа Фейстеля, 16 раундів, S-блоки. Симетричний стандарт шифрування даних.</div>
+      <div class="lab-tags">
+        <span class="tag">DES</span>
+        <span class="tag">Фейстель</span>
+        <span class="tag">S-блоки</span>
+        <span class="tag">56-bit</span>
+      </div>
+      <div class="lab-footer">
+        <div class="lab-difficulty">
+          <span>Складність</span>
+          <div class="diff-bars">
+            <div class="diff-bar active"></div>
+            <div class="diff-bar active"></div>
+            <div class="diff-bar medium"></div>
+            <div class="diff-bar medium"></div>
+          </div>
+        </div>
+        <span class="lab-arrow">↗</span>
+      </div>
+    </a>
+
+    <a href="labs/lab5.html" class="lab-card">
+      <div class="lab-num">ЛАБ 05</div>
+      <div class="lab-title">Алгоритм шифрування RSA</div>
+      <div class="lab-desc">Асиметричне шифрування. Відкритий та закритий ключ. Стійкість на задачі факторизації.</div>
+      <div class="lab-tags">
+        <span class="tag">RSA</span>
+        <span class="tag">Відкритий ключ</span>
+        <span class="tag">Евклід</span>
+      </div>
+      <div class="lab-footer">
+        <div class="lab-difficulty">
+          <span>Складність</span>
+          <div class="diff-bars">
+            <div class="diff-bar active"></div>
+            <div class="diff-bar active"></div>
+            <div class="diff-bar active"></div>
+            <div class="diff-bar"></div>
+          </div>
+        </div>
+        <span class="lab-arrow">↗</span>
+      </div>
+    </a>
+
+    <a href="labs/lab6.html" class="lab-card">
+      <div class="lab-num">ЛАБ 06</div>
+      <div class="lab-title">Електронний цифровий підпис</div>
+      <div class="lab-desc">ЕЦП на базі RSA. Хешування повідомлення. Перевірка автентичності та цілісності.</div>
+      <div class="lab-tags">
+        <span class="tag">ЕЦП</span>
+        <span class="tag">Хеш</span>
+        <span class="tag">RSA</span>
+        <span class="tag">Ель-Гамаль</span>
+      </div>
+      <div class="lab-footer">
+        <div class="lab-difficulty">
+          <span>Складність</span>
+          <div class="diff-bars">
+            <div class="diff-bar active"></div>
+            <div class="diff-bar active"></div>
+            <div class="diff-bar active"></div>
+            <div class="diff-bar hard"></div>
+          </div>
+        </div>
+        <span class="lab-arrow">↗</span>
+      </div>
+    </a>
+
+    <a href="labs/lab7.html" class="lab-card" style="opacity:0.6;">
+      <div class="lab-num">ЛАБ 07</div>
+      <div class="lab-title">Стеганографія</div>
+      <div class="lab-desc">Приховування даних у зображеннях. LSB-метод. QuickStego та DataHider.</div>
+      <div class="lab-tags">
+        <span class="tag">LSB</span>
+        <span class="tag">Стего</span>
+        <span class="tag">Зображення</span>
+      </div>
+      <div class="lab-footer">
+        <div class="lab-difficulty">
+          <span>Складність</span>
+          <div class="diff-bars">
+            <div class="diff-bar active"></div>
+            <div class="diff-bar active"></div>
+            <div class="diff-bar"></div>
+            <div class="diff-bar"></div>
+          </div>
+        </div>
+        <span class="lab-arrow" style="font-size:0.65rem;color:var(--yellow)">СКОРО</span>
+      </div>
+    </a>
+
+    <a href="labs/lab8.html" class="lab-card" style="opacity:0.6;">
+      <div class="lab-num">ЛАБ 08</div>
+      <div class="lab-title">Захист PDF (Adobe Acrobat)</div>
+      <div class="lab-desc">Шифрування PDF паролем та сертифікатом. RC4, AES. Цифровий підпис документів.</div>
+      <div class="lab-tags">
+        <span class="tag">PDF</span>
+        <span class="tag">AES-256</span>
+        <span class="tag">Сертифікат</span>
+      </div>
+      <div class="lab-footer">
+        <div class="lab-difficulty">
+          <span>Складність</span>
+          <div class="diff-bars">
+            <div class="diff-bar active"></div>
+            <div class="diff-bar"></div>
+            <div class="diff-bar"></div>
+            <div class="diff-bar"></div>
+          </div>
+        </div>
+        <span class="lab-arrow" style="font-size:0.65rem;color:var(--yellow)">СКОРО</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- DEMO SECTION -->
+<div class="demo-section">
+  <div class="demo-wrapper">
+    <div class="section-tag">// живе демо</div>
+    <h2 class="section-title" style="font-family:var(--font-sans);font-size:2.5rem;font-weight:800;letter-spacing:-0.03em;margin-top:0.5rem;">
+      Спробуй прямо зараз
+    </h2>
+
+    <div class="demo-container">
+      <!-- INPUT PANEL -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <span class="demo-panel-title">// введення</span>
+          <span class="demo-badge">LIVE</span>
+        </div>
+
+        <div class="cipher-selector">
+          <button class="cipher-btn active" onclick="selectCipher(this,'caesar')">Цезар</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'vigenere')">Віженер</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'atbash')">Атбаш</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'gronsfeld')">Гронсфельд</button>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Відкритий текст</label>
+          <textarea class="input-field" id="plaintext" placeholder="Введіть повідомлення...">HELLO WORLD</textarea>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label class="input-label" id="key-label">Ключ (зсув)</label>
+            <input class="input-field-sm" id="key-input" value="3" placeholder="Ключ...">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Режим</label>
+            <select class="input-field-sm" id="mode-select" style="cursor:pointer;">
+              <option value="enc">Шифрування</option>
+              <option value="dec">Розшифрування</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="encrypt-btn" onclick="runCipher()">
+          ⟶ Виконати шифрування
+        </button>
+      </div>
+
+      <!-- OUTPUT PANEL -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <span class="demo-panel-title">// результат</span>
+        </div>
+
+        <label class="input-label">Зашифрований текст</label>
+        <div class="output-area" id="output">
+          <span class="output-placeholder">Результат з'явиться тут...</span>
+          <button class="copy-btn" onclick="copyOutput()">COPY</button>
+        </div>
+
+        <label class="input-label" style="margin-bottom:0.75rem;display:block;">Кроки виконання</label>
+        <div class="steps-area" id="steps">
+          <div class="step-item">
+            <span class="step-num">—</span>
+            <span>Оберіть алгоритм та натисніть "Виконати"</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 CryptoLab — Лабораторні роботи з ІБ</span>
+  <div class="footer-links">
+    <a href="#" class="footer-link" onclick="document.querySelector('.section').scrollIntoView({behavior:'smooth'});return false;">Лаби</a>
+    <a href="#" class="footer-link" onclick="document.querySelector('.demo-section').scrollIntoView({behavior:'smooth'});return false;">Демо</a>
+  </div>
+</footer>
+
+<script src="js/common.js"></script>
+<script>
+let currentCipher = 'caesar';
+
+function selectCipher(btn, cipher) {
+  document.querySelectorAll('.cipher-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCipher = cipher;
+  const label = document.getElementById('key-label');
+  const keyInput = document.getElementById('key-input');
+  if (cipher === 'caesar') { label.textContent = 'Ключ (зсув 0–25)'; keyInput.value = '3'; keyInput.placeholder = '0–25'; }
+  else if (cipher === 'vigenere') { label.textContent = 'Ключ (слово)'; keyInput.value = 'KEY'; keyInput.placeholder = 'Слово...'; }
+  else if (cipher === 'atbash') { label.textContent = 'Ключ (не потрібен)'; keyInput.value = '—'; }
+  else if (cipher === 'gronsfeld') { label.textContent = 'Ключ (число)'; keyInput.value = '1357'; keyInput.placeholder = '0–9...'; }
+}
+
+function caesarChar(c, shift, decrypt) {
+  const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const idx = alpha.indexOf(c.toUpperCase());
+  if (idx === -1) return c;
+  const s = decrypt ? (26 - shift % 26) % 26 : shift % 26;
+  return alpha[(idx + s) % 26];
+}
+
+function runCipher() {
+  const text = document.getElementById('plaintext').value.toUpperCase();
+  const key = document.getElementById('key-input').value;
+  const decrypt = document.getElementById('mode-select').value === 'dec';
+  let result = '';
+  let steps = [];
+
+  if (currentCipher === 'caesar') {
+    const shift = parseInt(key) || 3;
+    result = text.split('').map(c => caesarChar(c, shift, decrypt)).join('');
+    steps = [
+      { n: '01', t: `Алгоритм: Шифр Цезаря`, d: decrypt ? 'розшифрування' : 'шифрування' },
+      { n: '02', t: `Ключ (зсув): ${shift}`, d: `кожна буква зсувається на ${shift} позицій` },
+      { n: '03', t: `Формула: b = (a ${decrypt?'-':'+'}  ${shift}) mod 26`, d: `де a — номер букви` },
+      { n: '04', t: `Вхід: "${text}"`, d: `→ Вихід: "${result}"` },
+    ];
+  } else if (currentCipher === 'vigenere') {
+    const k = key.replace(/[^A-Za-z]/g,'').toUpperCase() || 'KEY';
+    const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let ki = 0;
+    result = text.split('').map(c => {
+      if (!/[A-Z]/.test(c)) return c;
+      const shift = alpha.indexOf(k[ki % k.length]);
+      ki++;
+      return caesarChar(c, shift, decrypt);
+    }).join('');
+    steps = [
+      { n: '01', t: `Алгоритм: Шифр Віженера`, d: 'багатоалфавітна заміна' },
+      { n: '02', t: `Ключ: "${k}"`, d: `повторюється циклічно під текстом` },
+      { n: '03', t: `Формула: bi = (ai ${decrypt?'-':'+'} ki) mod 26`, d: 'ki — номер букви ключа' },
+      { n: '04', t: `Вхід: "${text}"`, d: `→ Вихід: "${result}"` },
+    ];
+  } else if (currentCipher === 'atbash') {
+    const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    result = text.split('').map(c => {
+      const i = alpha.indexOf(c);
+      return i === -1 ? c : alpha[25 - i];
+    }).join('');
+    steps = [
+      { n: '01', t: `Алгоритм: Атбаш`, d: 'дзеркальна заміна алфавіту' },
+      { n: '02', t: `A↔Z, B↔Y, C↔X...`, d: 'ключ не потрібен' },
+      { n: '03', t: `Формула: b = 25 - a`, d: 'де a — порядковий номер букви' },
+      { n: '04', t: `Вхід: "${text}"`, d: `→ Вихід: "${result}"` },
+    ];
+  } else if (currentCipher === 'gronsfeld') {
+    const digits = key.replace(/[^0-9]/g,'') || '1357';
+    const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let di = 0;
+    result = text.split('').map(c => {
+      if (!/[A-Z]/.test(c)) return c;
+      const shift = parseInt(digits[di % digits.length]);
+      di++;
+      return caesarChar(c, shift, decrypt);
+    }).join('');
+    steps = [
+      { n: '01', t: `Алгоритм: Шифр Гронсфельда`, d: 'числовий варіант Віженера' },
+      { n: '02', t: `Ключ: "${digits}"`, d: `цифри циклічно записуються під буквами` },
+      { n: '03', t: `Формула: bi = (ai ${decrypt?'-':'+'} di) mod 26`, d: 'di — цифра ключа' },
+      { n: '04', t: `Вхід: "${text}"`, d: `→ Вихід: "${result}"` },
+    ];
+  }
+
+  document.getElementById('output').innerHTML = `<span style="color:var(--green)">${result}</span><button class="copy-btn" onclick="copyOutput()">COPY</button>`;
+  document.getElementById('steps').innerHTML = steps.map(s =>
+    `<div class="step-item"><span class="step-num">${s.n}</span><span>${s.t} — <span class="step-detail">${s.d}</span></span></div>`
+  ).join('');
+}
+
+function copyOutput() {
+  const txt = document.getElementById('output').querySelector('span');
+  if (txt) { navigator.clipboard.writeText(txt.textContent); }
+}
+
+// Run on load
+runCipher();
+</script>
+</body>
+</html>
