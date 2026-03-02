@@ -25,60 +25,472 @@
     </header>
 
     <div class="lab-page">
+      <!-- LAB HERO -->
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
             <span class="lab-index-badge">ЛАБ 05</span>
+            <span
+              style="
+                font-size: 0.65rem;
+                color: var(--text-dim);
+                letter-spacing: 0.15em;
+              "
+              >АСИМЕТРИЧНЕ ШИФРУВАННЯ</span
+            >
           </div>
-          <h1 class="lab-hero-title">Алгоритм шифрування RSA</h1>
+          <h1 class="lab-hero-title">Алгоритм<br />шифрування RSA</h1>
+          <p class="lab-hero-sub">
+            RSA (Rivest–Shamir–Adleman, 1977) — перший практичний алгоритм
+            відкритого ключа. Безпека ґрунтується на складності факторизації
+            добутку великих простих чисел. Відкритий ключ (e, n) шифрує,
+            закритий (d, n) розшифровує.
+          </p>
           <div class="lab-hero-chips">
-            <span class="tag">RSA</span><span class="tag">Відкритий ключ</span
-            ><span class="tag">Евклід</span>
+            <span class="tag">RSA</span>
+            <span class="tag">Відкритий ключ</span>
+            <span class="tag">Алгоритм Евкліда</span>
+            <span class="tag">Модульна арифметика</span>
+            <span class="tag">BigInt</span>
           </div>
         </div>
       </div>
 
+      <!-- CONTENT -->
       <div class="lab-content">
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-            flex-direction: column;
-            gap: 1.5rem;
-            text-align: center;
-          "
-        >
-          <div style="font-size: 3rem; color: var(--purple); opacity: 0.3">
-            ⚙
-          </div>
-          <div
-            style="
-              font-family: var(--font-sans);
-              font-size: 1.5rem;
-              font-weight: 800;
-              color: var(--text-dim);
-            "
-          >
-            В розробці
-          </div>
-          <p
-            style="
-              font-size: 0.78rem;
-              color: var(--text-dim);
-              max-width: 400px;
-              line-height: 1.7;
-            "
-          >
-            Ця лабораторна робота ще не реалізована.<br />
-            Алгоритм та JS-файл готові — залишилось побудувати UI.
-          </p>
-          <div style="display: flex; gap: 1rem; margin-top: 0.5rem">
-            <a href="lab04.html" class="btn-secondary">← Лаб. 04</a>
-            <a href="../index.html" class="btn-primary">Всі лаби</a>
-            <a href="lab06.html" class="btn-secondary">Лаб. 06 →</a>
-          </div>
+        <div class="lab-layout">
+          <!-- SIDEBAR -->
+          <aside class="lab-sidebar">
+            <nav class="sidebar-nav">
+              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-item active" data-section="theory">
+                <span class="sidebar-nav-num">01</span> Теорія
+              </div>
+              <div class="sidebar-nav-item" data-section="keygen">
+                <span class="sidebar-nav-num">02</span> Генерація ключів
+              </div>
+              <div class="sidebar-nav-item" data-section="rsa">
+                <span class="sidebar-nav-num">03</span> Шифрування
+              </div>
+            </nav>
+          </aside>
+
+          <!-- MAIN -->
+          <main>
+            <!-- ── THEORY ────────────────────────────────────────── -->
+            <section id="theory">
+              <div class="theory-block">
+                <div class="theory-header">
+                  <span class="theory-title">Короткі теоретичні відомості</span>
+                  <span class="theory-toggle">▼</span>
+                </div>
+                <div class="theory-body open">
+                  <div class="theory-body-inner">
+                    <p>
+                      <strong>RSA</strong> — асиметричний алгоритм шифрування,
+                      де для шифрування та розшифрування використовуються різні
+                      ключі. Відкритий ключ можна вільно передавати, закритий
+                      залишається у власника. Основа безпеки — обчислювальна
+                      складність задачі факторизації великих чисел.
+                    </p>
+                    <div class="algo-cards">
+                      <div class="algo-card" data-target="keygen">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">RSA — Генерація ключів</span>
+                          <span class="algo-card-badge badge-rsa">асиметричний</span>
+                        </div>
+                        <div class="algo-card-formula">
+                          n = p × q<br />
+                          φ(n) = (p−1)(q−1)<br />
+                          e: НСД(e, φ) = 1<br />
+                          d = e⁻¹ mod φ(n)
+                        </div>
+                        <p class="algo-card-desc">
+                          p, q — великі прості числа. Відкритий ключ (e, n) для
+                          шифрування, закритий (d, n) для розшифрування. Безпека
+                          — у складності факторизації n на множники p та q.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+                      <div class="algo-card" data-target="rsa">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">RSA — Шифрування блоків</span>
+                          <span class="algo-card-badge badge-rsa">блочне</span>
+                        </div>
+                        <div class="algo-card-formula">
+                          c = m<sup>e</sup> mod n<br />
+                          m = c<sup>d</sup> mod n
+                        </div>
+                        <p class="algo-card-desc">
+                          Текст розбивається на числові блоки m &lt; n. Кожен
+                          блок шифрується незалежно за допомогою швидкого
+                          модульного піднесення до степеня (square-and-multiply).
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── KEY GENERATION ────────────────────────────────── -->
+            <section id="keygen">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: #b57ef5;
+                      border-bottom-color: #b57ef5;
+                      background: rgba(181, 126, 245, 0.06);
+                    "
+                  >
+                    // RSA — генерація пари ключів
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Крок 1:</span
+                      ><span class="chip-val">вибрати прості p та q</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Крок 2:</span
+                      ><span class="chip-val">n = p×q, φ(n) = (p−1)(q−1)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Крок 3:</span
+                      ><span class="chip-val">e: НСД(e, φ) = 1</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Крок 4:</span
+                      ><span class="chip-val">d = e⁻¹ mod φ(n)</span>
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <!-- LEFT COL: inputs -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">p — перше просте число</label>
+                        <input
+                          class="input-field-sm"
+                          id="rsa-p"
+                          type="number"
+                          min="2"
+                          value="47"
+                          style="height: 40px"
+                        />
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">q — друге просте число</label>
+                        <input
+                          class="input-field-sm"
+                          id="rsa-q"
+                          type="number"
+                          min="2"
+                          value="71"
+                          style="height: 40px"
+                        />
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label"
+                          >e — показник відкритого ключа</label
+                        >
+                        <input
+                          class="input-field-sm"
+                          id="rsa-e"
+                          type="number"
+                          min="2"
+                          value="79"
+                          style="height: 40px"
+                        />
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runKeyGen()"
+                        >
+                          <span style="font-size: 1.1rem; margin-right: 0.25rem">⚙</span>
+                          Генерувати ключі
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- RIGHT COL: steps log -->
+                    <div class="workspace-col">
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки генерації</div>
+                        <div class="steps-log-body" id="keygen-log">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text"
+                              >Натисніть «Генерувати ключі»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- KEY GENERATION VISUALIZER -->
+                  <div
+                    class="caesar-vis"
+                    id="keygen-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // RSA — ланцюг обчислень: p, q → ключова пара
+                    </div>
+                    <div class="cvis-body" style="padding: 0.75rem 0">
+                      <div id="keygen-flow">
+                        <div
+                          style="
+                            text-align: center;
+                            padding: 2.5rem 1rem;
+                            font-size: 0.67rem;
+                            color: var(--text-muted);
+                            font-family: var(--font-mono);
+                          "
+                        >
+                          // введіть p, q, e та натисніть «Генерувати ключі»
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cvis-hint">
+                      <span class="cvis-legend">
+                        <span>
+                          <span class="cvis-dot green"></span
+                          ><span class="cvis-label-green">зелений</span> — прості p, q
+                        </span>
+                        <span>·</span>
+                        <span>
+                          <span class="cvis-dot yellow"></span
+                          ><span class="cvis-label-yellow">жовтий</span> — модуль n
+                        </span>
+                        <span>·</span>
+                        <span>
+                          <span class="cvis-dot orange"></span
+                          ><span class="cvis-label-orange">помаранч.</span> — функція Ейлера φ(n)
+                        </span>
+                        <span>·</span>
+                        <span>
+                          <span class="cvis-dot cyan"></span
+                          ><span class="cvis-label-cyan">блакитний</span> — відкритий показник e
+                        </span>
+                        <span>·</span>
+                        <span>
+                          <span class="cvis-dot purple"></span
+                          ><span class="cvis-label-purple">фіолетовий</span> — закритий показник d
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── RSA ENCRYPT / DECRYPT ─────────────────────────── -->
+            <section id="rsa">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: #d2b739;
+                      border-bottom-color: #d2b739;
+                      background: rgba(210, 183, 57, 0.06);
+                    "
+                  >
+                    // RSA — шифрування числових блоків
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Шифр:</span
+                      ><span class="chip-val">c = m^e mod n</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Розшифр:</span
+                      ><span class="chip-val">m = c^d mod n</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Умова:</span
+                      ><span class="chip-val">m &lt; n для кожного блоку</span>
+                    </div>
+                    <div class="info-chip" id="rsa-current-key-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val">генеруйте ключі спочатку</span>
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <!-- LEFT COL -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label"
+                          >Числові блоки (через пробіл)</label
+                        >
+                        <textarea
+                          class="input-field"
+                          id="rsa-blocks"
+                          style="resize: none; height: 100px; min-height: unset"
+                          placeholder="напр.: 688 232 687 966 668 003"
+                        >688 232 687 966 668 003</textarea>
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runRsaEncrypt()"
+                        >
+                          ⟶ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runRsaDecrypt()"
+                        >
+                          ⟵ Розшифрувати
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- RIGHT COL -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Результат</label>
+                        <div style="position: relative">
+                          <div
+                            class="result-box"
+                            id="rsa-result"
+                            style="
+                              height: 100px;
+                              min-height: unset;
+                              overflow-y: auto;
+                              box-sizing: border-box;
+                              font-size: 0.72rem;
+                              word-break: break-all;
+                            "
+                          >
+                            <span class="result-empty"
+                              >Результат з'явиться тут...</span
+                            >
+                          </div>
+                          <button
+                            class="copy-btn"
+                            onclick="copyResult('rsa-result', this)"
+                          >
+                            copy
+                          </button>
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="rsa-log">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- RSA BLOCK VISUALIZER -->
+                  <div
+                    class="caesar-vis"
+                    id="rsa-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header" id="rsa-vis-header">
+                      // RSA — перетворення числових блоків
+                    </div>
+                    <div class="cvis-body">
+                      <!-- Block navigator (hidden until encryption runs) -->
+                      <div id="rsa-block-wrap" style="display: none">
+                        <div class="des-rnav-row">
+                          <button
+                            class="des-rnav-btn"
+                            onclick="rsaStep(-1)"
+                          >←</button>
+                          <div class="rsa-bstrip" id="rsa-bstrip"></div>
+                          <button
+                            class="des-rnav-btn"
+                            onclick="rsaStep(1)"
+                          >→</button>
+                          <span
+                            class="des-rstep-ctr"
+                            id="rsa-block-counter"
+                            >1 / N</span
+                          >
+                        </div>
+                        <div id="rsa-block-diagram"></div>
+                      </div>
+                      <!-- Initial empty state -->
+                      <div
+                        id="rsa-vis-empty"
+                        style="
+                          text-align: center;
+                          padding: 2.5rem 1rem;
+                          font-size: 0.67rem;
+                          color: var(--text-muted);
+                          font-family: var(--font-mono);
+                        "
+                      >
+                        // спочатку згенеруйте ключі, потім запустіть шифрування
+                      </div>
+                    </div>
+                    <div class="cvis-hint">
+                      <span class="cvis-legend">
+                        <span>
+                          <span class="cvis-dot yellow"></span
+                          ><span class="cvis-label-yellow">жовтий</span> — відкритий блок m
+                        </span>
+                        <span>·</span>
+                        <span>
+                          <span class="cvis-dot purple"></span
+                          ><span class="cvis-label-purple">фіолетовий</span> — шифроблок c
+                        </span>
+                        <span>·</span>
+                        <span>
+                          <span class="cvis-dot cyan"></span
+                          ><span class="cvis-label-cyan">блакитний</span> — відкритий показник e
+                        </span>
+                        <span>·</span>
+                        <span>
+                          <span class="cvis-dot orange"></span
+                          ><span class="cvis-label-orange">помаранчевий</span> — модуль n
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- NAV BETWEEN LABS -->
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 1rem;
+                border-top: 1px solid var(--border);
+                margin-top: 1.5rem;
+              "
+            >
+              <a href="lab04.html" class="btn-secondary">← Лаб. 04</a>
+              <a href="lab06.html" class="btn-primary">Лаб. 06 →</a>
+            </div>
+          </main>
         </div>
       </div>
     </div>
@@ -86,11 +498,345 @@
     <footer>
       <span>© 2026 CryptoLab — Лаб. 05 / Алгоритм шифрування RSA</span>
       <div class="footer-links">
-        <a href="../index.html" class="footer-link">← Головна</a>
+        <a href="lab04.html" class="footer-link">← Лаб. 04</a>
+        <a href="../index.html" class="footer-link">Головна</a>
+        <a href="lab06.html" class="footer-link">Лаб. 06 →</a>
       </div>
     </footer>
 
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/rsa.js"></script>
+    <script>
+      'use strict';
+
+      /* ── State ───────────────────────────────────────────────── */
+      var _rsaKeys = null;
+      var _rsaBlockData = null;
+      var _rsaBlockIdx = 0;
+      var _rsaIsDecrypt = false;
+
+      /* ── Helpers ─────────────────────────────────────────────── */
+      function copyResult(id, btn) {
+        var text = document.getElementById(id) && document.getElementById(id).textContent.trim();
+        var empty = "Результат з'явиться тут...";
+        if (!text || text === empty) return;
+        navigator.clipboard.writeText(text).then(function () {
+          var orig = btn.textContent;
+          btn.textContent = '✓ ok';
+          btn.style.color = 'var(--green)';
+          setTimeout(function () { btn.textContent = orig; btn.style.color = ''; }, 1500);
+        });
+      }
+
+      function buildLog(id, steps) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = steps.map(function (s) {
+          return '<div class="log-line">' +
+            '<span class="log-idx">' + s.n + '</span>' +
+            '<span class="log-text">' + s.t + '</span>' +
+            (s.d ? '<span class="log-detail">' + s.d + '</span>' : '') +
+            '</div>';
+        }).join('');
+      }
+
+      /* ── Key Generation ──────────────────────────────────────── */
+      function runKeyGen() {
+        var pVal = document.getElementById('rsa-p').value.trim();
+        var qVal = document.getElementById('rsa-q').value.trim();
+        var eVal = document.getElementById('rsa-e').value.trim();
+        try {
+          var p = BigInt(pVal);
+          var q = BigInt(qVal);
+          var eHint = eVal ? BigInt(eVal) : undefined;
+          var keys = window.CL.RSA.generateKeys(p, q, eHint);
+          _rsaKeys = keys;
+          buildLog('keygen-log', keys.steps);
+          buildKeygenVis(p, q, keys);
+          var chip = document.getElementById('rsa-current-key-chip');
+          if (chip) {
+            chip.innerHTML =
+              '<span class="chip-label">Ключ:</span>' +
+              '<span class="chip-val" style="color:#b57ef5">' +
+              'n=' + keys.n + ' &nbsp; e=' + keys.e + ' &nbsp; d=' + keys.d +
+              '</span>';
+          }
+        } catch (err) {
+          buildLog('keygen-log', [{ n: '!', t: err.message }]);
+        }
+      }
+
+      function buildKeygenVis(p, q, keys) {
+        var container = document.getElementById('keygen-flow');
+        if (!container) return;
+
+        var pMinus1 = p - 1n;
+        var qMinus1 = q - 1n;
+        var check = (keys.e * keys.d) % keys.phi;
+
+        container.innerHTML =
+          '<div class="rsa-keygen-flow">' +
+
+          /* Row: p × q */
+          '<div class="rsa-flow-row">' +
+            '<div class="rsa-param-node prime">' +
+              '<div class="rsa-node-label">p (просте)</div>' +
+              '<div class="rsa-node-val">' + p + '</div>' +
+            '</div>' +
+            '<div class="rsa-flow-op">×</div>' +
+            '<div class="rsa-param-node prime">' +
+              '<div class="rsa-node-label">q (просте)</div>' +
+              '<div class="rsa-node-val">' + q + '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="rsa-flow-arrow">↓</div>' +
+          '<div class="rsa-flow-label">n = p × q</div>' +
+
+          /* Row: n */
+          '<div class="rsa-flow-row">' +
+            '<div class="rsa-param-node modulus">' +
+              '<div class="rsa-node-label">n — модуль (відкритий)</div>' +
+              '<div class="rsa-node-val">' + keys.n + '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="rsa-flow-arrow">↓</div>' +
+          '<div class="rsa-flow-label">φ(n) = (p−1)(q−1) = ' + pMinus1 + ' × ' + qMinus1 + '</div>' +
+
+          /* Row: phi */
+          '<div class="rsa-flow-row">' +
+            '<div class="rsa-param-node phi-node">' +
+              '<div class="rsa-node-label">φ(n) — функція Ейлера</div>' +
+              '<div class="rsa-node-val">' + keys.phi + '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="rsa-flow-arrow">↓</div>' +
+          '<div class="rsa-flow-label">e: НСД(e, φ(n)) = 1 — взаємно прості</div>' +
+
+          /* Row: e */
+          '<div class="rsa-flow-row">' +
+            '<div class="rsa-param-node pub-exp">' +
+              '<div class="rsa-node-label">e — відкритий показник</div>' +
+              '<div class="rsa-node-val">' + keys.e + '</div>' +
+              '<div class="rsa-node-check">НСД(e, φ) = 1 ✓</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="rsa-flow-arrow">↓</div>' +
+          '<div class="rsa-flow-label">d = e⁻¹ mod φ(n) &nbsp;·&nbsp; розширений алгоритм Евкліда</div>' +
+
+          /* Row: d */
+          '<div class="rsa-flow-row">' +
+            '<div class="rsa-param-node priv-exp">' +
+              '<div class="rsa-node-label">d — закритий показник</div>' +
+              '<div class="rsa-node-val">' + keys.d + '</div>' +
+              '<div class="rsa-node-check">e × d mod φ(n) = ' + check + ' ✓</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="rsa-flow-arrow">↓</div>' +
+
+          /* Key cards */
+          '<div class="rsa-key-cards">' +
+            '<div class="rsa-key-card pub">' +
+              '<div class="rsa-key-card-icon">🔓</div>' +
+              '<div class="rsa-key-card-title">Відкритий ключ</div>' +
+              '<div class="rsa-key-card-val">e = ' + keys.e + '<br>n = ' + keys.n + '</div>' +
+              '<div class="rsa-key-card-sub">Для шифрування: c = m^e mod n<br>Можна передавати публічно</div>' +
+            '</div>' +
+            '<div class="rsa-key-card priv">' +
+              '<div class="rsa-key-card-icon">🔑</div>' +
+              '<div class="rsa-key-card-title">Закритий ключ</div>' +
+              '<div class="rsa-key-card-val">d = ' + keys.d + '<br>n = ' + keys.n + '</div>' +
+              '<div class="rsa-key-card-sub">Для розшифрування: m = c^d mod n<br>Залишається в таємниці</div>' +
+            '</div>' +
+          '</div>' +
+
+          '</div>';
+      }
+
+      /* ── RSA Encrypt ─────────────────────────────────────────── */
+      function runRsaEncrypt() {
+        if (!_rsaKeys) {
+          document.getElementById('rsa-result').textContent =
+            '⚠ Спочатку згенеруйте ключі у розділі «Генерація ключів»';
+          return;
+        }
+        var input = document.getElementById('rsa-blocks').value.trim();
+        if (!input) return;
+        try {
+          var r = window.CL.RSA.encryptBlocks(input, _rsaKeys.e, _rsaKeys.n);
+          document.getElementById('rsa-result').textContent = r.cipher.join(' ');
+          buildLog('rsa-log', r.steps);
+          var inputParts = input.split(/\s+/);
+          var blockData = r.cipher.map(function (c, i) {
+            return { m: inputParts[i], c: String(c) };
+          });
+          buildRsaVis(blockData, false);
+        } catch (err) {
+          document.getElementById('rsa-result').textContent = '⚠ ' + err.message;
+        }
+      }
+
+      /* ── RSA Decrypt ─────────────────────────────────────────── */
+      function runRsaDecrypt() {
+        if (!_rsaKeys) {
+          document.getElementById('rsa-result').textContent =
+            '⚠ Спочатку згенеруйте ключі у розділі «Генерація ключів»';
+          return;
+        }
+        var input = document.getElementById('rsa-blocks').value.trim();
+        if (!input) return;
+        try {
+          var cipherArr = input.split(/\s+/).map(BigInt);
+          var r = window.CL.RSA.decryptBlocks(cipherArr, _rsaKeys.d, _rsaKeys.n);
+          document.getElementById('rsa-result').textContent = r.plain.join(' ');
+          buildLog('rsa-log', r.steps);
+          var blockData = cipherArr.map(function (c, i) {
+            return { c: String(c), m: String(r.plain[i]) };
+          });
+          buildRsaVis(blockData, true);
+        } catch (err) {
+          document.getElementById('rsa-result').textContent = '⚠ ' + err.message;
+        }
+      }
+
+      /* ── RSA Block Visualizer ────────────────────────────────── */
+      function buildRsaVis(blocks, isDecrypt) {
+        _rsaBlockData = blocks;
+        _rsaIsDecrypt = isDecrypt;
+        _rsaBlockIdx = 0;
+
+        /* Header */
+        var hdr = document.getElementById('rsa-vis-header');
+        if (hdr) {
+          hdr.innerHTML =
+            '// RSA ' + (isDecrypt ? 'розшифрування' : 'шифрування') +
+            ' &nbsp;·&nbsp; блок за блоком &nbsp;·&nbsp; ' +
+            '<span class="badge-rsa">' + (isDecrypt ? 'c^d mod n' : 'm^e mod n') + '</span>';
+        }
+
+        /* Show wrap, hide empty */
+        var empty = document.getElementById('rsa-vis-empty');
+        if (empty) empty.style.display = 'none';
+        var wrap = document.getElementById('rsa-block-wrap');
+        if (wrap) wrap.style.display = 'block';
+
+        /* Build strip */
+        var strip = document.getElementById('rsa-bstrip');
+        if (strip) {
+          strip.innerHTML = blocks.map(function (b, i) {
+            var label = isDecrypt ? String(b.c) : String(b.m);
+            if (label.length > 5) label = label.substring(0, 4) + '…';
+            return '<div class="rsa-bstrip-pill' + (i === 0 ? ' active' : '') +
+              '" onclick="rsaGoTo(' + i + ')">' +
+              String(i + 1).padStart(2, '0') + '<br>' +
+              '<span style="font-size:.48rem;opacity:.75">' + label + '</span>' +
+              '</div>';
+          }).join('');
+        }
+
+        /* Counter */
+        var ctr = document.getElementById('rsa-block-counter');
+        if (ctr) ctr.textContent = '1 / ' + blocks.length;
+
+        rsaRenderBlock(0);
+      }
+
+      function rsaRenderBlock(idx) {
+        if (!_rsaBlockData || !_rsaKeys) return;
+        var b = _rsaBlockData[idx];
+        var total = _rsaBlockData.length;
+        var decrypt = _rsaIsDecrypt;
+
+        var inputVal = decrypt ? b.c : b.m;
+        var outputVal = decrypt ? b.m : b.c;
+        var expLabel = decrypt ? 'd' : 'e';
+        var expVal = decrypt ? String(_rsaKeys.d) : String(_rsaKeys.e);
+        var nVal = String(_rsaKeys.n);
+        var formulaShort = decrypt ? 'm = c^d mod n' : 'c = m^e mod n';
+        var formulaFull = decrypt
+          ? 'm = ' + b.c + '^' + _rsaKeys.d + ' mod ' + _rsaKeys.n + ' = ' + b.m
+          : 'c = ' + b.m + '^' + _rsaKeys.e + ' mod ' + _rsaKeys.n + ' = ' + b.c;
+
+        var inClass = decrypt ? 'cipher' : 'plain';
+        var outClass = decrypt ? 'plain' : 'cipher';
+        var expClass = decrypt ? 'd-exp' : 'e-exp';
+        var inLabel = decrypt ? 'ШИФРОБЛОК — вхід' : 'ВІДКРИТИЙ БЛОК — вхід';
+        var outLabel = decrypt ? 'ВІДКРИТИЙ БЛОК — вихід' : 'ШИФРОБЛОК — вихід';
+        var inSub = decrypt ? 'зашифрований числовий блок' : 'числовий блок відкритого тексту';
+        var outSub = decrypt ? 'відновлений числовий блок' : 'зашифрований числовий блок';
+
+        var el = document.getElementById('rsa-block-diagram');
+        if (!el) return;
+
+        el.innerHTML =
+          '<div class="rsa-bfocus">' +
+
+          /* Title bar */
+          '<div class="rsa-bfocus-title">' +
+            'БЛОК ' + String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0') +
+            '<span style="font-size:.55rem;opacity:.6;font-weight:400;letter-spacing:.04em">' +
+            formulaShort + '</span>' +
+          '</div>' +
+
+          /* Input section */
+          '<div class="rsa-bfocus-section">' +
+            '<div class="rsa-bfocus-label">' + inLabel + '</div>' +
+            '<div class="rsa-bfocus-num ' + inClass + '">' + inputVal + '</div>' +
+            '<div style="font-size:.5rem;color:var(--text-muted);font-family:var(--font-mono);margin-top:.2rem">' +
+            inSub + '</div>' +
+          '</div>' +
+
+          /* Operation section */
+          '<div class="rsa-bfocus-section" style="background:rgba(0,0,0,0.12)">' +
+            '<div class="rsa-bfocus-label">ОПЕРАЦІЯ — модульне піднесення до степеня</div>' +
+            '<div class="rsa-bfocus-formula">' +
+              '<span class="rsa-bfocus-num ' + inClass + '" style="font-size:1rem">' + inputVal + '</span>' +
+              '<span class="rsa-bfocus-op"> ^ </span>' +
+              '<span class="rsa-bfocus-exp ' + expClass + '">' + expLabel + ' = ' + expVal + '</span>' +
+              '<span class="rsa-bfocus-op"> mod </span>' +
+              '<span class="rsa-bfocus-exp n-exp">n = ' + nVal + '</span>' +
+              '<span class="rsa-bfocus-op"> = </span>' +
+              '<span class="rsa-bfocus-result ' + outClass + '">' + outputVal + '</span>' +
+            '</div>' +
+            '<div class="rsa-bfocus-full">' + formulaFull + '</div>' +
+          '</div>' +
+
+          /* Output section */
+          '<div class="rsa-bfocus-section">' +
+            '<div class="rsa-bfocus-label">' + outLabel + '</div>' +
+            '<div class="rsa-bfocus-result ' + outClass + '">' + outputVal + '</div>' +
+            '<div style="font-size:.5rem;color:var(--text-muted);font-family:var(--font-mono);margin-top:.25rem">' +
+            outSub + '</div>' +
+          '</div>' +
+
+          '</div>';
+      }
+
+      function rsaGoTo(idx) {
+        if (!_rsaBlockData) return;
+        _rsaBlockIdx = ((idx % _rsaBlockData.length) + _rsaBlockData.length) % _rsaBlockData.length;
+        document.querySelectorAll('.rsa-bstrip-pill').forEach(function (el, i) {
+          el.classList.toggle('active', i === _rsaBlockIdx);
+        });
+        var ctr = document.getElementById('rsa-block-counter');
+        if (ctr) ctr.textContent = (_rsaBlockIdx + 1) + ' / ' + _rsaBlockData.length;
+        rsaRenderBlock(_rsaBlockIdx);
+        var active = document.querySelector('.rsa-bstrip-pill.active');
+        if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+
+      function rsaStep(dir) { rsaGoTo(_rsaBlockIdx + dir); }
+
+      /* ── Init ────────────────────────────────────────────────── */
+      document.addEventListener('DOMContentLoaded', function () {
+        initScrollSpy(['theory', 'keygen', 'rsa']);
+        initAlgoCards();
+        runKeyGen();
+      });
+    </script>
   </body>
 </html>

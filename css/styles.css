@@ -1770,7 +1770,33 @@ footer {
   font-size: 0.6rem;
   color: var(--text-dim);
   letter-spacing: 0.06em;
+  padding: 0.6rem 1rem;
+  text-align: center;
 }
+.cvis-hint .cvis-legend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.cvis-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 0.25rem;
+}
+.cvis-dot.green { background: #39d353; }
+.cvis-dot.yellow { background: #d2b739; }
+.cvis-dot.orange { background: #ff9550; }
+.cvis-dot.cyan { background: #58d4f5; }
+.cvis-dot.purple { background: #b57ef5; }
+.cvis-label-green { color: #39d353; }
+.cvis-label-yellow { color: #d2b739; }
+.cvis-label-orange { color: #ff9550; }
+.cvis-label-cyan { color: #58d4f5; }
+.cvis-label-purple { color: #b57ef5; }
 .cvis-hint .hi-p {
   color: var(--green);
 }
@@ -3141,4 +3167,276 @@ footer {
   font-family: var(--font-mono);
   text-align: center;
   line-height: 1.5;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RSA Visualizer
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Badge ───────────────────────────────────────────────────── */
+.badge-rsa {
+  background: rgba(181, 126, 245, 0.15);
+  color: #b57ef5;
+  border: 1px solid rgba(181, 126, 245, 0.3);
+  font-size: 0.57rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Key Generation Flow ─────────────────────────────────────── */
+.rsa-keygen-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 0.5rem 0;
+}
+.rsa-flow-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.rsa-flow-op {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.rsa-flow-arrow {
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  opacity: 0.35;
+  margin: 0.3rem 0;
+  line-height: 1;
+}
+.rsa-flow-label {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  margin: 0.1rem 0 0.2rem;
+  text-align: center;
+}
+
+/* Parameter nodes */
+.rsa-param-node {
+  padding: 0.55rem 1rem;
+  border-radius: 7px;
+  font-family: var(--font-mono);
+  text-align: center;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  min-width: 90px;
+}
+.rsa-node-label {
+  font-size: 0.5rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.05em;
+}
+.rsa-node-val {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  word-break: break-all;
+}
+.rsa-node-check {
+  font-size: 0.5rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+/* Node color variants */
+.rsa-param-node.prime { border-color: rgba(57,211,83,.4); background: rgba(57,211,83,.07); }
+.rsa-param-node.prime .rsa-node-val { color: #39d353; }
+
+.rsa-param-node.modulus { border-color: rgba(210,183,57,.45); background: rgba(210,183,57,.07); }
+.rsa-param-node.modulus .rsa-node-val { color: #d2b739; }
+
+.rsa-param-node.phi-node { border-color: rgba(255,149,80,.4); background: rgba(255,149,80,.07); }
+.rsa-param-node.phi-node .rsa-node-val { color: #ff9550; }
+
+.rsa-param-node.pub-exp { border-color: rgba(88,212,245,.4); background: rgba(88,212,245,.07); }
+.rsa-param-node.pub-exp .rsa-node-val { color: #58d4f5; }
+
+.rsa-param-node.priv-exp { border-color: rgba(181,126,245,.4); background: rgba(181,126,245,.07); }
+.rsa-param-node.priv-exp .rsa-node-val { color: #b57ef5; }
+
+/* Key cards */
+.rsa-key-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  width: 100%;
+  max-width: 480px;
+}
+.rsa-key-card {
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+}
+.rsa-key-card.pub {
+  background: rgba(88,212,245,.07);
+  border-color: rgba(88,212,245,.35);
+}
+.rsa-key-card.priv {
+  background: rgba(181,126,245,.07);
+  border-color: rgba(181,126,245,.35);
+}
+.rsa-key-card-icon { font-size: 1.3rem; line-height: 1; margin-bottom: 0.3rem; }
+.rsa-key-card-title {
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+  font-family: var(--font-mono);
+}
+.rsa-key-card.pub  .rsa-key-card-title { color: #58d4f5; }
+.rsa-key-card.priv .rsa-key-card-title { color: #b57ef5; }
+.rsa-key-card-val {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.6;
+  word-break: break-all;
+}
+.rsa-key-card-sub {
+  font-size: 0.5rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-top: 0.25rem;
+  line-height: 1.5;
+}
+
+/* ── RSA Block Navigator ─────────────────────────────────────── */
+.rsa-bstrip {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  padding: 0.15rem 0;
+}
+.rsa-bstrip-pill {
+  flex-shrink: 0;
+  padding: 0.28rem 0.55rem;
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.57rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all .13s;
+  text-align: center;
+  min-width: 44px;
+}
+.rsa-bstrip-pill:hover { background: rgba(255,255,255,.07); color: var(--text-dim); }
+.rsa-bstrip-pill.active {
+  background: rgba(181,126,245,.15);
+  border-color: rgba(181,126,245,.45);
+  color: #b57ef5;
+  font-weight: 700;
+}
+
+/* ── Block Focus Card ────────────────────────────────────────── */
+.rsa-bfocus {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.rsa-bfocus-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  background: rgba(181,126,245,.07);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: #b57ef5;
+  letter-spacing: 0.1em;
+}
+.rsa-bfocus-section {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.rsa-bfocus-section:last-child { border-bottom: none; }
+.rsa-bfocus-label {
+  font-size: 0.5rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.07em;
+  margin-bottom: 0.4rem;
+}
+.rsa-bfocus-num {
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+.rsa-bfocus-result {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  letter-spacing: 0.07em;
+}
+.rsa-bfocus-formula {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.3rem;
+}
+.rsa-bfocus-op {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.rsa-bfocus-exp {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  line-height: 1.4;
+  word-break: break-all;
+  max-width: 200px;
+}
+.rsa-bfocus-full {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-top: 0.5rem;
+  word-break: break-all;
+  line-height: 1.6;
+}
+
+/* color variants */
+.rsa-bfocus-num.plain   { color: #d2b739; }
+.rsa-bfocus-num.cipher  { color: #b57ef5; }
+.rsa-bfocus-result.plain  { color: #d2b739; }
+.rsa-bfocus-result.cipher { color: #b57ef5; }
+.rsa-bfocus-exp.e-exp { color: #58d4f5; border-color: rgba(88,212,245,.3); }
+.rsa-bfocus-exp.d-exp { color: #b57ef5; border-color: rgba(181,126,245,.3); }
+.rsa-bfocus-exp.n-exp { color: #d2b739; border-color: rgba(210,183,57,.3); }
+
+/* Fine-tuning RSA visualizer spacing */
+#rsa-vis .cvis-header {
+  justify-content: center;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  text-align: center;
+}
+#rsa-vis .cvis-body {
+  padding: 1rem 1.5rem 1.1rem;
 }
