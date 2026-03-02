@@ -25,58 +25,341 @@
     </header>
 
     <div class="lab-page">
+      <!-- LAB HERO -->
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
             <span class="lab-index-badge">ЛАБ 04</span>
+            <span
+              style="
+                font-size: 0.65rem;
+                color: var(--text-dim);
+                letter-spacing: 0.15em;
+              "
+              >БЛОКОВЕ ШИФРУВАННЯ</span
+            >
           </div>
-          <h1 class="lab-hero-title">Алгоритм шифрування DES</h1>
+          <h1 class="lab-hero-title">Алгоритм<br />шифрування DES</h1>
+          <p class="lab-hero-sub">
+            DES (Data Encryption Standard) — перший стандартизований блоковий
+            симетричний шифр (FIPS 46-3, 1977). В основі — мережа Фейстеля:
+            64-бітний блок ділиться навпіл і проходить 16 раундів взаємних
+            перетворень із 56-бітним ключем.
+          </p>
           <div class="lab-hero-chips">
-            <span class="tag">DES</span><span class="tag">Фейстель</span
-            ><span class="tag">S-блоки</span>
+            <span class="tag">DES</span>
+            <span class="tag">Мережа Фейстеля</span>
+            <span class="tag">64-біт блок</span>
+            <span class="tag">56-біт ключ</span>
+            <span class="tag">16 раундів</span>
+            <span class="tag">S-блоки</span>
           </div>
         </div>
       </div>
 
+      <!-- CONTENT -->
       <div class="lab-content">
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-            flex-direction: column;
-            gap: 1.5rem;
-            text-align: center;
-          "
-        >
-          <div style="font-size: 3rem; color: var(--red); opacity: 0.3">⚙</div>
-          <div
-            style="
-              font-family: var(--font-sans);
-              font-size: 1.5rem;
-              font-weight: 800;
-              color: var(--text-dim);
-            "
-          >
-            В розробці
-          </div>
-          <p
-            style="
-              font-size: 0.78rem;
-              color: var(--text-dim);
-              max-width: 400px;
-              line-height: 1.7;
-            "
-          >
-            Ця лабораторна робота ще не реалізована.<br />
-            Алгоритм та JS-файл готові — залишилось побудувати UI.
-          </p>
-          <div style="display: flex; gap: 1rem; margin-top: 0.5rem">
-            <a href="lab03.html" class="btn-secondary">← Лаб. 03</a>
-            <a href="../index.html" class="btn-primary">Всі лаби</a>
-            <a href="lab05.html" class="btn-secondary">Лаб. 05 →</a>
-          </div>
+        <div class="lab-layout">
+          <!-- SIDEBAR -->
+          <aside class="lab-sidebar">
+            <nav class="sidebar-nav">
+              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-item active" data-section="theory">
+                <span class="sidebar-nav-num">01</span> Теорія
+              </div>
+              <div class="sidebar-nav-item" data-section="des">
+                <span class="sidebar-nav-num">02</span> DES
+              </div>
+            </nav>
+          </aside>
+
+          <!-- MAIN -->
+          <main>
+            <!-- ── THEORY ──────────────────────────────────────── -->
+            <section id="theory">
+              <div class="theory-block">
+                <div class="theory-header">
+                  <span class="theory-title">Короткі теоретичні відомості</span>
+                  <span class="theory-toggle">▼</span>
+                </div>
+                <div class="theory-body open">
+                  <div class="theory-body-inner">
+                    <p>
+                      <strong>DES</strong> — симетричний блоковий шифр,
+                      розроблений IBM і затверджений урядом США у 1977 р. Розмір
+                      блоку — 64 біти, ключ — 56 біт (64 з бітами парності).
+                      Алгоритм виконує
+                      <strong>початкову перестановку IP</strong>, потім
+                      <strong>16 раундів мережі Фейстеля</strong>, і
+                      завершується
+                      <strong>оберненою перестановкою IP⁻¹</strong>. Функція
+                      раунду <em>f(R, K)</em> розширює 32-бітний блок R до 48
+                      біт (E), складає XOR із 48-бітним підключем, пропускає
+                      через 8 нелінійних S-блоків і виконує перестановку P.
+                    </p>
+                    <div class="algo-cards">
+                      <div class="algo-card" data-target="des">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">DES</span>
+                          <span class="algo-card-badge badge-des"
+                            >блоковий</span
+                          >
+                        </div>
+                        <div class="algo-card-formula">
+                          L<sub>i</sub> = R<sub>i-1</sub><br />
+                          R<sub>i</sub> = L<sub>i-1</sub> ⊕ f(R<sub>i-1</sub>,
+                          K<sub>i</sub>)<br />
+                          f: E → ⊕K → S₁..S₈ → P
+                        </div>
+                        <p class="algo-card-desc">
+                          64-бітний блок, 56-бітний ключ. IP → 16×Feistel →
+                          IP⁻¹. Розшифрування — те ж саме, але підключі K₁₆..K₁
+                          у зворотному порядку. 8 S-блоків забезпечують
+                          нелінійність.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── DES ─────────────────────────────────────────── -->
+            <section id="des">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: #58d4f5;
+                      border-bottom-color: #58d4f5;
+                      background: rgba(88, 212, 245, 0.06);
+                    "
+                  >
+                    // DES — блоковий симетричний шифр (мережа Фейстеля)
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val">Симетричний блоковий</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Блок:</span
+                      ><span class="chip-val">64 біт (8 байт)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val">56 біт (8 байт)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Раундів:</span
+                      ><span class="chip-val">16 (мережа Фейстеля)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Функція f:</span
+                      ><span class="chip-val">E → ⊕K → S-блоки → P</span>
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <!-- LEFT COL -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label"
+                          >Відкритий текст (до 8 символів)</label
+                        >
+                        <textarea
+                          class="input-field"
+                          id="des-input"
+                          placeholder="до 8 символів; для розшифрування — 16 hex"
+                          style="resize: none; height: 100px; min-height: unset"
+                        >
+HELLO WORLD</textarea
+                        >
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Ключ (8 символів)</label>
+                        <input
+                          class="input-field-sm"
+                          id="des-key"
+                          value="SECRETKEY"
+                          placeholder="рівно 8 символів"
+                          style="height: 40px"
+                        />
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runDes()"
+                        >
+                          ⟶ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runDesDecrypt()"
+                        >
+                          ⟵ Розшифрувати hex
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- RIGHT COL -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Результат</label>
+                        <div style="position: relative">
+                          <div
+                            class="result-box"
+                            id="des-result"
+                            style="
+                              height: 100px;
+                              min-height: unset;
+                              overflow-y: auto;
+                              box-sizing: border-box;
+                              font-size: 0.72rem;
+                              word-break: break-all;
+                            "
+                          >
+                            <span class="result-empty"
+                              >Результат з'явиться тут...</span
+                            >
+                          </div>
+                          <button
+                            class="copy-btn"
+                            onclick="copyResult('des-result', this)"
+                          >
+                            copy
+                          </button>
+                        </div>
+                        <div
+                          id="des-decrypt-hint"
+                          style="
+                            display: none;
+                            margin-top: 0.5rem;
+                            padding: 0.5rem 0.75rem;
+                            background: rgba(88, 212, 245, 0.06);
+                            border: 1px solid rgba(88, 212, 245, 0.25);
+                            border-radius: 4px;
+                            font-size: 0.62rem;
+                            color: var(--text-dim);
+                            line-height: 1.6;
+                          "
+                        >
+                          <span style="color: #58d4f5; letter-spacing: 0.08em"
+                            >// hex результат</span
+                          ><br />
+                          <strong
+                            class="des-hint-hex"
+                            style="
+                              color: #58d4f5;
+                              font-family: var(--font-mono);
+                              letter-spacing: 0.08em;
+                            "
+                          ></strong>
+                        </div>
+                      </div>
+
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="des-log">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- DES VISUALIZER -->
+                  <div class="caesar-vis" id="des-vis" style="margin-top: 1.5rem">
+                    <div class="cvis-header" id="des-vis-header">
+                      // мережа Фейстеля — 16 раундів шифрування
+                    </div>
+                    <div class="cvis-body" style="padding: 0.75rem 0">
+
+                      <!-- Pipeline overview strip -->
+                      <div class="des-pipeline" id="des-pipeline">
+                        <div class="des-pipe-node">Вхід<br /><span class="des-pipe-hex">64 біт</span></div>
+                        <div class="des-pipe-arrow">→</div>
+                        <div class="des-pipe-node des-pipe-ip">IP<br /><span style="font-size:.5rem;opacity:.7">перест.</span></div>
+                        <div class="des-pipe-arrow">→</div>
+                        <div class="des-pipe-node" style="font-size:.55rem;color:#d2b739;padding:.4rem .5rem">L₀<br /><span style="opacity:.5">32b</span></div>
+                        <div class="des-pipe-arrow" style="opacity:.3">│</div>
+                        <div class="des-pipe-node" style="font-size:.55rem;color:#58d4f5;padding:.4rem .5rem">R₀<br /><span style="opacity:.5">32b</span></div>
+                        <div class="des-pipe-arrow">→</div>
+                        <div class="des-pipe-node des-pipe-feistel">16 × Feistel<br /><span style="font-size:.5rem;opacity:.7">K₁..K₁₆</span></div>
+                        <div class="des-pipe-arrow">→</div>
+                        <div class="des-pipe-node des-pipe-ip">IP⁻¹<br /><span style="font-size:.5rem;opacity:.7">обернена</span></div>
+                        <div class="des-pipe-arrow">→</div>
+                        <div class="des-pipe-node">Вихід<br /><span class="des-pipe-hex">64 біт</span></div>
+                      </div>
+
+                      <!-- Interactive round navigator (hidden until encryption runs) -->
+                      <div id="des-ff-wrap" style="display:none; margin-top:1.25rem">
+                        <div class="des-rnav-row">
+                          <button class="des-rnav-btn" onclick="desStep(-1)">←</button>
+                          <div class="des-rstrip" id="des-rstrip"></div>
+                          <button class="des-rnav-btn" onclick="desStep(1)">→</button>
+                          <span class="des-rstep-ctr" id="des-round-counter">1 / 16</span>
+                        </div>
+                        <div id="des-feistel-diagram"></div>
+                      </div>
+
+                      <!-- Collapsible reference table -->
+                      <div style="margin-top:1.25rem">
+                        <div
+                          class="cvis-header"
+                          style="cursor:pointer;user-select:none"
+                          onclick="
+                            const b=document.getElementById('des-rounds-section');
+                            b.style.display=b.style.display===\'none\'?\'block\':\'none\';
+                            this.querySelector(\'[data-arr]\').textContent=b.style.display===\'none\'?\'▶\':\'▼\';
+                          "
+                        >
+                          // таблиця всіх 16 раундів
+                          <span data-arr style="margin-left:.5rem;font-size:.6rem">▶</span>
+                        </div>
+                        <div id="des-rounds-section" style="display:none">
+                          <div class="des-rounds-wrap">
+                            <table class="des-rounds-table">
+                              <thead>
+                                <tr>
+                                  <th>Раунд</th>
+                                  <th>L (32 bit hex)</th>
+                                  <th>R (32 bit hex)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="des-rounds-body">
+                                <tr>
+                                  <td colspan="3" class="des-rounds-empty">
+                                    // запустіть шифрування
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="cvis-hint">
+                      ■ <span style="color:#d2b739">жовтий</span> — L вхід &nbsp;·&nbsp;
+                      ■ <span style="color:#58d4f5">блакитний</span> — R вхід / новий L &nbsp;·&nbsp;
+                      ■ <span style="color:#39d353">зелений</span> — новий R = L⊕f &nbsp;·&nbsp;
+                      ■ <span style="color:#b57ef5">фіолетовий</span> — функція f(R, K<sub>i</sub>)
+                    </div>
+                  </div>
+            </section>
+          </main>
         </div>
       </div>
     </div>
@@ -84,11 +367,270 @@
     <footer>
       <span>© 2026 CryptoLab — Лаб. 04 / Алгоритм шифрування DES</span>
       <div class="footer-links">
-        <a href="../index.html" class="footer-link">← Головна</a>
+        <a href="lab03.html" class="footer-link">← Лаб. 03</a>
+        <a href="../index.html" class="footer-link">Головна</a>
+        <a href="lab05.html" class="footer-link">Лаб. 05 →</a>
       </div>
     </footer>
 
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/des.js"></script>
+    <script>
+      "use strict";
+
+      /* ── state ───────────────────────────────────────────────── */
+      let _desRoundsData = null;
+      let _desL0 = '', _desR0 = '';
+      let _desRoundIdx = 0;
+
+      /* ── helpers ─────────────────────────────────────────────── */
+      function hexToText(hex) {
+        let str = '';
+        for (let i = 0; i < hex.length; i += 2)
+          str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        return str;
+      }
+
+      function copyResult(id, btn) {
+        const text = document.getElementById(id)?.textContent?.trim();
+        const empty = "Результат з'явиться тут...";
+        if (!text || text === empty) return;
+        navigator.clipboard.writeText(text).then(() => {
+          const orig = btn.textContent;
+          btn.textContent = '✓ ok';
+          btn.style.color = 'var(--green)';
+          setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1500);
+        });
+      }
+
+      /* ── DES encrypt ─────────────────────────────────────────── */
+      function runDes() {
+        const text = document.getElementById('des-input').value || 'HELLO WO';
+        const key  = document.getElementById('des-key').value  || 'SECRETKE';
+        const r = window.CL.DES.runText(text, key, false);
+        document.getElementById('des-result').textContent = r.result.toUpperCase();
+        document.getElementById('des-decrypt-hint').style.display = 'none';
+        buildDesLog(r.steps);
+        buildDesVis(r.rounds, r.steps, r.textHex, r.keyHex, r.result, false);
+      }
+
+      /* ── DES decrypt ─────────────────────────────────────────── */
+      function runDesDecrypt() {
+        const hexInput = document.getElementById('des-input').value.trim().replace(/\s/g, '');
+        const key = document.getElementById('des-key').value || 'SECRETKE';
+        if (!/^[0-9a-fA-F]{16}$/.test(hexInput)) {
+          document.getElementById('des-result').textContent =
+            '⚠ Введіть рівно 16 hex символів (скопіюйте результат шифрування)';
+          return;
+        }
+        const keyPadded = key.padEnd(8, ' ').slice(0, 8);
+        const keyHex = [...keyPadded].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+        const r = window.CL.DES.runHex(hexInput, keyHex, true);
+        const rawText  = hexToText(r.result).replace(/ +$/g, '');
+        const isPrint  = /^[ -~]*$/.test(rawText);
+        const display  = isPrint && rawText.length ? rawText : r.result.toUpperCase();
+        document.getElementById('des-result').textContent = display;
+        const hint = document.getElementById('des-decrypt-hint');
+        if (!isPrint || !rawText.length) {
+          hint.style.display = 'block';
+          hint.querySelector('.des-hint-hex').textContent = r.result.toUpperCase();
+        } else {
+          hint.style.display = 'none';
+        }
+        buildDesLog(r.steps);
+        buildDesVis(r.rounds, r.steps, hexInput, keyHex, r.result, true);
+      }
+
+      /* ── Steps log ───────────────────────────────────────────── */
+      function buildDesLog(steps) {
+        const logEl = document.getElementById('des-log');
+        if (!logEl) return;
+        logEl.innerHTML = steps.map(s =>
+          '<div class="log-line">' +
+            '<span class="log-idx">' + s.n + '</span>' +
+            '<span class="log-text">' + s.t + '</span>' +
+            (s.d ? '<span class="log-detail">' + s.d + '</span>' : '') +
+          '</div>'
+        ).join('');
+      }
+
+      /* ── buildDesVis ─────────────────────────────────────────── */
+      function buildDesVis(rounds, steps, inputHex, keyHex, resultHex, decrypt) {
+        /* Extract L0/R0 */
+        _desL0 = '—'; _desR0 = '—';
+        const ipStep = steps.find(s => s.t && s.t.includes('Після IP'));
+        if (ipStep) {
+          const m = ipStep.t.match(/L₀=([0-9A-Fa-f]+)\s+R₀=([0-9A-Fa-f]+)/);
+          if (m) { _desL0 = m[1].toUpperCase(); _desR0 = m[2].toUpperCase(); }
+        }
+        _desRoundsData = rounds;
+        _desRoundIdx   = 0;
+
+        /* Update header */
+        const vh = document.getElementById('des-vis-header');
+        if (vh) vh.innerHTML =
+          '// мережа Фейстеля — ' +
+          (decrypt ? 'розшифрування (K₁₆..K₁)' :
+                     'шифрування (K₁..K₁₆)') +
+          ' <span class="badge-des">' + (decrypt ? '⟵ decrypt' : '⟶ encrypt') + '</span>';
+
+        /* Update pipeline */
+        const pl = document.getElementById('des-pipeline');
+        if (pl) pl.innerHTML =
+          '<div class="des-pipe-node hi">' + (decrypt ? 'Шифртекст' : 'Текст') +
+            '<br><span class="des-pipe-hex">' + inputHex.toUpperCase() + '</span></div>' +
+          '<div class="des-pipe-arrow">→</div>' +
+          '<div class="des-pipe-node des-pipe-ip">IP<br><span style="font-size:.5rem;opacity:.7">перест.</span></div>' +
+          '<div class="des-pipe-arrow">→</div>' +
+          '<div class="des-pipe-node" style="font-size:.55rem;color:#d2b739;padding:.4rem .5rem">L₀<br><span style="font-size:.48rem;opacity:.8">' + _desL0 + '</span></div>' +
+          '<div class="des-pipe-arrow" style="opacity:.3">│</div>' +
+          '<div class="des-pipe-node" style="font-size:.55rem;color:#58d4f5;padding:.4rem .5rem">R₀<br><span style="font-size:.48rem;opacity:.8">' + _desR0 + '</span></div>' +
+          '<div class="des-pipe-arrow">→</div>' +
+          '<div class="des-pipe-node des-pipe-feistel">16 × Feistel<br><span style="font-size:.5rem;opacity:.7">' + (decrypt ? 'K₁₆→K₁' : 'K₁→K₁₆') + '</span></div>' +
+          '<div class="des-pipe-arrow">→</div>' +
+          '<div class="des-pipe-node des-pipe-ip">IP⁻¹<br><span style="font-size:.5rem;opacity:.7">обернена</span></div>' +
+          '<div class="des-pipe-arrow">→</div>' +
+          '<div class="des-pipe-node hi">' + (decrypt ? 'Текст' : 'Шифртекст') +
+            '<br><span class="des-pipe-hex">' + resultHex.toUpperCase() + '</span></div>';
+
+        /* Build round strip */
+        const strip = document.getElementById('des-rstrip');
+        if (strip) {
+          strip.innerHTML = rounds.map(function(r, i) {
+            return '<div class="des-rstrip-pill' + (i === 0 ? ' active' : '') +
+              '" onclick="desGoTo(' + i + ')">' +
+              String(r.round).padStart(2, '0') + '</div>';
+          }).join('');
+        }
+
+        /* Show navigator */
+        const wrap = document.getElementById('des-ff-wrap');
+        if (wrap) wrap.style.display = 'block';
+
+        /* Populate reference table */
+        const tbody = document.getElementById('des-rounds-body');
+        if (tbody) {
+          tbody.innerHTML =
+            '<tr class="des-row-ip"><td class="des-round-num">IP</td>' +
+            '<td class="des-l-cell">' + _desL0 + '</td>' +
+            '<td class="des-r-cell">' + _desR0 + '</td></tr>' +
+            rounds.map(function(r, i) {
+              return '<tr class="' + (i === rounds.length - 1 ? 'des-row-last' : '') + '">' +
+                '<td class="des-round-num">' + String(r.round).padStart(2, '0') + '</td>' +
+                '<td class="des-l-cell">' + r.L.toUpperCase() + '</td>' +
+                '<td class="des-r-cell">' + r.R.toUpperCase() + '</td></tr>';
+            }).join('');
+        }
+
+        /* Show round 1 */
+        desRenderRound(0);
+        const ctr = document.getElementById('des-round-counter');
+        if (ctr) ctr.textContent = '1 / 16';
+      }
+
+      /* ── desRenderRound ──────────────────────────────────────── */
+      function desRenderRound(idx) {
+        if (!_desRoundsData) return;
+        const round  = _desRoundsData[idx];
+        const rnum   = round.round;
+        const l_prev = (idx === 0 ? _desL0 : _desRoundsData[idx - 1].L).toUpperCase();
+        const r_prev = (idx === 0 ? _desR0 : _desRoundsData[idx - 1].R).toUpperCase();
+        const l_curr = round.L.toUpperCase();
+        const r_curr = round.R.toUpperCase();
+        const eq     = (l_curr === r_prev) ? ' ✓' : '';
+
+        const el = document.getElementById('des-feistel-diagram');
+        if (!el) return;
+
+        el.innerHTML =
+          '<div class="des-ff-card">' +
+
+          '<div class="des-ff-title">РАУНД ' + String(rnum).padStart(2, '0') + ' / 16' +
+            '<span class="des-ff-key-badge">K' + rnum + ' · підключ 48 біт</span></div>' +
+
+          /* INPUTS */
+          '<div class="des-ff-row">' +
+            '<div class="des-ff-half l-in">' +
+              '<div class="des-ff-hlabel">L' + (rnum - 1) + ' &mdash; ліва половина (вхід)</div>' +
+              '<div class="des-ff-hval">' + l_prev + '</div>' +
+              '<div class="des-ff-hbits">32 bit hex</div>' +
+            '</div>' +
+            '<div class="des-ff-divider"></div>' +
+            '<div class="des-ff-half r-in">' +
+              '<div class="des-ff-hlabel">R' + (rnum - 1) + ' &mdash; права половина (вхід)</div>' +
+              '<div class="des-ff-hval">' + r_prev + '</div>' +
+              '<div class="des-ff-hbits">32 bit hex</div>' +
+            '</div>' +
+          '</div>' +
+
+          /* FEISTEL CROSS */
+          '<div class="des-ff-cross-area">' +
+            '<div class="des-ff-pass-col">' +
+              '<div class="des-ff-pass-arrow">↓</div>' +
+              '<div class="des-ff-pass-desc">' +
+                '<strong>L' + rnum + ' = R' + (rnum - 1) + '</strong><br>' +
+                'права половина<br>стає лівою без змін' +
+              '</div>' +
+              '<div class="des-ff-pass-arrow">↓</div>' +
+            '</div>' +
+            '<div class="des-ff-divider"></div>' +
+            '<div class="des-ff-f-col">' +
+              '<div class="des-ff-f-box">' +
+                '<div class="des-ff-f-title">f(R' + (rnum - 1) + ', K' + rnum + ')</div>' +
+                '<div class="des-ff-f-stages">' +
+                  '<span class="des-ff-f-stage">E(32→48)</span>' +
+                  '<span class="des-ff-op">→</span>' +
+                  '<span class="des-ff-f-stage">⊕ K' + rnum + '</span>' +
+                  '<span class="des-ff-op">→</span>' +
+                  '<span class="des-ff-f-stage">8×S-box</span>' +
+                  '<span class="des-ff-op">→</span>' +
+                  '<span class="des-ff-f-stage">P(32)</span>' +
+                '</div>' +
+              '</div>' +
+              '<div class="des-ff-xor-sym">⊕</div>' +
+              '<div class="des-ff-xor-label">L' + (rnum - 1) + ' ⊕ f(R' + (rnum - 1) + ', K' + rnum + ') = R' + rnum + '</div>' +
+            '</div>' +
+          '</div>' +
+
+          /* OUTPUTS */
+          '<div class="des-ff-row">' +
+            '<div class="des-ff-half l-out">' +
+              '<div class="des-ff-hlabel">L' + rnum + ' = R' + (rnum - 1) + '</div>' +
+              '<div class="des-ff-hval">' + l_curr + '</div>' +
+              '<div class="des-ff-hbits">= R вхід' + eq + '</div>' +
+            '</div>' +
+            '<div class="des-ff-divider"></div>' +
+            '<div class="des-ff-half r-out">' +
+              '<div class="des-ff-hlabel">R' + rnum + ' = L' + (rnum - 1) + ' ⊕ f</div>' +
+              '<div class="des-ff-hval">' + r_curr + '</div>' +
+              '<div class="des-ff-hbits">нова права половина</div>' +
+            '</div>' +
+          '</div>' +
+
+          '</div>';
+      }
+
+      /* ── Navigation ──────────────────────────────────────────── */
+      function desGoTo(idx) {
+        if (!_desRoundsData) return;
+        _desRoundIdx = ((idx % 16) + 16) % 16;
+        document.querySelectorAll('.des-rstrip-pill').forEach(function(el, i) {
+          el.classList.toggle('active', i === _desRoundIdx);
+        });
+        const ctr = document.getElementById('des-round-counter');
+        if (ctr) ctr.textContent = (_desRoundIdx + 1) + ' / 16';
+        desRenderRound(_desRoundIdx);
+        const active = document.querySelector('.des-rstrip-pill.active');
+        if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+
+      function desStep(dir) { desGoTo(_desRoundIdx + dir); }
+
+      /* ── Init ────────────────────────────────────────────────── */
+      document.addEventListener('DOMContentLoaded', function() {
+        initScrollSpy(['theory', 'des']);
+        initAlgoCards();
+      });
+        </script>
   </body>
 </html>
