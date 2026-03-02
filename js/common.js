@@ -103,7 +103,18 @@ function initTabs(containerSelector) {
   if (tabs[0]) tabs[0].click();
 }
 
-// ── Theory accordion ────────────────────────────────────────
+// ── Algo-card scroll-to ──────────────────────────────────────
+function initAlgoCards() {
+  document.querySelectorAll('.algo-card[data-target]').forEach(card => {
+    card.addEventListener('click', () => {
+      const target = document.getElementById(card.dataset.target);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+}
+
+// ── Theory accordion (smooth max-height) ────────────────────
 function initTheory() {
   document.querySelectorAll('.theory-header').forEach(header => {
     header.addEventListener('click', () => {
@@ -111,6 +122,22 @@ function initTheory() {
       const toggle = header.querySelector('.theory-toggle');
       const isOpen = body.classList.toggle('open');
       toggle.classList.toggle('open', isOpen);
+
+      // Force reflow for smooth opening from 0
+      if (isOpen) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        // After transition ends let CSS class handle it
+        body.addEventListener('transitionend', () => {
+          if (body.classList.contains('open')) body.style.maxHeight = '';
+        }, { once: true });
+      } else {
+        // Snap to explicit px before collapsing to 0
+        body.style.maxHeight = body.scrollHeight + 'px';
+        requestAnimationFrame(() => { body.style.maxHeight = '0'; });
+        body.addEventListener('transitionend', () => {
+          if (!body.classList.contains('open')) body.style.maxHeight = '';
+        }, { once: true });
+      }
     });
   });
 }
@@ -169,5 +196,6 @@ function mod(n, m) {
 document.addEventListener('DOMContentLoaded', () => {
   initTabs('.cipher-workspace');
   initTheory();
+  initAlgoCards();
   initSidebarNav();
 });

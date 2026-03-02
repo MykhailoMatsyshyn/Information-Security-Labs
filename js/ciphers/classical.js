@@ -137,7 +137,7 @@ const SimpleTransposition = {
     key.forEach((pos, i) => { invKey[pos - 1] = i + 1; });
     const useKey = decrypt ? invKey : key;
 
-    const upper = text.toUpperCase().replace(/\s/g, '_');
+    const upper = text.toUpperCase().replace(/\s/g, '');
     const padded = upper.padEnd(Math.ceil(upper.length / n) * n, 'X');
     const blocks = [];
     for (let i = 0; i < padded.length; i += n) blocks.push(padded.slice(i, i + n));
@@ -183,7 +183,7 @@ const VerticalTransposition = {
     if (!order.length) return { result: text, steps: [{ n: '01', t: 'Помилка: невірний ключ' }] };
 
     const cols = order.length;
-    const upper = text.toUpperCase().replace(/\s/g, '_');
+    const upper = text.toUpperCase().replace(/\s/g, '');
     const padded = upper.padEnd(Math.ceil(upper.length / cols) * cols, 'X');
     const rows = Math.ceil(padded.length / cols);
 

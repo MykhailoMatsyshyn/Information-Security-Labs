@@ -1,432 +1,2045 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Лаб. 1 — Шифри заміни і перестановки | CryptoLab</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Лаб. 1 — Шифри заміни і перестановки | CryptoLab</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      /* ── Caesar alphabet visualizer ─────────────────────── */
+      .caesar-vis {
+        margin-top: 1.5rem;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        overflow: hidden;
+        animation: fadeIn 0.5s ease both;
+      }
+      .cvis-header {
+        padding: 0.6rem 1rem;
+        background: var(--surface2);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+        color: var(--text-dim);
+      }
+      .cvis-shift-pill {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+      }
+      .cvis-shift-pill strong {
+        color: var(--green);
+        font-size: 1rem;
+      }
+      .cvis-body {
+        padding: 1rem 1.1rem 1.1rem;
+        overflow-x: auto;
+      }
+      .cvis-strip {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        white-space: nowrap;
+      }
+      .cvis-lbl {
+        font-size: 0.58rem;
+        color: var(--text-dim);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        min-width: 78px;
+        text-align: right;
+        flex-shrink: 0;
+      }
+      .cvis-row {
+        display: inline-flex;
+        gap: 2px;
+      }
+      .cvis-cell {
+        width: 24px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.64rem;
+        font-family: var(--font-mono);
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        transition:
+          background 0.15s,
+          border-color 0.15s,
+          color 0.15s,
+          box-shadow 0.15s;
+        flex-shrink: 0;
+      }
+      .cvis-cell.hi-plain {
+        background: rgba(57, 211, 83, 0.18);
+        border-color: var(--green);
+        color: var(--green);
+        box-shadow: 0 0 7px rgba(57, 211, 83, 0.3);
+      }
+      .cvis-cell.hi-cipher {
+        background: rgba(88, 212, 245, 0.14);
+        border-color: rgba(88, 212, 245, 0.55);
+        color: #58d4f5;
+        box-shadow: 0 0 7px rgba(88, 212, 245, 0.22);
+      }
+      .cvis-mid {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin: 2px 0;
+      }
+      .cvis-mid-spc {
+        min-width: 78px;
+        flex-shrink: 0;
+      }
+      .cvis-arrows {
+        display: inline-flex;
+        gap: 2px;
+      }
+      .cvis-arr {
+        width: 24px;
+        text-align: center;
+        font-size: 0.52rem;
+        color: var(--surface2);
+        flex-shrink: 0;
+        line-height: 1;
+        transition: color 0.15s;
+      }
+      .cvis-arr.hi {
+        color: var(--green);
+      }
+      .cvis-hint {
+        margin-top: 0.85rem;
+        font-size: 0.6rem;
+        color: var(--text-dim);
+        letter-spacing: 0.06em;
+      }
+      .cvis-hint .hi-p {
+        color: var(--green);
+      }
+      .cvis-hint .hi-c {
+        color: #58d4f5;
+      }
 
-<!-- HEADER -->
-<header>
-  <a href="../index.html" class="logo">
-    <span class="logo-bracket">{</span>
-    <span class="logo-text">CryptoLab</span>
-    <span class="logo-bracket">}</span>
-  </a>
-  <div class="breadcrumb">
-    <a href="../index.html">Головна</a>
-    <span class="breadcrumb-sep">/</span>
-    <span class="breadcrumb-current">Лаб. 01</span>
-  </div>
-  <div class="header-right">
-    <span><span class="status-dot"></span>активна лаба</span>
-  </div>
-</header>
+      /* ── Vigenere Tabula Recta ──────────────────────── */
+      .vig-tab-wrap {
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+      .vig-tab {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 2px;
+        white-space: nowrap;
+      }
+      .vig-tab-row {
+        display: flex;
+        gap: 2px;
+      }
+      .vig-tc {
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.58rem;
+        font-family: var(--font-mono);
+        flex-shrink: 0;
+        transition:
+          background 0.12s,
+          color 0.12s;
+      }
+      .vig-tc-spc {
+        width: 32px;
+        min-width: 32px;
+      }
+      .vig-tc-head {
+        color: var(--text-dim);
+        background: transparent;
+        font-weight: 700;
+      }
+      .vig-tc-head.col-hi {
+        color: var(--green);
+      }
+      .vig-tc-key {
+        width: 32px;
+        min-width: 32px;
+        color: var(--yellow);
+        font-weight: 700;
+        background: rgba(210, 183, 57, 0.1);
+        border: 1px solid rgba(210, 183, 57, 0.3);
+      }
+      .vig-tc-cell {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+      }
+      .vig-tc-cell.col-hi {
+        background: rgba(57, 211, 83, 0.1);
+        border-color: var(--green-dim);
+        color: var(--green);
+      }
+      .vig-tc-cell.hit {
+        background: rgba(88, 212, 245, 0.22);
+        border-color: rgba(88, 212, 245, 0.65);
+        color: #58d4f5;
+        font-weight: 700;
+        box-shadow: 0 0 6px rgba(88, 212, 245, 0.28);
+      }
 
-<div class="lab-page">
+      /* ── Vigenere key-expansion cells ──────────────── */
+      .vig-cell {
+        width: 26px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.64rem;
+        font-family: var(--font-mono);
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--text-dim);
+        flex-shrink: 0;
+      }
+      .vig-cell.vig-plain {
+        color: var(--yellow);
+        border-color: rgba(210, 183, 57, 0.45);
+        background: rgba(210, 183, 57, 0.08);
+      }
+      .vig-cell.vig-key {
+        color: var(--green);
+        border-color: var(--green-dim);
+        background: var(--green-glow);
+      }
+      .vig-cell.vig-cipher {
+        color: #58d4f5;
+        border-color: rgba(88, 212, 245, 0.45);
+        background: rgba(88, 212, 245, 0.08);
+      }
+      .vig-cell.vig-skip {
+        opacity: 0.28;
+      }
+      .vig-col {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex-shrink: 0;
+      }
 
-  <!-- LAB HERO -->
-  <div class="lab-hero">
-    <div class="lab-hero-inner">
-      <div class="lab-hero-meta">
-        <span class="lab-index-badge">ЛАБ 01</span>
-        <span style="font-size:0.65rem;color:var(--text-dim);letter-spacing:0.15em;">КЛАСИЧНА КРИПТОГРАФІЯ</span>
+      /* ── Transposition visualizer ───────────────────── */
+      .trsp-block {
+        display: flex;
+        gap: 3px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+      }
+      .trsp-cell {
+        width: 36px;
+        height: 54px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        font-family: var(--font-mono);
+        flex-shrink: 0;
+        transition: all 0.15s;
+      }
+      .trsp-letter {
+        font-size: 0.88rem;
+        font-weight: 700;
+      }
+      .trsp-pos {
+        font-size: 0.5rem;
+        opacity: 0.7;
+      }
+      .trsp-arrows {
+        display: flex;
+        gap: 3px;
+        margin: 3px 0;
+      }
+      .trsp-arr {
+        width: 36px;
+        text-align: center;
+        font-size: 0.65rem;
+        color: var(--text-dim);
+        flex-shrink: 0;
+      }
+      .tp1 {
+        color: #39d353;
+        border-color: rgba(57, 211, 83, 0.5);
+        background: rgba(57, 211, 83, 0.1);
+      }
+      .tp2 {
+        color: #58d4f5;
+        border-color: rgba(88, 212, 245, 0.5);
+        background: rgba(88, 212, 245, 0.1);
+      }
+      .tp3 {
+        color: #d2b739;
+        border-color: rgba(210, 183, 57, 0.5);
+        background: rgba(210, 183, 57, 0.1);
+      }
+      .tp4 {
+        color: #b57ef5;
+        border-color: rgba(181, 126, 245, 0.5);
+        background: rgba(181, 126, 245, 0.1);
+      }
+      .tp5 {
+        color: #f85149;
+        border-color: rgba(248, 81, 73, 0.5);
+        background: rgba(248, 81, 73, 0.1);
+      }
+      .tp6 {
+        color: #f0883e;
+        border-color: rgba(240, 136, 62, 0.5);
+        background: rgba(240, 136, 62, 0.1);
+      }
+      .tp7 {
+        color: #79c0ff;
+        border-color: rgba(121, 192, 255, 0.5);
+        background: rgba(121, 192, 255, 0.1);
+      }
+      .tp8 {
+        color: #a8ff78;
+        border-color: rgba(168, 255, 120, 0.5);
+        background: rgba(168, 255, 120, 0.1);
+      }
+
+      /* ── Vertical Transposition — redesigned ───────────── */
+      .vert-vis-outer {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+
+      /* Key legend row */
+      .vert-key-legend {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .vert-kl-label {
+        font-size: 0.68rem;
+        color: var(--text-dim);
+        font-family: var(--font-mono);
+        flex-shrink: 0;
+      }
+      .vert-kpill {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        width: 36px;
+        height: 44px;
+        border-radius: 6px;
+        border: 1px solid;
+        justify-content: center;
+        gap: 1px;
+        font-family: var(--font-mono);
+      }
+      .vert-kpill-step {
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .vert-kpill-val {
+        font-size: 0.5rem;
+        opacity: 0.7;
+      }
+
+      /* Grid */
+      .vert-grid-outer {
+        overflow-x: auto;
+      }
+
+      /* Column strips */
+      .vert-strips {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+      .vert-strip {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.35rem 0.6rem;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
+      .vert-strip-lbl {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        min-width: 72px;
+        flex-shrink: 0;
+      }
+      .vert-strip-step {
+        font-size: 0.62rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+      }
+      .vert-strip-col {
+        font-size: 0.52rem;
+        color: var(--text-dim);
+        font-family: var(--font-mono);
+      }
+      .vert-strip-cells {
+        display: flex;
+        gap: 2px;
+      }
+      .vert-strip-cell {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        border-radius: 4px;
+        border: 1px solid;
+        flex-shrink: 0;
+      }
+      .vert-strip-arrow {
+        color: var(--text-dim);
+        font-size: 0.8rem;
+        flex-shrink: 0;
+        margin: 0 0.2rem;
+      }
+      .vert-strip-result {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        flex-shrink: 0;
+      }
+
+      /* ── Vertical Transposition grid ────────────────── */
+      .vert-vis-wrap {
+        overflow-x: auto;
+      }
+      .vert-table {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 2px;
+        white-space: nowrap;
+      }
+      .vert-row {
+        display: flex;
+        gap: 2px;
+      }
+      .vert-hdr {
+        width: 34px;
+        height: 38px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        gap: 1px;
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+      }
+      .vert-hdr-num {
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .vert-cell {
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.78rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        flex-shrink: 0;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+      }
+      .vc1 {
+        color: #39d353;
+        border-color: rgba(57, 211, 83, 0.45);
+        background: rgba(57, 211, 83, 0.09);
+      }
+      .vc2 {
+        color: #58d4f5;
+        border-color: rgba(88, 212, 245, 0.45);
+        background: rgba(88, 212, 245, 0.09);
+      }
+      .vc3 {
+        color: #d2b739;
+        border-color: rgba(210, 183, 57, 0.45);
+        background: rgba(210, 183, 57, 0.09);
+      }
+      .vc4 {
+        color: #b57ef5;
+        border-color: rgba(181, 126, 245, 0.45);
+        background: rgba(181, 126, 245, 0.09);
+      }
+      .vc5 {
+        color: #f85149;
+        border-color: rgba(248, 81, 73, 0.45);
+        background: rgba(248, 81, 73, 0.09);
+      }
+      .vc6 {
+        color: #f0883e;
+        border-color: rgba(240, 136, 62, 0.45);
+        background: rgba(240, 136, 62, 0.09);
+      }
+
+      /* ── Caesar section — consistent sizing ─────────── */
+      #caesar .input-field {
+        resize: none;
+        height: 100px;
+        min-height: unset;
+      }
+      #caesar .result-box {
+        height: 100px;
+        min-height: unset;
+        overflow-y: auto;
+        box-sizing: border-box;
+      }
+      #caesar .input-field-sm,
+      #caesar select.input-field-sm {
+        height: 40px;
+        padding-top: 0;
+        padding-bottom: 0;
+        box-sizing: border-box;
+      }
+      #caesar .action-row .decrypt-btn {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <a href="../index.html" class="logo">
+        <span class="logo-bracket">{</span>
+        <span class="logo-text">CryptoLab</span>
+        <span class="logo-bracket">}</span>
+      </a>
+      <div class="breadcrumb">
+        <a href="../index.html">Головна</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Лаб. 01</span>
       </div>
-      <h1 class="lab-hero-title">Шифри заміни<br>і перестановки</h1>
-      <p class="lab-hero-sub">
-        Практичне освоєння основ побудови шифрів заміни та перестановки.
-        Вибір ключів, процедура зашифрування-розшифрування, покрокова візуалізація.
-      </p>
-      <div class="lab-hero-chips">
-        <span class="tag">Цезар</span>
-        <span class="tag">Атбаш</span>
-        <span class="tag">Виженер</span>
-        <span class="tag">Перестановка</span>
-        <span class="tag">Вертикальна перестановка</span>
-      </div>
-    </div>
-  </div>
+    </header>
 
-  <!-- CONTENT -->
-  <div class="lab-content">
-    <div class="lab-layout">
-
-      <!-- SIDEBAR -->
-      <aside class="lab-sidebar">
-        <nav class="sidebar-nav">
-          <div class="sidebar-nav-title">// навігація</div>
-          <div class="sidebar-nav-item active" data-section="theory">
-            <span class="sidebar-nav-num">01</span> Теорія
+    <div class="lab-page">
+      <!-- LAB HERO -->
+      <div class="lab-hero">
+        <div class="lab-hero-inner">
+          <div class="lab-hero-meta">
+            <span class="lab-index-badge">ЛАБ 01</span>
+            <span
+              style="
+                font-size: 0.65rem;
+                color: var(--text-dim);
+                letter-spacing: 0.15em;
+              "
+              >КЛАСИЧНА КРИПТОГРАФІЯ</span
+            >
           </div>
-          <div class="sidebar-nav-item" data-section="caesar">
-            <span class="sidebar-nav-num">02</span> Шифр Цезаря
+          <h1 class="lab-hero-title">Шифри заміни<br />і перестановки</h1>
+          <p class="lab-hero-sub">
+            Практичне освоєння основ побудови шифрів заміни та перестановки.
+            Вибір ключів, процедура зашифрування-розшифрування, покрокова
+            візуалізація.
+          </p>
+          <div class="lab-hero-chips">
+            <span class="tag">Цезар</span>
+            <span class="tag">Атбаш</span>
+            <span class="tag">Виженер</span>
+            <span class="tag">Перестановка</span>
+            <span class="tag">Вертикальна перестановка</span>
           </div>
-          <div class="sidebar-nav-item" data-section="atbash">
-            <span class="sidebar-nav-num">03</span> Атбаш
-          </div>
-          <div class="sidebar-nav-item" data-section="vigenere">
-            <span class="sidebar-nav-num">04</span> Виженер
-          </div>
-          <div class="sidebar-nav-item" data-section="transposition">
-            <span class="sidebar-nav-num">05</span> Перестановка
-          </div>
-          <div class="sidebar-nav-item" data-section="vertical">
-            <span class="sidebar-nav-num">06</span> Вертикальна
-          </div>
-        </nav>
-      </aside>
-
-      <!-- MAIN -->
-      <main>
-
-        <!-- ── THEORY ─────────────────────────────────────── -->
-        <section id="theory">
-          <div class="theory-block">
-            <div class="theory-header">
-              <span class="theory-title">Короткі теоретичні відомості</span>
-              <span class="theory-toggle">▼</span>
-            </div>
-            <div class="theory-body open">
-              <p><strong>Шифр заміни (підстановки)</strong> — метод, при якому кожен елемент початкового тексту замінюється одним або декількома знаками деякого алфавіту.</p>
-              <div class="formula">b<sub>i</sub> = (a<sub>i</sub> + k) mod n — шифр Цезаря</div>
-              <p><strong>Шифр Виженера</strong> — багатоалфавітна заміна з ключем-словом. Кожна буква зсувається на кількість позицій, яку задає відповідна буква ключа.</p>
-              <div class="formula">b<sub>i</sub> = (a<sub>i</sub> + k<sub>i</sub>) mod n — Виженер, де k<sub>i</sub> — i-та буква ключа</div>
-              <p><strong>Шифр перестановки</strong> — букви відкритого тексту переставляються (але не замінюються). Ключ визначає новий порядок символів.</p>
-              <p><strong>Вертикальна перестановка</strong> — текст записується рядками в прямокутник, а зчитується по стовпцях в порядку, заданому ключем.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── CAESAR ─────────────────────────────────────── -->
-        <section id="caesar">
-          <div class="cipher-workspace" style="margin-bottom:2rem;">
-            <div class="workspace-tabs">
-              <div class="workspace-tab active" style="cursor:default;color:var(--green);border-bottom-color:var(--green);background:var(--green-subtle);">
-                // шифр цезаря
-              </div>
-            </div>
-            <div class="workspace-panel active" style="display:block;">
-              <div class="info-chips">
-                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Проста заміна</span></div>
-                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">зсув (0–25)</span></div>
-                <div class="info-chip"><span class="chip-label">Формула:</span><span class="chip-val">b=(a+k) mod n</span></div>
-              </div>
-
-              <div class="workspace-grid">
-                <div class="workspace-col">
-                  <div class="input-group">
-                    <label class="input-label">Відкритий текст</label>
-                    <textarea class="input-field" id="caesar-text" placeholder="Введіть повідомлення...">HELLO WORLD</textarea>
-                  </div>
-                  <div class="input-row">
-                    <div class="input-group">
-                      <label class="input-label">Зсув (0–25)</label>
-                      <input class="input-field-sm" id="caesar-shift" type="number" min="0" max="25" value="3">
-                    </div>
-                    <div class="input-group">
-                      <label class="input-label">Алфавіт</label>
-                      <select class="input-field-sm" id="caesar-lang">
-                        <option value="en">English (A–Z)</option>
-                        <option value="uk">Українська</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="action-row">
-                    <button class="encrypt-btn" onclick="runCaesar(false)">⟶ Зашифрувати</button>
-                    <button class="decrypt-btn" onclick="runCaesar(true)">⟵ Розшифрувати</button>
-                  </div>
-                </div>
-
-                <div class="workspace-col">
-                  <label class="input-label">Результат</label>
-                  <div class="result-box" id="caesar-output">
-                    <span class="result-empty">Результат з'явиться тут...</span>
-                  </div>
-                  <div class="steps-log">
-                    <div class="steps-log-header">// кроки виконання</div>
-                    <div class="steps-log-body" id="caesar-steps">
-                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── ATBASH ──────────────────────────────────────── -->
-        <section id="atbash">
-          <div class="cipher-workspace" style="margin-bottom:2rem;">
-            <div class="workspace-tabs">
-              <div class="workspace-tab active" style="cursor:default;color:var(--cyan);border-bottom-color:var(--cyan);background:var(--cyan-dim);">
-                // атбаш
-              </div>
-            </div>
-            <div class="workspace-panel active" style="display:block;">
-              <div class="info-chips">
-                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Дзеркальна заміна</span></div>
-                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">не потрібен</span></div>
-                <div class="info-chip"><span class="chip-label">Формула:</span><span class="chip-val">b = (n−1) − a</span></div>
-              </div>
-
-              <div class="workspace-grid">
-                <div class="workspace-col">
-                  <div class="input-group">
-                    <label class="input-label">Текст (шифр/розшифр — одна кнопка)</label>
-                    <textarea class="input-field" id="atbash-text" placeholder="Введіть повідомлення...">HELLO WORLD</textarea>
-                  </div>
-                  <div class="input-group">
-                    <label class="input-label">Алфавіт</label>
-                    <select class="input-field-sm" id="atbash-lang">
-                      <option value="en">English (A–Z)</option>
-                      <option value="uk">Українська</option>
-                    </select>
-                  </div>
-                  <div class="action-row">
-                    <button class="encrypt-btn" onclick="runAtbash()">⟶ Застосувати Атбаш</button>
-                  </div>
-                </div>
-                <div class="workspace-col">
-                  <label class="input-label">Результат</label>
-                  <div class="result-box" id="atbash-output"><span class="result-empty">Результат з'явиться тут...</span></div>
-                  <div class="steps-log">
-                    <div class="steps-log-header">// кроки виконання</div>
-                    <div class="steps-log-body" id="atbash-steps">
-                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Застосувати Атбаш»</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── VIGENERE ────────────────────────────────────── -->
-        <section id="vigenere">
-          <div class="cipher-workspace" style="margin-bottom:2rem;">
-            <div class="workspace-tabs">
-              <div class="workspace-tab active" style="cursor:default;color:var(--yellow);border-bottom-color:var(--yellow);background:var(--yellow-dim);">
-                // шифр виженера
-              </div>
-            </div>
-            <div class="workspace-panel active" style="display:block;">
-              <div class="info-chips">
-                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Багатоалфавітна заміна</span></div>
-                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">слово</span></div>
-                <div class="info-chip"><span class="chip-label">Формула:</span><span class="chip-val">b=(a+k) mod n</span></div>
-              </div>
-
-              <div class="workspace-grid">
-                <div class="workspace-col">
-                  <div class="input-group">
-                    <label class="input-label">Відкритий текст</label>
-                    <textarea class="input-field" id="vigenere-text" placeholder="Введіть повідомлення...">ATTACKATDAWN</textarea>
-                  </div>
-                  <div class="input-row">
-                    <div class="input-group">
-                      <label class="input-label">Ключ (слово)</label>
-                      <input class="input-field-sm" id="vigenere-key" value="LEMON" placeholder="Ключ...">
-                    </div>
-                    <div class="input-group">
-                      <label class="input-label">Алфавіт</label>
-                      <select class="input-field-sm" id="vigenere-lang">
-                        <option value="en">English (A–Z)</option>
-                        <option value="uk">Українська</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="action-row">
-                    <button class="encrypt-btn" onclick="runVigenere(false)">⟶ Зашифрувати</button>
-                    <button class="decrypt-btn" onclick="runVigenere(true)">⟵ Розшифрувати</button>
-                  </div>
-                </div>
-                <div class="workspace-col">
-                  <label class="input-label">Результат</label>
-                  <div class="result-box" id="vigenere-output"><span class="result-empty">Результат з'явиться тут...</span></div>
-                  <div class="steps-log">
-                    <div class="steps-log-header">// кроки виконання</div>
-                    <div class="steps-log-body" id="vigenere-steps">
-                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── TRANSPOSITION ──────────────────────────────── -->
-        <section id="transposition">
-          <div class="cipher-workspace" style="margin-bottom:2rem;">
-            <div class="workspace-tabs">
-              <div class="workspace-tab active" style="cursor:default;color:var(--purple);border-bottom-color:var(--purple);background:var(--purple-dim);">
-                // проста перестановка
-              </div>
-            </div>
-            <div class="workspace-panel active" style="display:block;">
-              <div class="info-chips">
-                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Перестановка символів</span></div>
-                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">"3 1 4 2" або "3,1,4,2"</span></div>
-                <div class="info-chip"><span class="chip-label">Блок:</span><span class="chip-val">= довжина ключа</span></div>
-              </div>
-
-              <div class="workspace-grid">
-                <div class="workspace-col">
-                  <div class="input-group">
-                    <label class="input-label">Відкритий текст</label>
-                    <textarea class="input-field" id="transp-text" placeholder="Введіть повідомлення...">СВЯЩ ЕННАЯРИМСКАЯИМПЕРИЯ</textarea>
-                  </div>
-                  <div class="input-group">
-                    <label class="input-label">Ключ (порядок позицій через пробіл або кому)</label>
-                    <input class="input-field-sm" id="transp-key" value="3 1 4 2 5" placeholder="напр. 3 1 4 2">
-                  </div>
-                  <div class="action-row">
-                    <button class="encrypt-btn" onclick="runTransp(false)">⟶ Зашифрувати</button>
-                    <button class="decrypt-btn" onclick="runTransp(true)">⟵ Розшифрувати</button>
-                  </div>
-                </div>
-                <div class="workspace-col">
-                  <label class="input-label">Результат</label>
-                  <div class="result-box" id="transp-output"><span class="result-empty">Результат з'явиться тут...</span></div>
-                  <div class="steps-log">
-                    <div class="steps-log-header">// кроки виконання</div>
-                    <div class="steps-log-body" id="transp-steps">
-                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── VERTICAL TRANSPOSITION ──────────────────────── -->
-        <section id="vertical">
-          <div class="cipher-workspace" style="margin-bottom:2rem;">
-            <div class="workspace-tabs">
-              <div class="workspace-tab active" style="cursor:default;color:var(--red);border-bottom-color:var(--red);background:var(--red-dim);">
-                // вертикальна перестановка
-              </div>
-            </div>
-            <div class="workspace-panel active" style="display:block;">
-              <div class="info-chips">
-                <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Маршрутна перестановка</span></div>
-                <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">числа або слово</span></div>
-                <div class="info-chip"><span class="chip-label">Запис:</span><span class="chip-val">рядками → зчитування стовпцями</span></div>
-              </div>
-
-              <div class="workspace-grid">
-                <div class="workspace-col">
-                  <div class="input-group">
-                    <label class="input-label">Відкритий текст</label>
-                    <textarea class="input-field" id="vert-text" placeholder="Введіть повідомлення...">WEAREDISCOVERED</textarea>
-                  </div>
-                  <div class="input-group">
-                    <label class="input-label">Ключ (числа або слово: "SECRET" → сортується за алфавітом)</label>
-                    <input class="input-field-sm" id="vert-key" value="3 1 4 2" placeholder="напр. 3 1 4 2 або SECRET">
-                  </div>
-                  <div class="action-row">
-                    <button class="encrypt-btn" onclick="runVert(false)">⟶ Зашифрувати</button>
-                    <button class="decrypt-btn" onclick="runVert(true)">⟵ Розшифрувати</button>
-                  </div>
-                </div>
-                <div class="workspace-col">
-                  <label class="input-label">Результат</label>
-                  <div class="result-box" id="vert-output"><span class="result-empty">Результат з'явиться тут...</span></div>
-                  <div class="steps-log">
-                    <div class="steps-log-header">// кроки виконання</div>
-                    <div class="steps-log-body" id="vert-steps">
-                      <div class="log-line"><span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- NAV BETWEEN LABS -->
-        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--border);">
-          <a href="../index.html" class="btn-secondary">← Всі лаби</a>
-          <a href="lab02.html" class="btn-primary">Лаб. 02 →</a>
         </div>
+      </div>
 
-      </main>
+      <!-- CONTENT -->
+      <div class="lab-content">
+        <div class="lab-layout">
+          <!-- SIDEBAR -->
+          <aside class="lab-sidebar">
+            <nav class="sidebar-nav">
+              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-item active" data-section="theory">
+                <span class="sidebar-nav-num">01</span> Теорія
+              </div>
+              <div class="sidebar-nav-item" data-section="caesar">
+                <span class="sidebar-nav-num">02</span> Шифр Цезаря
+              </div>
+              <div class="sidebar-nav-item" data-section="atbash">
+                <span class="sidebar-nav-num">03</span> Пропорційна заміна
+              </div>
+              <div class="sidebar-nav-item" data-section="vigenere">
+                <span class="sidebar-nav-num">04</span> Багатоалфавітна заміна
+              </div>
+              <div class="sidebar-nav-item" data-section="transposition">
+                <span class="sidebar-nav-num">05</span> Перестановка
+              </div>
+              <div class="sidebar-nav-item" data-section="vertical">
+                <span class="sidebar-nav-num">06</span> Вертикальна
+              </div>
+            </nav>
+          </aside>
+
+          <!-- MAIN -->
+          <main>
+            <!-- ── THEORY ─────────────────────────────────────── -->
+            <section id="theory">
+              <div class="theory-block">
+                <div class="theory-header">
+                  <span class="theory-title">Короткі теоретичні відомості</span>
+                  <span class="theory-toggle">▼</span>
+                </div>
+                <div class="theory-body open">
+                  <div class="theory-body-inner">
+                    <p>
+                      У цій лабораторній розглядаються два класи класичних шифрів:
+                      <strong>шифри заміни</strong> (кожен символ замінюється іншим)
+                      та <strong>шифри перестановки</strong> (символи міняються місцями).
+                      Обидва класи є основою симетричної криптографії та входять до
+                      складу сучасних блокових шифрів.
+                    </p>
+
+                    <div class="algo-cards">
+
+                      <!-- Caesar -->
+                      <div class="algo-card" data-target="caesar">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Шифр Цезаря</span>
+                          <span class="algo-card-badge badge-sub">проста заміна</span>
+                        </div>
+                        <div class="algo-card-formula">
+                          b<sub>i</sub> = (a<sub>i</sub> + k) mod n<br>
+                          d<sub>i</sub> = (b<sub>i</sub> &minus; k + n) mod n
+                        </div>
+                        <p class="algo-card-desc">
+                          Кожна буква циклічно зсувається на постійний ключ <em>k</em>.
+                          Простий, але легко зламується частотним аналізом.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+
+                      <!-- Atbash -->
+                      <div class="algo-card" data-target="atbash">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Пропорційна заміна <em style="font-weight:400;font-size:0.7rem;">(Атбаш)</em></span>
+                          <span class="algo-card-badge badge-sub">проста заміна</span>
+                        </div>
+                        <div class="algo-card-formula">
+                          b<sub>i</sub> = n &minus; 1 &minus; a<sub>i</sub>
+                        </div>
+                        <p class="algo-card-desc">
+                          Алфавіт відображається сам на себе у зворотному порядку:
+                          A&harr;Z, B&harr;Y&hellip; Самооберненість: шифрування&nbsp;=&nbsp;розшифрування.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+
+                      <!-- Vigenere -->
+                      <div class="algo-card" data-target="vigenere">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Шифр Виженера</span>
+                          <span class="algo-card-badge badge-poly">багатоалф. заміна</span>
+                        </div>
+                        <div class="algo-card-formula">
+                          b<sub>i</sub> = (a<sub>i</sub> + k<sub>i</sub>) mod n<br>
+                          k<sub>i</sub> = key[i mod |key|]
+                        </div>
+                        <p class="algo-card-desc">
+                          Ключ-слово циклічно накладається на відкритий текст.
+                          Різний зсув кожної літери унеможливлює простий частотний аналіз.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+
+                      <!-- Simple transposition -->
+                      <div class="algo-card" data-target="transposition">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Проста перестановка</span>
+                          <span class="algo-card-badge badge-perm">перестановка</span>
+                        </div>
+                        <div class="algo-card-formula">
+                          out[key[i]&minus;1] = block[i]<br>
+                          блок = n символів (|ключ| = n)
+                        </div>
+                        <p class="algo-card-desc">
+                          Текст ділиться на рівні блоки. В кожному блоці символи
+                          переставляються згідно з ключем-перестановкою.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+
+                      <!-- Vertical transposition — last + odd → spans 2 cols -->
+                      <div class="algo-card" data-target="vertical">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Вертикальна перестановка</span>
+                          <span class="algo-card-badge badge-vperm">маршрутна</span>
+                        </div>
+                        <div class="algo-card-formula">
+                          Запис: рядками (cols = |key|)<br>
+                          Зчит.: стовпці за sort(key)
+                        </div>
+                        <p class="algo-card-desc">
+                          Текст записується в прямокутну таблицю рядками.
+                          Стовпці зчитуються в порядку, що визначається ключем або ключ-словом.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+
+                    </div><!-- /algo-cards -->
+                  </div><!-- /theory-body-inner -->
+                </div>
+              </div>
+            </section>
+
+            <!-- ── CAESAR ─────────────────────────────────────── -->
+            <section id="caesar">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: var(--green);
+                      border-bottom-color: var(--green);
+                      background: var(--green-subtle);
+                    "
+                  >
+                    // шифр цезаря
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val">Проста заміна</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val">зсув (0–25)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Формула:</span
+                      ><span class="chip-val">b=(a+k) mod n</span>
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <!-- LEFT -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <div>
+                          <label class="input-label">Відкритий текст</label>
+                          <textarea
+                            class="input-field"
+                            id="caesar-text"
+                            placeholder="Введіть повідомлення..."
+                            style="
+                              resize: none;
+                              height: 100px;
+                              min-height: unset;
+                            "
+                          >
+                        
+HELLO WORLD</textarea
+                          >
+                        </div>
+                      </div>
+                      <div class="input-row">
+                        <div class="input-group">
+                          <label class="input-label">Зсув (0–25)</label>
+                          <input
+                            class="input-field-sm"
+                            id="caesar-shift"
+                            type="number"
+                            min="0"
+                            max="25"
+                            value="3"
+                            style="height: 40px"
+                          />
+                        </div>
+                        <div class="input-group">
+                          <label class="input-label">Алфавіт</label>
+                          <select
+                            class="input-field-sm"
+                            id="caesar-lang"
+                            style="height: 40px"
+                          >
+                            <option value="en">English (A–Z)</option>
+                            <option value="uk">Українська</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runCaesar(false)"
+                        >
+                          ⟶ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runCaesar(true)"
+                        >
+                          ⟵ Розшифрувати
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="workspace-col">
+                      <div>
+                        <label class="input-label">Результат</label>
+                        <div
+                          class="result-box"
+                          id="caesar-output"
+                          style="
+                            height: 100px;
+                            min-height: unset;
+                            overflow-y: auto;
+                            box-sizing: border-box;
+                          "
+                        >
+                          <span class="result-empty"
+                            >Результат з'явиться тут...</span
+                          >
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="caesar-steps">
+                          <div class="log-line">
+                            <span class="log-idx">—</span>
+                            <span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CAESAR VISUALIZER — всередині того самого workspace -->
+                  <div
+                    class="caesar-vis"
+                    id="caesar-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // алфавітний зсув — як працює шифр Цезаря
+                      <span class="cvis-shift-pill"
+                        >зсув: <strong id="cvis-k">3</strong> позиції →</span
+                      >
+                    </div>
+                    <div class="cvis-body">
+                      <div class="cvis-strip">
+                        <span class="cvis-lbl">відкритий</span>
+                        <div class="cvis-row" id="cvis-plain"></div>
+                      </div>
+                      <div class="cvis-mid">
+                        <span class="cvis-mid-spc"></span>
+                        <div class="cvis-arrows" id="cvis-arrows"></div>
+                      </div>
+                      <div class="cvis-strip">
+                        <span class="cvis-lbl">шифр</span>
+                        <div class="cvis-row" id="cvis-cipher"></div>
+                      </div>
+                      <div class="cvis-hint">
+                        <span class="hi-p">■ зелений</span> — літери з вашого
+                        тексту &nbsp;·&nbsp;
+                        <span class="hi-c">■ блакитний</span> — їх зашифровані
+                        відповідники &nbsp;<br />·&nbsp;змінюйте текст або ключ
+                        — таблиця оновиться
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── ATBASH ──────────────────────────────────────── -->
+            <section id="atbash">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: var(--cyan);
+                      border-bottom-color: var(--cyan);
+                      background: var(--cyan-dim);
+                    "
+                  >
+                    // шифр пропорційної заміни (Атбаш)
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val">Дзеркальна заміна</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val">не потрібен</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Формула:</span
+                      ><span class="chip-val">b = (n−1) − a</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Властивість:</span
+                      ><span class="chip-val">самооберненість — enc = dec</span>
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <!-- LEFT -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label"
+                          >Текст (шифр/розшифр — одна операція)</label
+                        >
+                        <textarea
+                          class="input-field"
+                          id="atbash-text"
+                          placeholder="Введіть повідомлення..."
+                          style="resize: none; height: 100px; min-height: unset"
+                        >
+HELLO WORLD</textarea
+                        >
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Алфавіт</label>
+                        <select
+                          class="input-field-sm"
+                          id="atbash-lang"
+                          style="height: 40px"
+                        >
+                          <option value="en">English (A–Z)</option>
+                          <option value="uk">Українська</option>
+                        </select>
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runAtbash()"
+                        >
+                          ⟺ Зашифрувати / Розшифрувати
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="workspace-col">
+                      <div>
+                        <label class="input-label">Результат</label>
+                        <div
+                          class="result-box"
+                          id="atbash-output"
+                          style="
+                            height: 100px;
+                            min-height: unset;
+                            overflow-y: auto;
+                            box-sizing: border-box;
+                          "
+                        >
+                          <span class="result-empty"
+                            >Результат з'явиться тут...</span
+                          >
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="atbash-steps">
+                          <div class="log-line">
+                            <span class="log-idx">—</span>
+                            <span class="log-text">Натисніть кнопку</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ATBASH VISUALIZER -->
+                  <div
+                    class="caesar-vis"
+                    id="atbash-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // дзеркальне відображення — A↔Z, B↔Y, C↔X...
+                      <span class="cvis-shift-pill"
+                        >формула:
+                        <strong style="color: var(--cyan)"
+                          >b = (n−1) − a</strong
+                        ></span
+                      >
+                    </div>
+                    <div class="cvis-body">
+                      <div class="cvis-strip">
+                        <span class="cvis-lbl">відкритий</span>
+                        <div class="cvis-row" id="atbash-cvis-plain"></div>
+                      </div>
+                      <div class="cvis-mid">
+                        <span class="cvis-mid-spc"></span>
+                        <div class="cvis-arrows" id="atbash-cvis-arrows"></div>
+                      </div>
+                      <div class="cvis-strip">
+                        <span class="cvis-lbl">шифр</span>
+                        <div class="cvis-row" id="atbash-cvis-cipher"></div>
+                      </div>
+                      <div class="cvis-hint">
+                        <span class="hi-p">■ зелений</span> — літери з вашого
+                        тексту &nbsp;·&nbsp;
+                        <span class="hi-c">■ блакитний</span> — їх зашифровані
+                        відповідники &nbsp;<br />·&nbsp;Атбаш самооберненний —
+                        результат розшифрування = зашифрування
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── VIGENERE ────────────────────────────────────── -->
+            <section id="vigenere">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: var(--yellow);
+                      border-bottom-color: var(--yellow);
+                      background: var(--yellow-dim);
+                    "
+                  >
+                    // шифр багатоалфавітної заміни (Виженера)
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val">Багатоалфавітна заміна</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val">слово-гасло</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Формула:</span
+                      ><span class="chip-val">bᵢ = (aᵢ + kᵢ) mod n</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Особливість:</span
+                      ><span class="chip-val"
+                        >різний зсув для кожної літери</span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <!-- LEFT -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Відкритий текст</label>
+                        <textarea
+                          class="input-field"
+                          id="vigenere-text"
+                          placeholder="Введіть повідомлення..."
+                          style="resize: none; height: 100px; min-height: unset"
+                        >
+HELLO WORLD</textarea
+                        >
+                      </div>
+                      <div class="input-row">
+                        <div class="input-group">
+                          <label class="input-label">Ключ (слово)</label>
+                          <input
+                            class="input-field-sm"
+                            id="vigenere-key"
+                            value="LEMON"
+                            placeholder="Ключ..."
+                            style="height: 40px"
+                          />
+                        </div>
+                        <div class="input-group">
+                          <label class="input-label">Алфавіт</label>
+                          <select class="input-field-sm" id="vigenere-lang">
+                            <option value="en">English (A–Z)</option>
+                            <option value="uk">Українська</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runVigenere(false)"
+                        >
+                          ⟶ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runVigenere(true)"
+                        >
+                          ⟵ Розшифрувати
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="workspace-col">
+                      <div>
+                        <label class="input-label">Результат</label>
+                        <div
+                          class="result-box"
+                          id="vigenere-output"
+                          style="
+                            height: 100px;
+                            min-height: unset;
+                            overflow-y: auto;
+                            box-sizing: border-box;
+                          "
+                        >
+                          <span class="result-empty"
+                            >Результат з'явиться тут...</span
+                          >
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="vigenere-steps">
+                          <div class="log-line">
+                            <span class="log-idx">—</span>
+                            <span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- VIGENERE VISUALIZER: key expansion table -->
+                  <div
+                    class="caesar-vis"
+                    id="vig-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // розгортання ключа — накладання на відкритий текст
+                      <span class="cvis-shift-pill"
+                        >ключ:
+                        <strong
+                          id="vig-key-disp"
+                          style="color: var(--yellow); letter-spacing: 0.12em"
+                          >LEMON</strong
+                        ></span
+                      >
+                    </div>
+                    <div class="cvis-body">
+                      <div
+                        style="
+                          display: flex;
+                          align-items: flex-start;
+                          gap: 0.6rem;
+                          overflow-x: auto;
+                          padding-bottom: 0.5rem;
+                        "
+                      >
+                        <div
+                          style="
+                            display: flex;
+                            flex-direction: column;
+                            gap: 2px;
+                            min-width: 78px;
+                            align-items: flex-end;
+                            flex-shrink: 0;
+                            padding-top: 0;
+                          "
+                        >
+                          <div
+                            class="cvis-lbl"
+                            style="
+                              height: 28px;
+                              display: flex;
+                              align-items: center;
+                            "
+                          >
+                            відкритий
+                          </div>
+                          <div
+                            class="cvis-lbl"
+                            style="
+                              height: 28px;
+                              display: flex;
+                              align-items: center;
+                            "
+                          >
+                            ключ
+                          </div>
+                          <div
+                            class="cvis-lbl"
+                            style="
+                              height: 28px;
+                              display: flex;
+                              align-items: center;
+                            "
+                          >
+                            шифр
+                          </div>
+                        </div>
+                        <div
+                          id="vig-vis-table"
+                          style="display: flex; gap: 2px; flex-wrap: nowrap"
+                        ></div>
+                      </div>
+                      <div class="cvis-hint">
+                        <span style="color: var(--yellow)">■ жовтий</span> —
+                        відкритий текст &nbsp;·&nbsp;
+                        <span class="hi-p">■ зелений</span> — буква ключа
+                        (повторюється циклічно) &nbsp;·&nbsp;
+                        <span class="hi-c">■ блакитний</span> — зашифрована
+                        буква
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── TRANSPOSITION ──────────────────────────────── -->
+            <section id="transposition">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: var(--purple);
+                      border-bottom-color: var(--purple);
+                      background: var(--purple-dim);
+                    "
+                  >
+                    // шифр простої перестановки
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val"
+                        >Перестановка символів у блоці</span
+                      >
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val"
+                        >"3 1 4 2" — новий порядок позицій</span
+                      >
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Блок:</span
+                      ><span class="chip-val">= довжина ключа</span>
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Відкритий текст</label>
+                        <textarea
+                          class="input-field"
+                          id="transp-text"
+                          placeholder="Введіть повідомлення..."
+                          style="resize: none; height: 100px; min-height: unset"
+                        >
+HELLO WORLD</textarea
+                        >
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label"
+                          >Ключ (позиції через пробіл або кому)</label
+                        >
+                        <input
+                          class="input-field-sm"
+                          id="transp-key"
+                          value="3 1 4 2 5"
+                          placeholder="напр. 3 1 4 2"
+                          style="height: 40px"
+                        />
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runTransp(false)"
+                        >
+                          ⟶ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runTransp(true)"
+                        >
+                          ⟵ Розшифрувати
+                        </button>
+                      </div>
+                    </div>
+                    <div class="workspace-col">
+                      <div>
+                        <label class="input-label">Результат</label>
+                        <div
+                          class="result-box"
+                          id="transp-output"
+                          style="
+                            height: 100px;
+                            min-height: unset;
+                            overflow-y: auto;
+                            box-sizing: border-box;
+                          "
+                        >
+                          <span class="result-empty"
+                            >Результат з'явиться тут...</span
+                          >
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="transp-steps">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- TRANSPOSITION VISUALIZER -->
+                  <div
+                    class="caesar-vis"
+                    id="transp-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // перестановка першого блоку — кожен колір = одна позиція
+                      <span class="cvis-shift-pill"
+                        >ключ:
+                        <strong
+                          id="transp-key-disp"
+                          style="color: var(--purple); letter-spacing: 0.1em"
+                          >3 1 4 2 5</strong
+                        ></span
+                      >
+                    </div>
+                    <div
+                      class="cvis-body"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                      "
+                    >
+                      <div
+                        id="transp-vis-content"
+                        style="
+                          width: 100%;
+                          display: flex;
+                          justify-content: center;
+                        "
+                      ></div>
+                      <div class="cvis-hint" style="margin-top: 0.65rem">
+                        Однакові кольори = одна літера. Мала цифра <em>→N</em> =
+                        куди переміщується. Нижній рядок — результат блоку.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── VERTICAL TRANSPOSITION ──────────────────────── -->
+            <section id="vertical">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: var(--red);
+                      border-bottom-color: var(--red);
+                      background: var(--red-dim);
+                    "
+                  >
+                    // шифр вертикальної (маршрутної) перестановки
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val">Маршрутна перестановка</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val"
+                        >числа або слово (SECRET → алфавітний порядок)</span
+                      >
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Метод:</span
+                      ><span class="chip-val"
+                        >запис рядками → зчитування стовпцями</span
+                      >
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Особливість:</span
+                      ><span class="chip-val"
+                        >різний порядок виведення кожного стовпця</span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Відкритий текст</label>
+                        <textarea
+                          class="input-field"
+                          id="vert-text"
+                          placeholder="Введіть повідомлення..."
+                          style="resize: none; height: 100px; min-height: unset"
+                        >
+HELLO WORLD</textarea
+                        >
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label"
+                          >Ключ (числа або слово, напр. SECRET)</label
+                        >
+                        <input
+                          class="input-field-sm"
+                          id="vert-key"
+                          value="3 1 4 2"
+                          placeholder="напр. 3 1 4 2 або SECRET"
+                          style="height: 40px"
+                        />
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runVert(false)"
+                        >
+                          ⟶ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runVert(true)"
+                        >
+                          ⟵ Розшифрувати
+                        </button>
+                      </div>
+                    </div>
+                    <div class="workspace-col">
+                      <div>
+                        <label class="input-label">Результат</label>
+                        <div
+                          class="result-box"
+                          id="vert-output"
+                          style="
+                            height: 100px;
+                            min-height: unset;
+                            overflow-y: auto;
+                            box-sizing: border-box;
+                          "
+                        >
+                          <span class="result-empty"
+                            >Результат з'явиться тут...</span
+                          >
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="vert-steps">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- VERTICAL TRANSPOSITION VISUALIZER -->
+                  <div
+                    class="caesar-vis"
+                    id="vert-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // текст у сітці → стовпці зчитуються за ключем
+                      <span class="cvis-shift-pill"
+                        >ключ:
+                        <strong
+                          id="vert-key-disp"
+                          style="color: var(--red); letter-spacing: 0.1em"
+                          >3 1 4 2</strong
+                        ></span
+                      >
+                    </div>
+                    <div class="cvis-body">
+                      <div id="vert-vis-content"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- NAV BETWEEN LABS -->
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 1rem;
+                border-top: 1px solid var(--border);
+              "
+            >
+              <a href="../index.html" class="btn-secondary">← Всі лаби</a>
+              <a href="lab02.html" class="btn-primary">Лаб. 02 →</a>
+            </div>
+          </main>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- FOOTER -->
-<footer>
-  <span>© 2025 CryptoLab — Лаб. 01 / Шифри заміни і перестановки</span>
-  <div class="footer-links">
-    <a href="../index.html" class="footer-link">← Головна</a>
-    <a href="lab02.html" class="footer-link">Лаб. 02 →</a>
-  </div>
-</footer>
+    <!-- FOOTER -->
+    <footer>
+      <span>© 2026 CryptoLab — Лаб. 01 / Шифри заміни і перестановки</span>
+      <div class="footer-links">
+        <a href="../index.html" class="footer-link">← Головна</a>
+        <a href="lab02.html" class="footer-link">Лаб. 02 →</a>
+      </div>
+    </footer>
 
-<!-- SCRIPTS -->
-<script src="../js/common.js"></script>
-<script src="../js/ciphers/classical.js"></script>
-<script>
+    <!-- SCRIPTS -->
+    <script src="../js/common.js"></script>
+    <script src="../js/ciphers/classical.js"></script>
+    <script>
+      function getVal(id) {
+        return document.getElementById(id).value;
+      }
 
-function getVal(id) { return document.getElementById(id).value; }
+      function displayResult(outputId, stepsId, data) {
+        renderOutput(outputId, data.result);
+        renderSteps(stepsId, data.steps);
+      }
 
-function displayResult(outputId, stepsId, data) {
-  renderOutput(outputId, data.result);
-  renderSteps(stepsId, data.steps);
-}
+      /* ── Caesar ─────────────────────────────────────────── */
+      function runCaesar(decrypt) {
+        const text = getVal("caesar-text");
+        const shift = parseInt(getVal("caesar-shift")) || 3;
+        const lang = getVal("caesar-lang");
+        const data = CL.Caesar.run(text, shift, decrypt, lang);
+        displayResult("caesar-output", "caesar-steps", data);
+        buildCaesarVis();
+      }
 
-/* ── Caesar ─────────────────────────────────────────── */
-function runCaesar(decrypt) {
-  const text  = getVal('caesar-text');
-  const shift = parseInt(getVal('caesar-shift')) || 3;
-  const lang  = getVal('caesar-lang');
-  const data  = CL.Caesar.run(text, shift, decrypt, lang);
-  displayResult('caesar-output', 'caesar-steps', data);
-}
+      function buildCaesarVis() {
+        const EN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const UK = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
+        const lang = getVal("caesar-lang");
+        const alpha = lang === "uk" ? UK : EN;
+        const n = alpha.length;
+        const k = (((parseInt(getVal("caesar-shift")) || 0) % n) + n) % n;
+        const text = getVal("caesar-text").toUpperCase();
 
-/* ── Atbash ─────────────────────────────────────────── */
-function runAtbash() {
-  const text = getVal('atbash-text');
-  const lang = getVal('atbash-lang');
-  const data = CL.Atbash.run(text, lang);
-  displayResult('atbash-output', 'atbash-steps', data);
-}
+        const inText = new Set([...text].filter((c) => alpha.includes(c)));
+        const plainArr = [...alpha];
+        const cipherArr = plainArr.map((_, i) => alpha[(i + k) % n]);
+        const inCipher = new Set(
+          plainArr
+            .filter((c) => inText.has(c))
+            .map((c) => alpha[(alpha.indexOf(c) + k) % n]),
+        );
 
-/* ── Vigenere ───────────────────────────────────────── */
-function runVigenere(decrypt) {
-  const text = getVal('vigenere-text');
-  const key  = getVal('vigenere-key');
-  const lang = getVal('vigenere-lang');
-  const data = CL.Vigenere.run(text, key, decrypt, lang);
-  displayResult('vigenere-output', 'vigenere-steps', data);
-}
+        document.getElementById("cvis-k").textContent = k;
 
-/* ── Simple Transposition ───────────────────────────── */
-function runTransp(decrypt) {
-  const text = getVal('transp-text');
-  const key  = getVal('transp-key');
-  const data = CL.SimpleTransposition.run(text, key, decrypt);
-  displayResult('transp-output', 'transp-steps', data);
-}
+        document.getElementById("cvis-plain").innerHTML = plainArr
+          .map(
+            (c) =>
+              `<span class="cvis-cell${inText.has(c) ? " hi-plain" : ""}">${c}</span>`,
+          )
+          .join("");
 
-/* ── Vertical Transposition ─────────────────────────── */
-function runVert(decrypt) {
-  const text = getVal('vert-text');
-  const key  = getVal('vert-key');
-  const data = CL.VerticalTransposition.run(text, key, decrypt);
-  displayResult('vert-output', 'vert-steps', data);
-}
+        document.getElementById("cvis-cipher").innerHTML = cipherArr
+          .map(
+            (c, i) =>
+              `<span class="cvis-cell${inText.has(plainArr[i]) ? " hi-cipher" : ""}">${c}</span>`,
+          )
+          .join("");
 
-/* ── ScrollSpy ──────────────────────────────────────── */
-document.addEventListener('DOMContentLoaded', () => {
-  initScrollSpy(['theory','caesar','atbash','vigenere','transposition','vertical']);
-});
+        document.getElementById("cvis-arrows").innerHTML = plainArr
+          .map(
+            (c) =>
+              `<span class="cvis-arr${inText.has(c) ? " hi" : ""}">↓</span>`,
+          )
+          .join("");
+      }
 
-</script>
-</body>
+      /* ── Atbash ─────────────────────────────────────────── */
+      function runAtbash() {
+        const text = getVal("atbash-text");
+        const lang = getVal("atbash-lang");
+        const data = CL.Atbash.run(text, lang);
+        displayResult("atbash-output", "atbash-steps", data);
+        buildAtbashVis();
+      }
+
+      function buildAtbashVis() {
+        const EN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const UK = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
+        const lang = getVal("atbash-lang");
+        const alpha = lang === "uk" ? UK : EN;
+        const n = alpha.length;
+        const text = getVal("atbash-text").toUpperCase();
+
+        const inText = new Set([...text].filter((c) => alpha.includes(c)));
+        const plainArr = [...alpha];
+        const cipherArr = plainArr.map((_, i) => alpha[n - 1 - i]);
+
+        document.getElementById("atbash-cvis-plain").innerHTML = plainArr
+          .map(
+            (c) =>
+              `<span class="cvis-cell${inText.has(c) ? " hi-plain" : ""}">${c}</span>`,
+          )
+          .join("");
+
+        document.getElementById("atbash-cvis-cipher").innerHTML = cipherArr
+          .map(
+            (c, i) =>
+              `<span class="cvis-cell${inText.has(plainArr[i]) ? " hi-cipher" : ""}">${c}</span>`,
+          )
+          .join("");
+
+        document.getElementById("atbash-cvis-arrows").innerHTML = plainArr
+          .map(
+            (c) =>
+              `<span class="cvis-arr${inText.has(c) ? " hi" : ""}">↕</span>`,
+          )
+          .join("");
+      }
+
+      /* ── Vigenere ───────────────────────────────────────── */
+      let _vigDecrypt = false;
+
+      function runVigenere(decrypt) {
+        _vigDecrypt = decrypt;
+        const text = getVal("vigenere-text");
+        const key = getVal("vigenere-key");
+        const lang = getVal("vigenere-lang");
+        const data = CL.Vigenere.run(text, key, decrypt, lang);
+        displayResult("vigenere-output", "vigenere-steps", data);
+        buildVigenereVis();
+      }
+
+      function buildVigenereVis() {
+        const EN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const UK = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
+        const lang = getVal("vigenere-lang");
+        const alpha = lang === "uk" ? UK : EN;
+        const n = alpha.length;
+        const text = getVal("vigenere-text").toUpperCase();
+        const rawKey = getVal("vigenere-key")
+          .toUpperCase()
+          .replace(/[^A-ZАБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ]/g, "");
+        const key = rawKey || "KEY";
+        const decrypt = _vigDecrypt;
+
+        document.getElementById("vig-key-disp").textContent = key;
+
+        const hdr = document.querySelector("#vig-vis .cvis-header");
+        if (hdr)
+          hdr.childNodes[0].textContent = decrypt
+            ? "// таблиця Виженера — розшифрування "
+            : "// таблиця Виженера — зашифрування ";
+
+        // Build plain-key-cipher pairs (up to 24 alpha chars)
+        let ki = 0;
+        const pairs = [];
+        for (const ch of text) {
+          const pi = alpha.indexOf(ch);
+          if (pi === -1) continue;
+          const kChar = key[ki % key.length];
+          const kIdx = alpha.indexOf(kChar);
+          const cIdx = (((decrypt ? pi - kIdx : pi + kIdx) % n) + n) % n;
+          pairs.push({ plain: ch, keyLetter: kChar, cipher: alpha[cIdx] });
+          ki++;
+          if (ki >= 24) break;
+        }
+
+        // Unique key letters in order of first use (max 6 rows)
+        const seen = new Set();
+        const keyRows = [];
+        for (const p of pairs) {
+          if (!seen.has(p.keyLetter)) {
+            seen.add(p.keyLetter);
+            keyRows.push(p.keyLetter);
+          }
+          if (keyRows.length >= 6) break;
+        }
+
+        // For each key letter, which plain letters map through it?
+        const keyToPlain = {};
+        for (const p of pairs) {
+          if (!keyToPlain[p.keyLetter]) keyToPlain[p.keyLetter] = new Set();
+          keyToPlain[p.keyLetter].add(p.plain);
+        }
+
+        // Active plain-text columns
+        const activeCols = new Set(pairs.map((p) => p.plain));
+        const alphaArr = [...alpha];
+
+        let html = '<div class="vig-tab-wrap"><div class="vig-tab">';
+
+        // Header row: alphabet columns
+        html += '<div class="vig-tab-row">';
+        html += '<span class="vig-tc vig-tc-spc"></span>';
+        html += alphaArr
+          .map(
+            (c) =>
+              `<span class="vig-tc vig-tc-head${activeCols.has(c) ? " col-hi" : ""}">${c}</span>`,
+          )
+          .join("");
+        html += "</div>";
+
+        // One row per unique key letter
+        for (const kLetter of keyRows) {
+          const kIdx = alpha.indexOf(kLetter);
+          const plainSet = keyToPlain[kLetter] || new Set();
+          html += '<div class="vig-tab-row">';
+          html += `<span class="vig-tc vig-tc-key">${kLetter}</span>`;
+          html += alphaArr
+            .map((_, ci) => {
+              const plain = alphaArr[ci];
+              const cipher =
+                alphaArr[(((decrypt ? ci - kIdx : ci + kIdx) % n) + n) % n];
+              const isHit = plainSet.has(plain);
+              const cls = isHit
+                ? " hit"
+                : activeCols.has(plain)
+                  ? " col-hi"
+                  : "";
+              return `<span class="vig-tc vig-tc-cell${cls}">${cipher}</span>`;
+            })
+            .join("");
+          html += "</div>";
+        }
+
+        html += "</div></div>";
+        document.getElementById("vig-vis-table").innerHTML = html;
+      }
+
+      /* ── Simple Transposition ───────────────────────────── */
+
+      /* ── Vertical Transposition ─────────────────────────── */
+
+      /* ── ScrollSpy + Caesar vis init ────────────────────── */
+      /* ── Simple Transposition ───────────────────────────── */
+      function runTransp(decrypt) {
+        const text = getVal("transp-text");
+        const key = getVal("transp-key");
+        const data = CL.SimpleTransposition.run(text, key, decrypt);
+        displayResult("transp-output", "transp-steps", data);
+        buildTranspVis();
+      }
+
+      function buildTranspVis() {
+        const COLORS = ["tp1", "tp2", "tp3", "tp4", "tp5", "tp6", "tp7", "tp8"];
+        const raw = getVal("transp-key")
+          .trim()
+          .split(/[\s,]+/)
+          .map(Number)
+          .filter((x) => !isNaN(x) && x > 0);
+        const key = raw.length ? raw : [1];
+        const n = key.length;
+        const text = getVal("transp-text").toUpperCase().replace(/\s/g, "");
+        const padded = text.padEnd(Math.ceil(text.length / n) * n, "X");
+
+        document.getElementById("transp-key-disp").textContent = key.join(" ");
+
+        // Inverse colours: result[key[i]-1] = orig[i]
+        const resColor = new Array(n);
+        key.forEach((pos, i) => {
+          resColor[pos - 1] = i;
+        });
+
+        // Build each block (max 4 to keep UI sane)
+        const maxBlocks = Math.min(Math.ceil(padded.length / n), 4);
+        let html =
+          '<div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;">';
+        for (let b = 0; b < maxBlocks; b++) {
+          const block = padded.slice(b * n, (b + 1) * n).split("");
+          const out = new Array(n);
+          key.forEach((pos, i) => {
+            out[pos - 1] = block[i];
+          });
+
+          // original row
+          html +=
+            '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;">';
+          html += '<div class="trsp-block">';
+          block.forEach((ch, i) => {
+            html += `<div class="trsp-cell ${COLORS[i % 8]}"><span class="trsp-letter">${ch}</span><span class="trsp-pos">&#8594;${key[i]}</span></div>`;
+          });
+          html += "</div>";
+          html +=
+            '<div class="trsp-arrows">' +
+            block.map(() => '<span class="trsp-arr">&#8595;</span>').join("") +
+            "</div>";
+          // result row
+          html += '<div class="trsp-block">';
+          out.forEach((ch, i) => {
+            html += `<div class="trsp-cell ${COLORS[resColor[i] % 8]}"><span class="trsp-letter">${ch}</span><span class="trsp-pos">${i + 1}</span></div>`;
+          });
+          html += "</div></div>";
+
+          if (b < maxBlocks - 1)
+            html +=
+              '<div style="color:var(--border);font-size:0.7rem;">───────────────────</div>';
+        }
+        if (Math.ceil(padded.length / n) > maxBlocks) {
+          html += `<div style="color:var(--text-dim);font-size:0.7rem;">... ще ${Math.ceil(padded.length / n) - maxBlocks} блок(ів)</div>`;
+        }
+        html += "</div>";
+        document.getElementById("transp-vis-content").innerHTML = html;
+      }
+
+      /* ── Vertical Transposition ─────────────────────────── */
+      function runVert(decrypt) {
+        const text = getVal("vert-text");
+        const key = getVal("vert-key");
+        const data = CL.VerticalTransposition.run(text, key, decrypt);
+        displayResult("vert-output", "vert-steps", data);
+        buildVertVis();
+      }
+
+      function buildVertVis() {
+        const COL_CLS = ["vc1", "vc2", "vc3", "vc4", "vc5", "vc6"];
+        const keyStr = getVal("vert-key").trim();
+        let order;
+        if (/^[\d\s,]+$/.test(keyStr)) {
+          order = keyStr
+            .split(/[\s,]+/)
+            .map(Number)
+            .filter((x) => !isNaN(x) && x > 0);
+        } else {
+          const chars = keyStr.toUpperCase().split("");
+          const sorted = [...chars].sort();
+          order = chars.map((c) => sorted.indexOf(c) + 1);
+        }
+        if (!order.length) return;
+
+        document.getElementById("vert-key-disp").textContent = keyStr || "?";
+
+        const cols = order.length;
+        const text = getVal("vert-text").toUpperCase().replace(/\s/g, "");
+        const padded = text.padEnd(Math.ceil(text.length / cols) * cols, "X");
+        const rows = padded.length / cols;
+
+        // sortedCols[step] = col index read at that step (0-based)
+        const sortedCols = order
+          .map((_, i) => i)
+          .sort((a, b) => order[a] - order[b]);
+        const readStep = new Array(cols); // readStep[col] = 1-based step
+        const colClass = new Array(cols); // colClass[col] = CSS class
+        sortedCols.forEach((col, step) => {
+          readStep[col] = step + 1;
+          colClass[col] = COL_CLS[step % 6];
+        });
+
+        // Build 2D table
+        const table = [];
+        for (let r = 0; r < rows; r++)
+          table.push(padded.slice(r * cols, (r + 1) * cols).split(""));
+
+        let html = '<div class="vert-vis-outer" style="align-items:center;">';
+
+        // ── Key legend ──────────────────────────────────────────
+        html += '<div class="vert-key-legend" style="justify-content:center;">';
+        html += '<span class="vert-kl-label">крок&nbsp;читання:</span>';
+        for (let c = 0; c < cols; c++) {
+          html += `<div class="vert-kpill ${colClass[c]}" style="border-color:currentColor;">
+            <span class="vert-kpill-step">${readStep[c]}</span>
+            <span class="vert-kpill-val">[${order[c]}]</span>
+          </div>`;
+        }
+        html += "</div>";
+
+        // ── Grid ────────────────────────────────────────────────
+        html += '<div class="vert-grid-outer" style="display:flex;justify-content:center;"><div class="vert-table">';
+
+        // Column header row
+        html += '<div class="vert-row">';
+        html +=
+          '<span class="vert-cell" style="background:transparent;border-color:transparent;color:var(--text-dim);font-size:0.55rem;width:20px;">#</span>';
+        for (let c = 0; c < cols; c++) {
+          html += `<div class="vert-hdr ${colClass[c]}">
+            <span class="vert-hdr-num">${readStep[c]}</span>
+            <span style="font-size:0.48rem;opacity:0.65;">[${order[c]}]</span>
+          </div>`;
+        }
+        html += "</div>";
+
+        // Data rows with row number
+        for (let r = 0; r < rows; r++) {
+          html += '<div class="vert-row">';
+          html += `<span class="vert-cell" style="background:transparent;border-color:transparent;color:var(--text-dim);font-size:0.55rem;width:20px;">${r + 1}</span>`;
+          for (let c = 0; c < cols; c++) {
+            const isPad = r * cols + c >= text.length;
+            const cellStyle = isPad ? ' style="opacity:0.35;"' : "";
+            html += `<span class="vert-cell ${colClass[c]}"${cellStyle}>${table[r][c]}</span>`;
+          }
+          html += "</div>";
+        }
+        html += "</div></div>";
+
+        // ── Column reading strips ────────────────────────────────
+        html +=
+          '<div style="font-size:0.65rem;color:var(--text-dim);font-family:var(--font-mono);margin-bottom:0.25rem;">// порядок зчитування стовпців:</div>';
+        html += '<div class="vert-strips" style="width:100%;max-width:600px;">';
+        sortedCols.forEach((col, step) => {
+          const cls = COL_CLS[step % 6];
+          const cells = table.map((row) => row[col]);
+          const word = cells.join("");
+          html += `<div class="vert-strip">
+            <div class="vert-strip-lbl">
+              <span class="vert-strip-step ${cls}">крок ${step + 1}</span>
+              <span class="vert-strip-col">стовпець ${col + 1} &nbsp;[ключ: ${order[col]}]</span>
+            </div>
+            <div class="vert-strip-cells">`;
+          cells.forEach((ch, ri) => {
+            const isPad = ri * cols + col >= text.length;
+            const style = isPad ? ' style="opacity:0.35;"' : "";
+            html += `<span class="vert-strip-cell ${cls}"${style}>${ch}</span>`;
+          });
+          html += `</div>
+            <span class="vert-strip-arrow">&#8594;</span>
+            <span class="vert-strip-result ${cls}">${word}</span>
+          </div>`;
+        });
+        html += "</div>";
+
+        // ── Final ciphertext assembly ────────────────────────────
+        const cipher = sortedCols
+          .map((col) => table.map((row) => row[col]).join(""))
+          .join("");
+        html += `<div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.75rem;
+          border:1px solid var(--border);border-radius:6px;background:var(--surface2);flex-wrap:wrap;max-width:600px;justify-content:center;">
+          <span style="font-size:0.62rem;color:var(--text-dim);font-family:var(--font-mono);flex-shrink:0;">// шифртекст:</span>`;
+        let pos = 0;
+        sortedCols.forEach((col, step) => {
+          const cls = COL_CLS[step % 6];
+          const word = table.map((row) => row[col]).join("");
+          html += `<span class="${cls}" style="font-family:var(--font-mono);font-weight:700;font-size:0.88rem;letter-spacing:0.08em;">${word}</span>`;
+          if (step < cols - 1)
+            html +=
+              '<span style="color:var(--border);font-size:0.7rem;">·</span>';
+          pos += word.length;
+        });
+        html += "</div>";
+
+        html += "</div>";
+        document.getElementById("vert-vis-content").innerHTML = html;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        initScrollSpy([
+          "theory",
+          "caesar",
+          "atbash",
+          "vigenere",
+          "transposition",
+          "vertical",
+        ]);
+        buildCaesarVis();
+        document
+          .getElementById("caesar-text")
+          .addEventListener("input", buildCaesarVis);
+        document
+          .getElementById("caesar-shift")
+          .addEventListener("input", buildCaesarVis);
+        document
+          .getElementById("caesar-lang")
+          .addEventListener("change", buildCaesarVis);
+
+        buildAtbashVis();
+        document
+          .getElementById("atbash-text")
+          .addEventListener("input", buildAtbashVis);
+        document
+          .getElementById("atbash-lang")
+          .addEventListener("change", buildAtbashVis);
+
+        buildVigenereVis();
+        document
+          .getElementById("vigenere-text")
+          .addEventListener("input", buildVigenereVis);
+        document
+          .getElementById("vigenere-key")
+          .addEventListener("input", buildVigenereVis);
+        document
+          .getElementById("vigenere-lang")
+          .addEventListener("change", buildVigenereVis);
+
+        buildTranspVis();
+        document
+          .getElementById("transp-text")
+          .addEventListener("input", buildTranspVis);
+        document
+          .getElementById("transp-key")
+          .addEventListener("input", buildTranspVis);
+
+        buildVertVis();
+        document
+          .getElementById("vert-text")
+          .addEventListener("input", buildVertVis);
+        document
+          .getElementById("vert-key")
+          .addEventListener("input", buildVertVis);
+      });
+    </script>
+  </body>
 </html>

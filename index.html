@@ -683,7 +683,7 @@
     flex-wrap: wrap;
   }
 
-  .stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
+  .stat-item { display: flex; flex-direction: column; gap: 0.2rem; align-items: center; text-align: center; }
 
   .stat-val {
     font-family: var(--font-sans);
@@ -743,9 +743,36 @@
   .lab-card:nth-child(5) { animation-delay: 0.25s; }
   .lab-card:nth-child(6) { animation-delay: 0.3s; }
 
+  /* ── Hero content constraint (left side) ─── */
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 52%;
+  }
+
+  /* ── Bare globe SVG ─────────────────────── */
+  .hero-globe {
+    position: absolute;
+    right: 2vw; top: 50%;
+    transform: translateY(-50%);
+    width: 46vw;
+    max-width: 688px;
+    min-width: 384px;
+    pointer-events: none;
+    animation: fadeIn 1.2s ease 0.3s both;
+    /* fade left edge so it blends into the hero */
+    mask-image: linear-gradient(to right, transparent 0%, black 18%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 100%);
+  }
+
+  /* Threat status chip */
+  .gw-fval      { color: var(--green); }
+  .gw-fval-warn { color: var(--red); }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
-    .terminal-preview { display: none; }
+    .hero-content { max-width: 100%; }
+    .hero-globe { display: none; }
     .demo-container { grid-template-columns: 1fr; }
     .hero { padding: 100px 1.5rem 3rem; }
     .section { padding: 4rem 1.5rem; }
@@ -762,10 +789,6 @@
     <span class="logo-text">CryptoLab</span>
     <span class="logo-bracket">}</span>
   </div>
-  <div class="header-status">
-    <span><span class="status-dot"></span>система активна</span>
-    <span>v2.0 — ІБ Лаби</span>
-  </div>
 </header>
 
 <!-- HERO -->
@@ -773,56 +796,205 @@
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
 
-  <div class="hero-label">Інформаційна безпека / Криптографія</div>
+  <div class="hero-content">
+    <div class="hero-label">Інформаційна безпека / Криптографія</div>
 
-  <h1 class="hero-title">
-    <span class="accent">Шифри</span><br>
-    та протоколи<br>
-    <span class="dim">безпеки</span>
-  </h1>
+    <h1 class="hero-title">
+      <span class="accent">Шифри</span><br>
+      та протоколи<br>
+      <span class="dim">безпеки</span>
+    </h1>
 
-  <p class="hero-sub">
-    Інтерактивні реалізації класичних та сучасних криптографічних алгоритмів. 
-    Від шифру Цезаря до RSA — все в одному місці.
-  </p>
+    <p class="hero-sub">
+      Інтерактивні реалізації класичних та сучасних криптографічних алгоритмів. 
+      Від шифру Цезаря до RSA — все в одному місці.
+    </p>
 
-  <div class="hero-actions">
-    <button class="btn-primary" onclick="document.querySelector('.section').scrollIntoView({behavior:'smooth'})">
-      → Відкрити лаби
-    </button>
-    <button class="btn-secondary" onclick="document.querySelector('.demo-section').scrollIntoView({behavior:'smooth'})">
-      Спробувати демо
-    </button>
-  </div>
-
-  <!-- TERMINAL -->
-  <div class="terminal-preview">
-    <div class="terminal-bar">
-      <div class="dot dot-r"></div>
-      <div class="dot dot-y"></div>
-      <div class="dot dot-g"></div>
-      <span class="terminal-title">caesar_cipher.js</span>
-    </div>
-    <div class="terminal-body">
-      <div class="t-comment">// Шифр Цезаря — Лаб. 1</div>
-      <div><span class="t-cmd">function</span> <span class="t-key">encrypt</span>(text, key) {</div>
-      <div>&nbsp;&nbsp;<span class="t-cmd">return</span> text.<span class="t-key">split</span>(<span class="t-val">''</span>)</div>
-      <div>&nbsp;&nbsp;&nbsp;&nbsp;.map(c => <span class="t-key">shift</span>(c, key))</div>
-      <div>&nbsp;&nbsp;&nbsp;&nbsp;.join(<span class="t-val">''</span>);</div>
-      <div>}</div>
-      <div>&nbsp;</div>
-      <div class="t-comment">// Виклик:</div>
-      <div><span class="t-key">encrypt</span>(<span class="t-val">"HELLO"</span>, <span class="t-val">3</span>);</div>
-      <div><span class="t-out">▶ "KHOOR"</span></div>
-      <div>&nbsp;</div>
-      <div><span class="t-key">encrypt</span>(<span class="t-val">"CRYPTO"</span>, <span class="t-val">13</span>);</div>
-      <div><span class="t-out">▶ "PELCGB"</span> <span class="t-cursor"></span></div>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.querySelector('.section').scrollIntoView({behavior:'smooth'})">
+        → Відкрити лаби
+      </button>
+      <button class="btn-secondary" onclick="document.querySelector('.demo-section').scrollIntoView({behavior:'smooth'})">
+        Спробувати демо
+      </button>
     </div>
   </div>
+
+  <!-- BARE GLOBE SVG — no frame, fullsize right -->
+  <svg class="hero-globe" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#39d353" stop-opacity="0.12"/>
+        <stop offset="60%"  stop-color="#39d353" stop-opacity="0.04"/>
+        <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#39d353" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="nglow" x="-80%" y="-80%" width="260%" height="260%">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="nglow-sm" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="2" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Ambient fill glow -->
+    <ellipse cx="250" cy="250" rx="220" ry="215" fill="url(#glowGrad)"/>
+
+    <!-- Globe outline -->
+    <circle cx="250" cy="250" r="195" fill="none" stroke="#39d353" stroke-width="0.7" opacity="0.2"/>
+
+    <!-- Latitude rings -->
+    <ellipse cx="250" cy="250" rx="195" ry="48"  fill="none" stroke="#39d353" stroke-width="0.4" opacity="0.12"/>
+    <ellipse cx="250" cy="250" rx="195" ry="100" fill="none" stroke="#39d353" stroke-width="0.4" opacity="0.12"/>
+    <ellipse cx="250" cy="250" rx="195" ry="155" fill="none" stroke="#39d353" stroke-width="0.4" opacity="0.12"/>
+    <ellipse cx="250" cy="250" rx="195" ry="190" fill="none" stroke="#39d353" stroke-width="0.3" opacity="0.08"/>
+
+    <!-- Longitude lines -->
+    <ellipse cx="250" cy="250" rx="55"  ry="195" fill="none" stroke="#39d353" stroke-width="0.4" opacity="0.12" transform="rotate(0   250 250)"/>
+    <ellipse cx="250" cy="250" rx="55"  ry="195" fill="none" stroke="#39d353" stroke-width="0.4" opacity="0.12" transform="rotate(36  250 250)"/>
+    <ellipse cx="250" cy="250" rx="55"  ry="195" fill="none" stroke="#39d353" stroke-width="0.4" opacity="0.12" transform="rotate(72  250 250)"/>
+    <ellipse cx="250" cy="250" rx="55"  ry="195" fill="none" stroke="#39d353" stroke-width="0.4" opacity="0.12" transform="rotate(108 250 250)"/>
+    <ellipse cx="250" cy="250" rx="55"  ry="195" fill="none" stroke="#39d353" stroke-width="0.4" opacity="0.12" transform="rotate(144 250 250)"/>
+
+    <!-- Connection arcs -->
+    <path id="p1" d="M95,192 Q138,80  214,158"   fill="none" stroke="#39d353" stroke-width="1"   stroke-dasharray="4,4" opacity="0.35"/>
+    <path id="p2" d="M214,158 Q240,90  270,162"  fill="none" stroke="#39d353" stroke-width="1"   stroke-dasharray="4,4" opacity="0.35"/>
+    <path id="p3" d="M270,162 Q340,70  388,192"  fill="none" stroke="#39d353" stroke-width="1"   stroke-dasharray="4,4" opacity="0.35"/>
+    <path id="p4" d="M388,192 Q408,140 415,232"  fill="none" stroke="#39d353" stroke-width="1"   stroke-dasharray="4,4" opacity="0.35"/>
+    <path id="p5" d="M95,192  Q60,305  152,378"  fill="none" stroke="#39d353" stroke-width="1"   stroke-dasharray="4,4" opacity="0.35"/>
+    <path id="p6" d="M214,158 Q196,250 238,352"  fill="none" stroke="#39d353" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.28"/>
+    <path id="p7" d="M152,378 Q196,415 238,352"  fill="none" stroke="#39d353" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.28"/>
+    <path id="p8" d="M270,162 Q305,250 300,340"  fill="none" stroke="#39d353" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.28"/>
+
+    <!-- Threat arc (periodic) -->
+    <path id="pthreat" d="M415,232 Q340,30 214,158" fill="none" stroke="#f85149" stroke-width="1.5" stroke-dasharray="6,4" opacity="0">
+      <animate attributeName="opacity" values="0;0;0;0;0.8;0.8;0.6;0.2;0;0;0;0" dur="16s" repeatCount="indefinite" begin="6s"/>
+    </path>
+
+    <!-- Data packets -->
+    <circle r="3.5" fill="#39d353" filter="url(#nglow-sm)">
+      <animateMotion dur="5s"   repeatCount="indefinite"><mpath href="#p1"/></animateMotion>
+    </circle>
+    <circle r="3"   fill="#39d353" opacity="0.8">
+      <animateMotion dur="3.5s" repeatCount="indefinite" begin="1.2s"><mpath href="#p2"/></animateMotion>
+    </circle>
+    <circle r="3"   fill="#39d353" opacity="0.8">
+      <animateMotion dur="6.2s" repeatCount="indefinite" begin="0.6s"><mpath href="#p3"/></animateMotion>
+    </circle>
+    <circle r="3"   fill="#39d353" opacity="0.8">
+      <animateMotion dur="4s"   repeatCount="indefinite" begin="2.5s"><mpath href="#p4"/></animateMotion>
+    </circle>
+    <circle r="3"   fill="#39d353" opacity="0.7">
+      <animateMotion dur="7s"   repeatCount="indefinite" begin="1.8s"><mpath href="#p5"/></animateMotion>
+    </circle>
+    <circle r="2.5" fill="#39d353" opacity="0.6">
+      <animateMotion dur="5.5s" repeatCount="indefinite" begin="3.2s"><mpath href="#p6"/></animateMotion>
+    </circle>
+    <circle r="2.5" fill="#39d353" opacity="0.6">
+      <animateMotion dur="4.8s" repeatCount="indefinite" begin="0.9s"><mpath href="#p8"/></animateMotion>
+    </circle>
+    <!-- Threat packet -->
+    <circle r="3" fill="#f85149" opacity="0">
+      <animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#pthreat"/></animateMotion>
+      <animate attributeName="opacity" values="0;0;0;0;0.95;0.95;0.95;0;0;0;0;0" dur="16s" repeatCount="indefinite" begin="6s"/>
+    </circle>
+
+    <!-- Central lock -->
+    <g transform="translate(250,250)" filter="url(#nglow)">
+      <circle cx="0" cy="0" r="32"  fill="rgba(57,211,83,0.06)" stroke="#39d353" stroke-width="0.8" opacity="0.5"/>
+      <circle cx="0" cy="0" r="44"  fill="none" stroke="#39d353" stroke-width="0.6">
+        <animate attributeName="r"       values="38;56;38" dur="3.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.3;0;0.3" dur="3.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="0" cy="0" r="60"  fill="none" stroke="#39d353" stroke-width="0.3">
+        <animate attributeName="r"       values="55;75;55" dur="5s" repeatCount="indefinite" begin="1s"/>
+        <animate attributeName="opacity" values="0.15;0;0.15" dur="5s" repeatCount="indefinite" begin="1s"/>
+      </circle>
+      <!-- Lock body -->
+      <rect x="-12" y="-2" width="24" height="20" rx="3" fill="none" stroke="#39d353" stroke-width="2"/>
+      <!-- Shackle -->
+      <path d="M-8,-2 L-8,-12 Q-8,-22 0,-22 Q8,-22 8,-12 L8,-2" fill="none" stroke="#39d353" stroke-width="2"/>
+      <!-- Keyhole -->
+      <circle cx="0" cy="7" r="3.5" fill="#39d353" opacity="0.9"/>
+      <rect x="-1.8" y="7" width="3.6" height="6" fill="#39d353" opacity="0.9"/>
+    </g>
+
+    <!-- City nodes -->
+    <!-- New York -->
+    <circle cx="95"  cy="192" r="5"   fill="#39d353" filter="url(#nglow-sm)"/>
+    <circle cx="95"  cy="192" r="7"   fill="none" stroke="#39d353" stroke-width="1">
+      <animate attributeName="r"       values="7;22;7"   dur="4s"   repeatCount="indefinite" begin="0s"/>
+      <animate attributeName="opacity" values="0.5;0;0.5" dur="4s"   repeatCount="indefinite" begin="0s"/>
+    </circle>
+    <text x="68"  y="186" font-size="11" fill="#39d353" opacity="0.6" font-family="monospace">NY</text>
+
+    <!-- London -->
+    <circle cx="214" cy="158" r="5"   fill="#39d353" filter="url(#nglow-sm)"/>
+    <circle cx="214" cy="158" r="7"   fill="none" stroke="#39d353" stroke-width="1">
+      <animate attributeName="r"       values="7;22;7"   dur="3.5s" repeatCount="indefinite" begin="0.7s"/>
+      <animate attributeName="opacity" values="0.5;0;0.5" dur="3.5s" repeatCount="indefinite" begin="0.7s"/>
+    </circle>
+    <text x="222" y="156" font-size="11" fill="#39d353" opacity="0.6" font-family="monospace">LON</text>
+
+    <!-- Kyiv — highlighted -->
+    <circle cx="270" cy="162" r="6"   fill="#58d4f5" filter="url(#nglow)"/>
+    <circle cx="270" cy="162" r="8"   fill="none" stroke="#58d4f5" stroke-width="1.5">
+      <animate attributeName="r"       values="8;26;8"   dur="2.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;0;0.7" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <text x="280" y="158" font-size="13" fill="#58d4f5" opacity="0.95" font-family="monospace" font-weight="bold">KYIV</text>
+
+    <!-- Beijing -->
+    <circle cx="388" cy="192" r="5"   fill="#39d353" filter="url(#nglow-sm)"/>
+    <circle cx="388" cy="192" r="7"   fill="none" stroke="#39d353" stroke-width="1">
+      <animate attributeName="r"       values="7;22;7"   dur="4.5s" repeatCount="indefinite" begin="1.5s"/>
+      <animate attributeName="opacity" values="0.5;0;0.5" dur="4.5s" repeatCount="indefinite" begin="1.5s"/>
+    </circle>
+    <text x="396" y="190" font-size="11" fill="#39d353" opacity="0.6" font-family="monospace">BEI</text>
+
+    <!-- Tokyo (threat) -->
+    <circle cx="415" cy="232" r="5"   fill="#39d353" filter="url(#nglow-sm)">
+      <animate attributeName="fill" values="#39d353;#39d353;#39d353;#39d353;#f85149;#f85149;#f85149;#39d353;#39d353;#39d353;#39d353;#39d353" dur="16s" repeatCount="indefinite" begin="6s"/>
+    </circle>
+    <circle cx="415" cy="232" r="7"   fill="none" stroke="#39d353" stroke-width="1">
+      <animate attributeName="r"       values="7;22;7"   dur="3.8s" repeatCount="indefinite" begin="2s"/>
+      <animate attributeName="opacity" values="0.5;0;0.5" dur="3.8s" repeatCount="indefinite" begin="2s"/>
+    </circle>
+    <text x="420" y="228" font-size="11" fill="#39d353" opacity="0.6" font-family="monospace">TYO</text>
+
+    <!-- São Paulo -->
+    <circle cx="152" cy="378" r="4"   fill="#39d353" filter="url(#nglow-sm)" opacity="0.8"/>
+    <circle cx="152" cy="378" r="6"   fill="none" stroke="#39d353" stroke-width="0.8">
+      <animate attributeName="r"       values="6;18;6"   dur="5s"   repeatCount="indefinite" begin="1s"/>
+      <animate attributeName="opacity" values="0.4;0;0.4" dur="5s"   repeatCount="indefinite" begin="1s"/>
+    </circle>
+    <text x="158" y="376" font-size="10" fill="#39d353" opacity="0.5" font-family="monospace">SAO</text>
+
+    <!-- Lagos -->
+    <circle cx="238" cy="352" r="4"   fill="#39d353" filter="url(#nglow-sm)" opacity="0.8"/>
+    <circle cx="238" cy="352" r="6"   fill="none" stroke="#39d353" stroke-width="0.8">
+      <animate attributeName="r"       values="6;18;6"   dur="4.2s" repeatCount="indefinite" begin="2.8s"/>
+      <animate attributeName="opacity" values="0.4;0;0.4" dur="4.2s" repeatCount="indefinite" begin="2.8s"/>
+    </circle>
+    <text x="246" y="350" font-size="10" fill="#39d353" opacity="0.5" font-family="monospace">LAG</text>
+
+    <!-- Singapore -->
+    <circle cx="300" cy="340" r="4"   fill="#39d353" filter="url(#nglow-sm)" opacity="0.8"/>
+    <circle cx="300" cy="340" r="6"   fill="none" stroke="#39d353" stroke-width="0.8">
+      <animate attributeName="r"       values="6;18;6"   dur="3.6s" repeatCount="indefinite" begin="0.4s"/>
+      <animate attributeName="opacity" values="0.4;0;0.4" dur="3.6s" repeatCount="indefinite" begin="0.4s"/>
+    </circle>
+    <text x="308" y="338" font-size="10" fill="#39d353" opacity="0.5" font-family="monospace">SGP</text>
+  </svg>
 </section>
 
 <!-- STATS -->
-<div class="stats-bar">
+<div class="stats-bar" style="justify-content:center;">
   <div class="stat-item">
     <span class="stat-val">8</span>
     <span class="stat-label">Лабораторних робіт</span>
@@ -1120,12 +1292,13 @@
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <span>© 2025 CryptoLab — Лабораторні роботи з ІБ</span>
-  <div class="footer-links">
-    <a href="#" class="footer-link" onclick="document.querySelector('.section').scrollIntoView({behavior:'smooth'});return false;">Лаби</a>
-    <a href="#" class="footer-link" onclick="document.querySelector('.demo-section').scrollIntoView({behavior:'smooth'});return false;">Демо</a>
-  </div>
+<footer style="flex-direction:column;align-items:center;gap:0.6rem;text-align:center;">
+  <span style="font-size:0.75rem;">© 2026 CryptoLab — Лабораторні роботи з інформаційної безпеки</span>
+  <span style="font-size:0.72rem;color:var(--text-muted);">Виконав: Мацишин Михайло</span>
+  <a href="https://github.com/MykhailoMatsyshyn" target="_blank" class="footer-link" style="font-size:0.72rem;display:flex;align-items:center;gap:0.4rem;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    github.com/MykhailoMatsyshyn
+  </a>
 </footer>
 
 <script src="js/common.js"></script>
