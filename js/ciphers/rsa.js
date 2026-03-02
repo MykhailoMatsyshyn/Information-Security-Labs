@@ -147,7 +147,7 @@ const RSA = {
 /* ── Digital Signature (ЕЦП) ─────────────────────────────────── */
 const DSA = {
   /**
-   * Хеш-функція з методички: H_i = (M_i + H_{i-1})² mod n
+   * Геш-функція: H_i = (M_i + H_{i-1})² mod n
    * @param {string} message  — повідомлення як рядок цифр "312"
    * @param {bigint} n
    * @param {bigint} H0       — вектор ініціалізації
@@ -155,7 +155,7 @@ const DSA = {
   hash(message, n, H0 = 6n) {
     const digits = message.trim().split('').map(BigInt);
     const steps = [
-      { n: '01', t: `Хешування повідомлення M="${message}"`, d: `H₀ = ${H0}` },
+      { n: '01', t: `Гешування повідомлення M="${message}"`, d: `H₀ = ${H0}` },
     ];
     let H = H0;
     digits.forEach((m, i) => {

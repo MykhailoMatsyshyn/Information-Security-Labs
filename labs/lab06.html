@@ -25,74 +25,947 @@
     </header>
 
     <div class="lab-page">
+      <!-- LAB HERO -->
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
             <span class="lab-index-badge">ЛАБ 06</span>
+            <span style="font-size:0.65rem;color:var(--text-dim);letter-spacing:0.15em">
+              ПІДПИС · АВТЕНТИЧНІСТЬ
+            </span>
           </div>
-          <h1 class="lab-hero-title">Електронний цифровий підпис (ЕЦП)</h1>
+          <h1 class="lab-hero-title">
+            Електронний цифровий<br />підпис RSA (ЕЦП)
+          </h1>
+          <p class="lab-hero-sub">
+            У цій лабораторній ми досліджуємо, як на базі RSA побудувати
+            електронний цифровий підпис: обчислити геш повідомлення,
+            сформувати підпис <strong>S&nbsp;=&nbsp;m<sup>d</sup>&nbsp;mod&nbsp;n</strong>
+            та перевірити його дійсність
+            <strong>m₁&nbsp;=&nbsp;S<sup>e</sup>&nbsp;mod&nbsp;n</strong>.
+          </p>
           <div class="lab-hero-chips">
-            <span class="tag">ЕЦП</span><span class="tag">Хеш</span
-            ><span class="tag">RSA</span>
+            <span class="tag">ЕЦП</span>
+            <span class="tag">RSA</span>
+            <span class="tag">Геш-функція</span>
+            <span class="tag">Автентичність</span>
           </div>
         </div>
       </div>
 
+      <!-- CONTENT -->
       <div class="lab-content">
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-            flex-direction: column;
-            gap: 1.5rem;
-            text-align: center;
-          "
-        >
-          <div style="font-size: 3rem; color: var(--green); opacity: 0.3">
-            ⚙
+        <div class="lab-layout">
+          <!-- SIDEBAR -->
+          <aside class="lab-sidebar">
+            <nav class="sidebar-nav">
+              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-item active" data-section="theory">
+                <span class="sidebar-nav-num">01</span> Теорія
+              </div>
+              <div class="sidebar-nav-item" data-section="hash">
+                <span class="sidebar-nav-num">02</span> Гешування
+              </div>
+              <div class="sidebar-nav-item" data-section="dsa">
+                <span class="sidebar-nav-num">03</span> ЕЦП RSA
+              </div>
+            </nav>
+          </aside>
+
+          <!-- MAIN -->
+          <main>
+            <!-- ── THEORY ─────────────────────────────────────────── -->
+            <section id="theory">
+              <div class="theory-block">
+                <div class="theory-header">
+                  <span class="theory-title">Короткі теоретичні відомості</span>
+                  <span class="theory-toggle">▼</span>
+                </div>
+                <div class="theory-body open">
+                  <div class="theory-body-inner">
+
+                    <p>
+                      <strong>Електронний цифровий підпис (ЕЦП)</strong> — це
+                      криптографічний механізм, що гарантує
+                      <em>автентичність</em> (підпис міг поставити лише власник
+                      секретного ключа) та <em>цілісність</em> (будь-яка зміна
+                      повідомлення робить підпис недійсним) електронного
+                      документа.
+                    </p>
+
+                    <p>
+                      В основі лабораторної — <strong>RSA-підпис</strong> із
+                      простою геш-функцією
+                      <span style="white-space:nowrap">Hᵢ = (Mᵢ + Hᵢ₋₁)² mod n</span>,
+                      де останнє значення Hₖ використовується як m для підпису.
+                    </p>
+
+                    <!-- Кроки алгоритму -->
+                    <div style="margin: 0.8rem 0; display: flex; flex-direction: column; gap: 0.35rem;">
+                      <div style="display:flex;align-items:flex-start;gap:0.6rem;font-size:0.75rem;line-height:1.55">
+                        <span style="flex-shrink:0;width:1.4rem;height:1.4rem;border-radius:50%;background:rgba(181,126,245,.15);border:1px solid rgba(181,126,245,.4);color:#b57ef5;font-family:var(--font-mono);font-size:0.58rem;font-weight:700;display:flex;align-items:center;justify-content:center">1</span>
+                        <span><strong style="color:#b57ef5">Генерація ключів RSA</strong> — обрати прості p, q; обчислити
+                          n&nbsp;=&nbsp;p·q, φ(n)&nbsp;=&nbsp;(p−1)(q−1), вибрати e: НСД(e,φ(n))=1,
+                          знайти d: e·d&nbsp;≡&nbsp;1&nbsp;(mod&nbsp;φ(n))</span>
+                      </div>
+                      <div style="display:flex;align-items:flex-start;gap:0.6rem;font-size:0.75rem;line-height:1.55">
+                        <span style="flex-shrink:0;width:1.4rem;height:1.4rem;border-radius:50%;background:rgba(88,212,245,.12);border:1px solid rgba(88,212,245,.4);color:#58d4f5;font-family:var(--font-mono);font-size:0.58rem;font-weight:700;display:flex;align-items:center;justify-content:center">2</span>
+                        <span><strong style="color:#58d4f5">Гешування повідомлення</strong> —
+                          H₀ задано; для кожної цифри M<sub>i</sub>:
+                          H<sub>i</sub>&nbsp;=&nbsp;(M<sub>i</sub>&nbsp;+&nbsp;H<sub>i−1</sub>)²&nbsp;mod&nbsp;n;
+                          фінальне H<sub>k</sub>&nbsp;=&nbsp;m</span>
+                      </div>
+                      <div style="display:flex;align-items:flex-start;gap:0.6rem;font-size:0.75rem;line-height:1.55">
+                        <span style="flex-shrink:0;width:1.4rem;height:1.4rem;border-radius:50%;background:rgba(255,149,80,.12);border:1px solid rgba(255,149,80,.4);color:#ff9550;font-family:var(--font-mono);font-size:0.58rem;font-weight:700;display:flex;align-items:center;justify-content:center">3</span>
+                        <span><strong style="color:#ff9550">Формування підпису</strong> —
+                          S&nbsp;=&nbsp;m<sup>d</sup>&nbsp;mod&nbsp;n (відправник, секретний ключ d)</span>
+                      </div>
+                      <div style="display:flex;align-items:flex-start;gap:0.6rem;font-size:0.75rem;line-height:1.55">
+                        <span style="flex-shrink:0;width:1.4rem;height:1.4rem;border-radius:50%;background:rgba(57,211,83,.1);border:1px solid rgba(57,211,83,.4);color:#39d353;font-family:var(--font-mono);font-size:0.58rem;font-weight:700;display:flex;align-items:center;justify-content:center">4</span>
+                        <span><strong style="color:#39d353">Перевірка підпису</strong> —
+                          m₁&nbsp;=&nbsp;S<sup>e</sup>&nbsp;mod&nbsp;n (одержувач, відкритий ключ e).
+                          Підпис дійсний, якщо m₁&nbsp;=&nbsp;m</span>
+                      </div>
+                    </div>
+
+                    <!-- Блок-схема алгоритму ЕЦП RSA -->
+                    <div class="eds-diagram">
+                      <div class="eds-diagram-header">
+                        // блок-схема алгоритму ЕЦП RSA
+                      </div>
+                      <div class="eds-diagram-body">
+
+                        <!-- ВІДПРАВНИК (Аліса) -->
+                        <div class="eds-side">
+                          <div class="eds-side-title sender">Відправник (Аліса)</div>
+
+                          <div class="eds-node key">
+                            <div class="eds-node-title">Генерація ключів RSA</div>
+                            <div class="eds-node-formula">
+                              p, q → n = p·q<br />
+                              φ(n) = (p−1)(q−1)<br />
+                              e·d ≡ 1 (mod φ(n))
+                            </div>
+                          </div>
+                          <div class="eds-arr">↓</div>
+
+                          <div class="eds-key-row">
+                            <div class="eds-node" style="border-color:rgba(88,212,245,.4);background:rgba(88,212,245,.07);text-align:center">
+                              <div class="eds-node-title" style="color:#58d4f5">Відкритий</div>
+                              <div class="eds-node-formula">(e, n)</div>
+                            </div>
+                            <div class="eds-node key" style="text-align:center">
+                              <div class="eds-node-title">Секретний</div>
+                              <div class="eds-node-formula">(d, n)</div>
+                            </div>
+                          </div>
+                          <div class="eds-arr">↓</div>
+
+                          <div class="eds-node msg">
+                            <div class="eds-node-title">Повідомлення M</div>
+                            <div class="eds-node-formula">рядок цифр: 312</div>
+                          </div>
+                          <div class="eds-arr">↓</div>
+
+                          <div class="eds-node hash">
+                            <div class="eds-node-title">Гешування H(M)</div>
+                            <div class="eds-node-formula">
+                              H₀ = 6<br />
+                              Hᵢ = (Mᵢ + Hᵢ₋₁)² mod n<br />
+                              m = Hₖ
+                            </div>
+                          </div>
+                          <div class="eds-arr">↓</div>
+
+                          <div class="eds-node sign">
+                            <div class="eds-node-title">Підпис S = mᵈ mod n</div>
+                            <div class="eds-node-formula">секретний ключ d</div>
+                          </div>
+                          <div class="eds-arr">↓</div>
+
+                          <div class="eds-node" style="border-color:rgba(255,149,80,.4);background:rgba(255,149,80,.07);text-align:center">
+                            <div class="eds-node-title" style="color:#ff9550">Передача (M, S)</div>
+                          </div>
+                        </div>
+
+                        <!-- КАНАЛ -->
+                        <div class="eds-channel">
+                          <div class="eds-channel-label">відкритий<br />канал</div>
+                          <div class="eds-channel-arrow">→</div>
+                          <div class="eds-channel-badge">(M, S)</div>
+                          <div class="eds-channel-arrow">→</div>
+                          <div class="eds-channel-label">відкритий<br />ключ (e,n)</div>
+                          <div class="eds-channel-arrow">→</div>
+                        </div>
+
+                        <!-- ОДЕРЖУВАЧ (Боб) -->
+                        <div class="eds-side">
+                          <div class="eds-side-title receiver">Одержувач (Боб)</div>
+
+                          <div class="eds-node" style="border-color:rgba(255,149,80,.4);background:rgba(255,149,80,.07);text-align:center">
+                            <div class="eds-node-title" style="color:#ff9550">Отримує (M, S)</div>
+                            <div class="eds-node-formula">та відкритий ключ (e, n)</div>
+                          </div>
+                          <div class="eds-arr">↓</div>
+
+                          <div class="eds-node hash">
+                            <div class="eds-node-title">Гешування H(M)</div>
+                            <div class="eds-node-formula">
+                              ті ж самі кроки<br />
+                              Hᵢ = (Mᵢ + Hᵢ₋₁)² mod n<br />
+                              m = Hₖ
+                            </div>
+                          </div>
+                          <div class="eds-arr">↓</div>
+
+                          <div class="eds-node" style="border-color:rgba(88,212,245,.4);background:rgba(88,212,245,.07)">
+                            <div class="eds-node-title" style="color:#58d4f5">Відновлення m₁</div>
+                            <div class="eds-node-formula">
+                              m₁ = Sᵉ mod n<br />
+                              (відкритий ключ e)
+                            </div>
+                          </div>
+                          <div class="eds-arr">↓</div>
+
+                          <div class="eds-node chk">
+                            <div class="eds-node-title">Порівняння m₁ = m ?</div>
+                          </div>
+                          <div class="eds-arr">↓</div>
+
+                          <div class="eds-key-row">
+                            <div class="eds-node chk" style="text-align:center">
+                              <div class="eds-node-title">✓ ДІЙСНИЙ</div>
+                              <div class="eds-node-formula">m₁ = m</div>
+                            </div>
+                            <div class="eds-node" style="border-color:rgba(248,81,73,.4);background:rgba(248,81,73,.07);text-align:center">
+                              <div class="eds-node-title" style="color:#f85149">✗ НЕ ДІЙСНИЙ</div>
+                              <div class="eds-node-formula">m₁ ≠ m</div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div><!-- /eds-diagram-body -->
+                    </div><!-- /eds-diagram -->
+
+                    <!-- algo-cards -->
+                    <div class="algo-cards" style="margin-top:1rem">
+                      <div class="algo-card" data-target="hash">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Геш-функція для ЕЦП</span>
+                          <span class="algo-card-badge badge-rsa">hash</span>
+                        </div>
+                        <div class="algo-card-formula">
+                          H₀ = 6<br />
+                          Hᵢ = (Mᵢ + Hᵢ₋₁)² mod n
+                        </div>
+                        <p class="algo-card-desc">
+                          Повідомлення M подається як послідовність цифр
+                          (наприклад, 312). На кожному кроці додаємо цифру до
+                          попереднього H та підносимо до квадрату за модулем n.
+                          Останнє Hₖ — це m, яке підписується (геш-значення).
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+                      <div class="algo-card" data-target="dsa">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">ЕЦП на базі RSA</span>
+                          <span class="algo-card-badge badge-rsa">sign</span>
           </div>
-          <div
-            style="
-              font-family: var(--font-sans);
-              font-size: 1.5rem;
-              font-weight: 800;
-              color: var(--text-dim);
-            "
-          >
-            В розробці
+                        <div class="algo-card-formula">
+                          S = mᵈ mod n<br />
+                          m₁ = Sᵉ mod n<br />
+                          m₁ =? m
           </div>
-          <p
-            style="
-              font-size: 0.78rem;
-              color: var(--text-dim);
-              max-width: 400px;
-              line-height: 1.7;
-            "
-          >
-            Ця лабораторна робота ще не реалізована.<br />
-            Алгоритм та JS-файл готові — залишилось побудувати UI.
-          </p>
-          <div style="display: flex; gap: 1rem; margin-top: 0.5rem">
+                        <p class="algo-card-desc">
+                          Відправник обчислює геш m і підписує його своїм
+                          секретним ключем d. Одержувач, маючи відкритий
+                          ключ (e, n), відновлює m₁ з підпису та порівнює з
+                          власним гешем повідомлення.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── HASH FUNCTION ──────────────────────────────────── -->
+            <section id="hash">
+              <div class="cipher-workspace" style="margin-bottom:2rem">
+                <div class="workspace-tabs">
+                  <div class="workspace-tab active" style="cursor:default;color:#58d4f5;border-bottom-color:#58d4f5;background:rgba(88,212,245,.06)">
+                    // Гешування повідомлення для ЕЦП
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display:block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Формула:</span
+                      ><span class="chip-val">Hᵢ = (Mᵢ + Hᵢ₋₁)² mod n</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Вектор H₀:</span
+                      ><span class="chip-val">6 (початкове значення)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Приклад:</span
+                      ><span class="chip-val">M = 312, n = 33</span>
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <!-- LEFT COL -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Повідомлення M (рядок цифр)</label>
+                        <input class="input-field-sm" id="hash-msg" value="312"
+                          placeholder="напр.: 312" style="height:40px" />
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Модуль n (RSA)</label>
+                        <input class="input-field-sm" id="hash-n" type="number"
+                          min="2" value="33" style="height:40px" />
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Початкове H₀</label>
+                        <input class="input-field-sm" id="hash-h0" type="number"
+                          value="6" style="height:40px" />
+                      </div>
+                      <div class="action-row">
+                        <button class="encrypt-btn" style="flex:1" onclick="runHashDemo()">
+                          Обчислити геш m
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- RIGHT COL -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Результат</label>
+                        <div style="position:relative">
+                          <div class="result-box" id="hash-result"
+                            style="height:80px;min-height:unset;overflow-y:auto;box-sizing:border-box;font-size:0.8rem">
+                            <span class="result-empty">Натисніть «Обчислити геш m»</span>
+                          </div>
+                          <button class="copy-btn" onclick="copyResult('hash-result', this)">copy</button>
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки гешування</div>
+                        <div class="steps-log-body" id="hash-log">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text">Введіть M, n та натисніть кнопку</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- HASH VISUALIZER — chain of H boxes -->
+                  <div class="caesar-vis" id="hash-vis" style="margin-top:1.5rem">
+                    <div class="cvis-header" style="justify-content:center;text-align:center;padding:0.65rem 1.25rem">
+                      // Ланцюжок гешів H₀ → H₁ → H₂ → … → m
+                    </div>
+                    <div class="cvis-hint">
+                      <span class="cvis-legend">
+                        <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — початкове H₀</span>
+                        <span>·</span>
+                        <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — проміжний Hᵢ</span>
+                        <span>·</span>
+                        <span><span class="cvis-dot purple"></span><span class="cvis-label-purple">фіолетовий</span> — фінальний m</span>
+                      </span>
+                    </div>
+                    <div class="cvis-body" style="padding:1rem 1.25rem 1.25rem">
+                      <div id="hash-vis-body">
+                        <span style="color:var(--text-dim);font-size:0.7rem;font-family:var(--font-mono)">
+                          // ланцюжок з'явиться після обчислення
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </section>
+
+            <!-- ── DSA / EDS RSA ──────────────────────────────────── -->
+            <section id="dsa">
+              <div class="cipher-workspace" style="margin-bottom:2rem">
+                <div class="workspace-tabs">
+                  <div class="workspace-tab active" style="cursor:default;color:#b57ef5;border-bottom-color:#b57ef5;background:rgba(181,126,245,.06)">
+                    // ЕЦП RSA — генерація, підпис, перевірка
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display:block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Кроки:</span
+                      ><span class="chip-val">ключі → геш m → підпис S → перевірка</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Приклад:</span
+                      ><span class="chip-val">p=3, q=11, d=7, e=3, n=33</span>
+                    </div>
+                    <div class="info-chip" id="dsa-key-chip">
+                      <span class="chip-label">Ключі:</span
+                      ><span class="chip-val">згенеруйте або використайте приклад</span>
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <!-- LEFT COL -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">p, q — прості</label>
+                        <div class="input-row">
+                          <input class="input-field-sm" id="dsa-p" type="number" value="3" min="2" />
+                          <input class="input-field-sm" id="dsa-q" type="number" value="11" min="2" />
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">e — відкритий показник (бажане)</label>
+                        <input class="input-field-sm" id="dsa-e" type="number"
+                          value="3" min="2" style="height:40px" />
+                      </div>
+                      <div class="action-row">
+                        <button class="encrypt-btn" style="flex:1" onclick="runDsaKeygen()">
+                          <span style="font-size:1.1rem;margin-right:0.25rem">⚙</span>
+                          Генерувати ключі RSA
+                        </button>
+                      </div>
+
+                      <div class="input-group">
+                        <label class="input-label">Повідомлення M (рядок цифр)</label>
+                        <input class="input-field-sm" id="dsa-msg" value="312"
+                          placeholder="напр.: 312" style="height:40px" />
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Цифровий підпис S</label>
+                        <input class="input-field-sm" id="dsa-sig"
+                          placeholder="з'явиться після підпису" style="height:40px" />
+                      </div>
+                      <div class="action-row">
+                        <button class="encrypt-btn" style="flex:1" onclick="runDsaSign()">
+                          ⟶ Підписати M
+                        </button>
+                        <button class="decrypt-btn" style="flex:1" onclick="runDsaVerify()">
+                          ⟵ Перевірити підпис
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- RIGHT COL -->
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Результат (m, S, m₁)</label>
+                        <div style="position:relative">
+                          <div class="result-box" id="dsa-result"
+                            style="min-height:90px;height:auto;overflow-y:visible;box-sizing:border-box;font-size:0.78rem;white-space:pre-line">
+                            <span class="result-empty">Тут будуть m, S та результат перевірки</span>
+                          </div>
+                          <button class="copy-btn" onclick="copyResult('dsa-result', this)">copy</button>
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки: ключі, геш, підпис, перевірка</div>
+                        <div class="steps-log-body" id="dsa-log">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text">Згенеруйте ключі та натисніть «Підписати»</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- DSA VISUALIZER — pipeline -->
+                  <div class="caesar-vis" id="dsa-vis" style="margin-top:1.5rem">
+                    <div class="cvis-header" id="dsa-vis-header"
+                      style="justify-content:center;text-align:center;padding:0.65rem 1.25rem">
+                      // ЕЦП RSA — M → m → S → m₁
+                    </div>
+                    <div class="cvis-hint">
+                      <span class="cvis-legend">
+                        <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — повідомлення M</span>
+                        <span>·</span>
+                        <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — геш m</span>
+                        <span>·</span>
+                        <span><span class="cvis-dot orange"></span><span class="cvis-label-orange">помаранчевий</span> — підпис S</span>
+                        <span>·</span>
+                        <span><span class="cvis-dot purple"></span><span class="cvis-label-purple">фіолетовий</span> — ключі (e, d, n)</span>
+                      </span>
+                    </div>
+                    <div class="cvis-body" style="padding:1rem 1.25rem 1.25rem">
+                      <div id="dsa-vis-body">
+                        <span style="color:var(--text-dim);font-size:0.7rem;font-family:var(--font-mono)">
+                          // натисніть «Підписати M» або «Перевірити підпис» — тут з'явиться візуалізація
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </section>
+
+            <!-- NAV BETWEEN LABS -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--border);margin-top:1.5rem">
             <a href="lab05.html" class="btn-secondary">← Лаб. 05</a>
-            <a href="../index.html" class="btn-primary">Всі лаби</a>
-            <a href="lab07.html" class="btn-secondary">Лаб. 07 →</a>
+              <a href="lab07.html" class="btn-primary">Лаб. 07 →</a>
           </div>
+          </main>
         </div>
       </div>
     </div>
 
     <footer>
-      <span
-        >© 2026 CryptoLab — Лаб. 06 / Електронний цифровий підпис (ЕЦП)</span
-      >
+      <span>© 2026 CryptoLab — Лаб. 06 / Електронний цифровий підпис (ЕЦП)</span>
       <div class="footer-links">
-        <a href="../index.html" class="footer-link">← Головна</a>
+        <a href="lab05.html" class="footer-link">← Лаб. 05</a>
+        <a href="../index.html" class="footer-link">Головна</a>
+        <a href="lab07.html" class="footer-link">Лаб. 07 →</a>
       </div>
     </footer>
 
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/rsa.js"></script>
+    <script>
+      'use strict';
+
+      /* ── State ──────────────────────────────────────────────── */
+      var _hashLast = null;
+      var _dsaKeys  = null;
+      var _dsaHash  = null;
+      var _dsaSig   = null;
+
+      /* ── Helpers ────────────────────────────────────────────── */
+      function copyResult(id, btn) {
+        var el = document.getElementById(id);
+        var text = el && el.textContent.trim();
+        if (!text || text.startsWith('Тут') || text.startsWith('Натисніть')) return;
+        navigator.clipboard.writeText(text).then(function () {
+          var orig = btn.textContent;
+          btn.textContent = '✓ ok';
+          btn.style.color = 'var(--green)';
+          setTimeout(function () {
+            btn.textContent = orig;
+            btn.style.color = '';
+          }, 1500);
+        });
+      }
+
+      function buildLog(id, steps) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = steps.map(function (s) {
+          return '<div class="log-line">' +
+            '<span class="log-idx">' + s.n + '</span>' +
+            '<span class="log-text">' + s.t + '</span>' +
+            (s.d ? '<span class="log-detail">' + s.d + '</span>' : '') +
+            '</div>';
+        }).join('');
+      }
+
+      /* ── Hash demo ──────────────────────────────────────────── */
+      function runHashDemo() {
+        var msg   = document.getElementById('hash-msg').value.trim();
+        var nVal  = document.getElementById('hash-n').value.trim();
+        var h0Val = document.getElementById('hash-h0').value.trim();
+        if (!msg || !/^[0-9]+$/.test(msg)) {
+          document.getElementById('hash-result').textContent =
+            '⚠ Введіть повідомлення як рядок цифр (напр.: 312)';
+          return;
+        }
+        try {
+          var n   = BigInt(nVal  || '33');
+          var H0  = BigInt(h0Val || '6');
+          var res = window.CL.DSA.hash(msg, n, H0);
+          _hashLast = { msg, n, H0, steps: res.steps, hash: res.hash };
+          // синхронізуємо M для секції ЕЦП
+          var dsaMsgInput = document.getElementById('dsa-msg');
+          if (dsaMsgInput) dsaMsgInput.value = msg;
+          document.getElementById('hash-result').textContent =
+            'm = Hₖ = ' + String(res.hash) + '  (остаточне геш-значення)';
+          buildLog('hash-log', res.steps);
+          buildHashChain(msg, n, H0, res.hash);
+        } catch (e) {
+          document.getElementById('hash-result').textContent = '⚠ ' + e.message;
+        }
+      }
+
+      /* Hash chain visualizer — colored boxes + arrows */
+      function buildHashChain(msg, n, H0, finalH) {
+        var digits = msg.trim().split('').map(function (d) { return BigInt(d); });
+        var body   = document.getElementById('hash-vis-body');
+        if (!body) return;
+
+        var steps = [];
+        var Hprev = H0;
+        steps.push({ idx: 0, Mi: null, Hprev: null, H: H0 });
+        digits.forEach(function (m, i) {
+          var H = window.CL.modPow(m + Hprev, 2n, n);
+          steps.push({ idx: i + 1, Mi: m, Hprev: Hprev, H: H });
+          Hprev = H;
+        });
+
+        var html = '<div class="hash-chain">';
+        steps.forEach(function (r, ri) {
+          var isInit  = r.idx === 0;
+          var isFinal = r.idx === digits.length;
+          var cls     = isInit ? 'hc-init' : isFinal ? 'hc-final' : 'hc-step';
+          var calc    = '';
+          if (!isInit) {
+            var mi  = BigInt(r.Mi);
+            var hp  = BigInt(r.Hprev);
+            var sum = mi + hp;
+            var sq  = sum * sum;
+            var q   = sq / n;
+            var rem = sq % n;
+            calc =
+              '(' + String(mi) + ' + ' + String(hp) + ')² mod ' + String(n) + '<br/>' +
+              String(mi) + ' + ' + String(hp) + ' = ' + String(sum) + '<br/>' +
+              String(sum) + '² = ' + String(sq) + '<br/>' +
+              String(sq) + ' ÷ ' + String(n) + ' = ' + String(q) + ' і залишок ' + String(rem) + '<br/>' +
+              '(бо ' + String(q) + '×' + String(n) + ' = ' + String(q * n) +
+              ', і ' + String(sq) + '−' + String(q * n) + ' = ' + String(rem) + ')<br/>' +
+              '✅ результат = ' + String(rem);
+          }
+          html +=
+            '<div class="hc-box ' + cls + '">' +
+            '<div class="hc-lbl">H' + r.idx + (isInit ? ' (початок)' : isFinal ? ' = m' : '') + '</div>' +
+            '<div class="hc-val">' + String(r.H) + '</div>' +
+            (calc ? '<div class="hc-calc">' + calc + '</div>' : '') +
+            '</div>';
+          if (ri < steps.length - 1) {
+            html += '<div class="hc-arr">→</div>';
+          }
+        });
+        html += '</div>';
+
+        /* also append the table below the chain for detail */
+        html +=
+          '<div style="margin-top:0.75rem">' +
+          '<table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:0.68rem">' +
+          '<thead><tr>' +
+          '<th style="border-bottom:1px solid var(--border);padding:0.22rem 0.45rem;text-align:left;color:var(--text-dim)">i</th>' +
+          '<th style="border-bottom:1px solid var(--border);padding:0.22rem 0.45rem;text-align:left;color:var(--text-dim)">Mᵢ</th>' +
+          '<th style="border-bottom:1px solid var(--border);padding:0.22rem 0.45rem;text-align:left;color:var(--text-dim)">Hᵢ₋₁</th>' +
+          '<th style="border-bottom:1px solid var(--border);padding:0.22rem 0.45rem;text-align:left;color:var(--text-dim)">(Mᵢ+Hᵢ₋₁)² mod n</th>' +
+          '<th style="border-bottom:1px solid var(--border);padding:0.22rem 0.45rem;text-align:left;color:var(--text-dim)">Hᵢ</th>' +
+          '</tr></thead><tbody>';
+        steps.forEach(function (r) {
+          var hiStyle = (r.idx === digits.length) ? 'color:#b57ef5;font-weight:700' : '';
+          var formula = r.Mi !== null
+            ? '(' + r.Mi + '+' + r.Hprev + ')²&nbsp;mod&nbsp;' + n
+            : '—';
+          html +=
+            '<tr>' +
+            '<td style="padding:0.18rem 0.45rem;color:var(--text-muted)">' + r.idx + '</td>' +
+            '<td style="padding:0.18rem 0.45rem;color:#d2b739">' + (r.Mi === null ? '—' : String(r.Mi)) + '</td>' +
+            '<td style="padding:0.18rem 0.45rem;color:#58d4f5">' + (r.Hprev === null ? '—' : String(r.Hprev)) + '</td>' +
+            '<td style="padding:0.18rem 0.45rem;color:var(--text-dim);font-size:0.6rem">' + formula + '</td>' +
+            '<td style="padding:0.18rem 0.45rem;' + hiStyle + '">' + String(r.H) + '</td>' +
+            '</tr>';
+        });
+        html += '</tbody></table></div>';
+
+        body.innerHTML = html;
+      }
+
+      /* ── DSA / EDS RSA ──────────────────────────────────────── */
+      function runDsaKeygen() {
+        var pVal = document.getElementById('dsa-p').value.trim();
+        var qVal = document.getElementById('dsa-q').value.trim();
+        var eVal = document.getElementById('dsa-e').value.trim();
+        try {
+          var p     = BigInt(pVal || '3');
+          var q     = BigInt(qVal || '11');
+          var eHint = eVal ? BigInt(eVal) : undefined;
+          var keys  = window.CL.RSA.generateKeys(p, q, eHint);
+          _dsaKeys  = Object.assign({ p: p, q: q }, keys);
+          var chip  = document.getElementById('dsa-key-chip');
+          if (chip) {
+            chip.innerHTML =
+              '<span class="chip-label">Ключі:</span>' +
+              '<span class="chip-val" style="color:#b57ef5">' +
+              'n=' + keys.n + ' · e=' + keys.e + ' · d=' + keys.d +
+              '</span>';
+          }
+          buildLog('dsa-log', keys.steps);
+        } catch (e) {
+          buildLog('dsa-log', [{ n: '!', t: e.message }]);
+        }
+      }
+
+      function ensureKeysForDsa() {
+        if (_dsaKeys) return true;
+        runDsaKeygen();
+        return !!_dsaKeys;
+      }
+
+      function runDsaSign() {
+        if (!ensureKeysForDsa()) return;
+        var msg = document.getElementById('dsa-msg').value.trim();
+        if (!msg || !/^[0-9]+$/.test(msg)) {
+          document.getElementById('dsa-result').textContent =
+            '⚠ Повідомлення M має бути рядком цифр (напр.: 312)';
+          return;
+        }
+        var n      = _dsaKeys.n;
+        var H0     = 6n;
+        // якщо до цього вже обчислювали геш у відповідному блоці — перевикористовуємо
+        var hRes;
+        if (
+          _hashLast &&
+          _hashLast.msg === msg &&
+          _hashLast.n === n &&
+          _hashLast.H0 === H0
+        ) {
+          hRes = { hash: _hashLast.hash, steps: _hashLast.steps };
+        } else {
+          hRes = window.CL.DSA.hash(msg, n, H0);
+          _hashLast = { msg: msg, n: n, H0: H0, steps: hRes.steps, hash: hRes.hash };
+        }
+        var sRes   = window.CL.DSA.sign(hRes.hash, _dsaKeys.d, _dsaKeys.n);
+        _dsaHash   = hRes.hash;
+        _dsaSig    = sRes.signature;
+        var sigEl  = document.getElementById('dsa-sig');
+        if (sigEl) sigEl.value = String(sRes.signature);
+
+        document.getElementById('dsa-result').textContent =
+          'm = ' + String(hRes.hash) +
+          '\nS = mᵈ mod n = ' + String(sRes.signature) +
+          '\n\nПідпис сформовано. Тепер можна перевірити.';
+
+        var steps = hRes.steps.concat(
+          sRes.steps.map(function (s) { return { n: 'H' + s.n, t: s.t, d: s.d }; })
+        );
+        buildLog('dsa-log', steps);
+        buildDsaPipeline(msg, hRes, sRes, null, null, true);
+      }
+
+      function runDsaVerify() {
+        if (!ensureKeysForDsa()) return;
+        var msg    = document.getElementById('dsa-msg').value.trim();
+        var sigStr = document.getElementById('dsa-sig').value.trim();
+        if (!msg || !/^[0-9]+$/.test(msg)) {
+          document.getElementById('dsa-result').textContent =
+            '⚠ Повідомлення M має бути рядком цифр';
+          return;
+        }
+        if (!sigStr || !/^[0-9]+$/.test(sigStr)) {
+          document.getElementById('dsa-result').textContent =
+            '⚠ Підпис S має бути числом';
+          return;
+        }
+        var n      = _dsaKeys.n;
+        var H0     = 6n;
+        var hRes;
+        if (
+          _hashLast &&
+          _hashLast.msg === msg &&
+          _hashLast.n === n &&
+          _hashLast.H0 === H0
+        ) {
+          hRes = { hash: _hashLast.hash, steps: _hashLast.steps };
+        } else {
+          hRes = window.CL.DSA.hash(msg, n, H0);
+          _hashLast = { msg: msg, n: n, H0: H0, steps: hRes.steps, hash: hRes.hash };
+        }
+        var vRes   = window.CL.DSA.verify(BigInt(sigStr), _dsaKeys.e, _dsaKeys.n, hRes.hash);
+
+        document.getElementById('dsa-result').textContent =
+          'm = ' + String(hRes.hash) +
+          '\nS = ' + sigStr +
+          '\nm₁ = Sᵉ mod n = ' + String(vRes.computedHash) +
+          '\n\nПідпис: ' + (vRes.valid ? 'ДІЙСНИЙ ✓' : 'НЕДІЙСНИЙ ✗');
+
+        var steps = hRes.steps.concat(
+          vRes.steps.map(function (s) { return { n: 'V' + s.n, t: s.t, d: s.d }; })
+        );
+        buildLog('dsa-log', steps);
+        buildDsaPipeline(msg, hRes, { signature: BigInt(sigStr) }, vRes, vRes.valid, false);
+      }
+
+      /* ── Main DSA pipeline visualizer ───────────────────────── */
+      function buildDsaPipeline(msg, hRes, sRes, vRes, valid, fromSign) {
+        var header = document.getElementById('dsa-vis-header');
+        if (header) {
+          header.innerHTML =
+            '// ЕЦП RSA — ' +
+            (fromSign ? 'формування підпису' : 'перевірка підпису') +
+            ' &nbsp;·&nbsp; ' +
+            '<span class="badge-rsa">' +
+            (fromSign ? 'S = mᵈ mod n' : 'm₁ = Sᵉ mod n') +
+            '</span>';
+        }
+        var body = document.getElementById('dsa-vis-body');
+        if (!body || !_dsaKeys) return;
+
+        var keys = _dsaKeys;
+        var m    = hRes.hash;
+        var S    = sRes.signature;
+        var n    = keys.n;
+
+        /* ── helpers ── */
+        function card(cls, icon, title, rows) {
+          var rowsHtml = rows.map(function(r) {
+            if (r.divider) return '<div class="dsa-card-divider"></div>';
+            return '<div class="dsa-card-row' + (r.accent ? ' accent' : '') + '">' +
+              (r.label ? '<span class="dsa-card-row-label">' + r.label + '</span>' : '') +
+              '<span class="dsa-card-row-val' + (r.big ? ' big' : '') + (r.color ? ' ' + r.color : '') + '">' + r.val + '</span>' +
+              '</div>';
+          }).join('');
+          return '<div class="dsa-card ' + cls + '">' +
+            '<div class="dsa-card-head"><span class="dsa-card-icon">' + icon + '</span>' + title + '</div>' +
+            '<div class="dsa-card-body">' + rowsHtml + '</div>' +
+            '</div>';
+        }
+        function darr() { return '<div class="dsa-darr">↓</div>'; }
+        function rarr() { return '<div class="dsa-rarr">→</div>'; }
+        function section(cls, icon, title, content) {
+          return '<div class="dsa-section ' + cls + '">' +
+            '<div class="dsa-section-header">' + icon + ' &nbsp;' + title + '</div>' +
+            '<div class="dsa-section-body">' + content + '</div>' +
+            '</div>';
+        }
+        function row(cards, centered) {
+          return '<div class="dsa-row' + (centered ? ' centered' : '') + '">' + cards + '</div>';
+        }
+
+        /* ── Hash steps mini-table ── */
+        var digits   = msg.split('');
+        var Hprev    = 6n;
+        var hashRows = ['<div class="dsa-hash-steps">',
+          '<div class="dsa-hs-row header">' +
+          '<span>i</span><span>Mᵢ</span><span>Hᵢ₋₁</span><span>формула</span><span>Hᵢ</span>' +
+          '</div>'];
+        digits.forEach(function(d, i) {
+          var mi  = BigInt(d);
+          var H   = window.CL.modPow(mi + Hprev, 2n, n);
+          var sum = mi + Hprev;
+          var sq  = sum * sum;
+          hashRows.push(
+            '<div class="dsa-hs-row">' +
+            '<span class="dc-dim">' + (i + 1) + '</span>' +
+            '<span class="dc-yellow">' + d + '</span>' +
+            '<span class="dc-cyan">' + String(Hprev) + '</span>' +
+            '<span class="dc-dim">(' + d + '+' + String(Hprev) + ')²=' + String(sq) + ' mod ' + String(n) + '</span>' +
+            '<span class="dc-cyan' + (i === digits.length - 1 ? ' dc-purple bold' : '') + '">' + String(H) + '</span>' +
+            '</div>'
+          );
+          Hprev = H;
+        });
+        hashRows.push('</div>');
+        var hashTableHtml = hashRows.join('');
+
+        /* ── Sections ── */
+
+        /* KEY */
+        var keysContent = row(
+          card('dc-key', '🔑', 'Прості числа',
+            [{ label: 'p =', val: String(keys.p || '?'), big: true },
+             { label: 'q =', val: String(keys.q || '?'), big: true }]) +
+          rarr() +
+          card('dc-key', '⊗', 'Параметри',
+            [{ label: 'n = p·q =', val: String(n), big: true },
+             { label: 'φ(n) = (p−1)(q−1) =', val: String(keys.phi || '?'), big: true }]) +
+          rarr() +
+          card('dc-pub', '🔓', 'Відкритий ключ',
+            [{ label: 'e =', val: String(keys.e), big: true },
+             { label: 'n =', val: String(n) }]) +
+          rarr() +
+          card('dc-priv', '🔒', 'Секретний ключ',
+            [{ label: 'd =', val: String(keys.d), big: true },
+             { label: 'n =', val: String(n) }]),
+          true
+        );
+        var keySection = section('sec-key', '⚙', 'Генерація ключів RSA', keysContent);
+
+        /* SENDER */
+        var senderContent = row(
+          card('dc-msg', '📝', 'Повідомлення',
+            [{ label: 'M =', val: msg, big: true },
+             { label: '', val: 'рядок цифр' }]) +
+          rarr() +
+          '<div class="dsa-card dc-hash">' +
+            '<div class="dsa-card-head"><span class="dsa-card-icon">∑</span>Гешування H(M)</div>' +
+            '<div class="dsa-card-body">' +
+              '<div class="dsa-card-row"><span class="dsa-card-row-label">H₀ =</span><span class="dsa-card-row-val dc-yellow">6</span></div>' +
+              '<div class="dsa-card-row"><span class="dsa-card-row-label">формула:</span><span class="dsa-card-row-val dc-dim">Hᵢ = (Mᵢ+Hᵢ₋₁)² mod n</span></div>' +
+              hashTableHtml +
+              '<div class="dsa-card-row accent"><span class="dsa-card-row-label">m = Hₖ =</span><span class="dsa-card-row-val big dc-purple">' + String(m) + '</span></div>' +
+            '</div>' +
+          '</div>' +
+          rarr() +
+          card('dc-sign', '✍', 'Формування підпису',
+            [{ label: 'S = mᵈ mod n', val: '' },
+             { label: 'S = ' + String(m) + '^' + String(keys.d) + ' mod ' + String(n) + ' =', val: String(S), big: true, color: 'dc-orange', accent: true }]),
+          true
+        );
+        var senderSection = section('sec-sender', '✏', 'Відправник (Аліса) — формування підпису', senderContent);
+
+        /* CHANNEL */
+        var channelContent = row(
+          card('dc-msg', '📨', 'Передається відкрито',
+            [{ label: 'Повідомлення:', val: 'M = ' + msg, big: true },
+             { label: 'Підпис:', val: 'S = ' + String(S) }]) +
+          rarr() +
+          card('dc-pub', '📢', 'Відомий публічно',
+            [{ label: 'e =', val: String(keys.e), big: true },
+             { label: 'n =', val: String(n), big: true }]),
+          true
+        );
+        var channelSection = section('sec-channel', '📡', 'Відкритий канал зв\'язку', channelContent);
+
+        /* RECEIVER */
+        var receiverSection = '';
+        if (!fromSign && vRes) {
+          var m1    = vRes.computedHash;
+          var match = valid;
+          var verifyContent = row(
+            card('dc-sign', '📬', 'Отримано',
+              [{ label: 'M =', val: msg },
+               { label: 'S =', val: String(S), big: true, color: 'dc-orange' }]) +
+            rarr() +
+            card('dc-hash', '🔄', 'Відновлення m₁',
+              [{ label: 'm₁ = S^e mod n', val: '' },
+               { label: 'm₁ = ' + String(S) + '^' + String(keys.e) + ' mod ' + String(n) + ' =', val: String(m1), big: true, color: 'dc-cyan', accent: true }]) +
+            rarr() +
+            card('dc-hash', '∑', 'Власний геш',
+              [{ label: 'H(M) =', val: String(m), big: true, color: 'dc-purple' },
+               { label: 'та ж формула', val: 'Hᵢ = (Mᵢ+Hᵢ₋₁)² mod n' }]) +
+            rarr() +
+            card(
+              match ? 'dc-valid' : 'dc-bad',
+              match ? '✅' : '❌',
+              match ? 'Підпис ДІЙСНИЙ' : 'Підпис НЕДІЙСНИЙ',
+              [{ label: 'm₁ ' + (match ? '=' : '≠') + ' m', val: String(m1) + (match ? ' = ' : ' ≠ ') + String(m), big: true, accent: true }]
+            ),
+            true
+          );
+          receiverSection = section('sec-receiver', '🔍', 'Одержувач (Боб) — перевірка підпису', verifyContent);
+        }
+
+        body.innerHTML =
+          '<div class="eds-pipeline eds-pipeline-anim dsa-vis-root">' +
+          keySection +
+          darr() +
+          senderSection +
+          darr() +
+          channelSection +
+          (receiverSection ? darr() + receiverSection : '') +
+          '</div>';
+      }
+
+      /* ── Init ───────────────────────────────────────────────── */
+      document.addEventListener('DOMContentLoaded', function () {
+        initScrollSpy(['theory', 'hash', 'dsa']);
+        initAlgoCards();
+      });
+    </script>
   </body>
 </html>
