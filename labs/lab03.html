@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Лаб. 03 — Біграмні шифри та шифр Вернама | CryptoLab</title>
+    <title>Лаб. 03 — Шифр Playfair та шифр Вернама | CryptoLab</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
       rel="stylesheet"
@@ -25,72 +25,918 @@
     </header>
 
     <div class="lab-page">
+      <!-- LAB HERO -->
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
             <span class="lab-index-badge">ЛАБ 03</span>
+            <span
+              style="
+                font-size: 0.65rem;
+                color: var(--text-dim);
+                letter-spacing: 0.15em;
+              "
+              >КЛАСИЧНА КРИПТОГРАФІЯ</span
+            >
           </div>
-          <h1 class="lab-hero-title">Біграмні шифри та шифр Вернама</h1>
+          <h1 class="lab-hero-title">Шифр Playfair<br />та шифр Вернама</h1>
+          <p class="lab-hero-sub">
+            Playfair — перший практичний біграмний шифр на 5×5 квадраті. Шифр
+            Вернама — симетричне XOR-шифрування, єдиний теоретично абсолютно
+            стійкий шифр (OTP).
+          </p>
           <div class="lab-hero-chips">
-            <span class="tag">Playfair</span><span class="tag">Вернам</span
-            ><span class="tag">XOR</span>
+            <span class="tag">Playfair</span>
+            <span class="tag">Біграмний</span>
+            <span class="tag">Вернам</span>
+            <span class="tag">XOR</span>
+            <span class="tag">OTP</span>
           </div>
         </div>
       </div>
 
+      <!-- CONTENT -->
       <div class="lab-content">
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-            flex-direction: column;
-            gap: 1.5rem;
-            text-align: center;
-          "
-        >
-          <div style="font-size: 3rem; color: var(--yellow); opacity: 0.3">
-            ⚙
-          </div>
-          <div
-            style="
-              font-family: var(--font-sans);
-              font-size: 1.5rem;
-              font-weight: 800;
-              color: var(--text-dim);
-            "
-          >
-            В розробці
-          </div>
-          <p
-            style="
-              font-size: 0.78rem;
-              color: var(--text-dim);
-              max-width: 400px;
-              line-height: 1.7;
-            "
-          >
-            Ця лабораторна робота ще не реалізована.<br />
-            Алгоритм та JS-файл готові — залишилось побудувати UI.
-          </p>
-          <div style="display: flex; gap: 1rem; margin-top: 0.5rem">
-            <a href="lab02.html" class="btn-secondary">← Лаб. 02</a>
-            <a href="../index.html" class="btn-primary">Всі лаби</a>
-            <a href="lab04.html" class="btn-secondary">Лаб. 04 →</a>
-          </div>
+        <div class="lab-layout">
+          <!-- SIDEBAR -->
+          <aside class="lab-sidebar">
+            <nav class="sidebar-nav">
+              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-item active" data-section="theory">
+                <span class="sidebar-nav-num">01</span> Теорія
+              </div>
+              <div class="sidebar-nav-item" data-section="playfair">
+                <span class="sidebar-nav-num">02</span> Playfair
+              </div>
+              <div class="sidebar-nav-item" data-section="vernam">
+                <span class="sidebar-nav-num">03</span> Шифр Вернама
+              </div>
+            </nav>
+          </aside>
+
+          <!-- MAIN -->
+          <main>
+            <!-- ── THEORY ──────────────────────────────────────── -->
+            <section id="theory">
+              <div class="theory-block">
+                <div class="theory-header">
+                  <span class="theory-title">Короткі теоретичні відомості</span>
+                  <span class="theory-toggle">▼</span>
+                </div>
+                <div class="theory-body open">
+                  <div class="theory-body-inner">
+                    <p>
+                      У цій лабораторній розглядаються два принципово різні
+                      підходи.
+                      <strong>Шифр Playfair</strong> шифрує не окремі літери, а
+                      <strong>пари (біграми)</strong> за спеціальними правилами
+                      у 5×5 таблиці — це унеможливлює простий частотний аналіз.
+                      <strong>Шифр Вернама (OTP)</strong> виконує побітовий
+                      <strong>XOR</strong> кожного символу тексту з відповідним
+                      символом ключа і є єдиним теоретично абсолютно стійким
+                      шифром за умови унікального випадкового ключа.
+                    </p>
+
+                    <div class="algo-cards">
+                      <!-- Playfair -->
+                      <div class="algo-card" data-target="playfair">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Шифр Playfair</span>
+                          <span class="algo-card-badge badge-bigram"
+                            >біграмний</span
+                          >
+                        </div>
+                        <div class="algo-card-formula">
+                          [A,B] рядок → [A+1, B+1]<br />
+                          [A,B] стовп → [A↓, B↓]<br />
+                          [A,B] прямок → [A<sub>r</sub>B<sub>c</sub>,
+                          B<sub>r</sub>A<sub>c</sub>]
+                        </div>
+                        <p class="algo-card-desc">
+                          Пари літер шифруються за 3 правилами у квадраті 5×5. J
+                          замінюється на I. Якщо в парі однакові літери —
+                          вставляється X.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+
+                      <!-- Vernam -->
+                      <div class="algo-card" data-target="vernam">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Шифр Вернама</span>
+                          <span class="algo-card-badge badge-poly"
+                            >XOR / OTP</span
+                          >
+                        </div>
+                        <div class="algo-card-formula">
+                          y<sub>i</sub> = x<sub>i</sub> ⊕ k<sub>i</sub><br />
+                          x<sub>i</sub> = y<sub>i</sub> ⊕ k<sub>i</sub>
+                        </div>
+                        <p class="algo-card-desc">
+                          Побітовий XOR кожного байта тексту з відповідним
+                          байтом ключа. Симетричний: та сама операція для
+                          шифрування і розшифрування.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── PLAYFAIR ─────────────────────────────────────── -->
+            <section id="playfair">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: var(--yellow);
+                      border-bottom-color: var(--yellow);
+                      background: rgba(210, 183, 57, 0.08);
+                    "
+                  >
+                    // біграмний шифр Playfair
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val">Біграмна підстановка</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val">слово (5×5 квадрат, J≡I)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Алфавіт:</span
+                      ><span class="chip-val">англійський (25 літер)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Правила:</span
+                      ><span class="chip-val"
+                        >рядок / стовпець / прямокутник</span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Відкритий текст</label>
+                        <textarea
+                          class="input-field"
+                          id="pf-text"
+                          placeholder="Введіть повідомлення..."
+                          style="resize: none; height: 100px; min-height: unset"
+                        >
+HELLO WORLD</textarea
+                        >
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Ключове слово</label>
+                        <input
+                          class="input-field-sm"
+                          id="pf-key"
+                          value="KEYWORD"
+                          placeholder="напр. SECRET"
+                          style="height: 40px"
+                        />
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runPlayfair(false)"
+                        >
+                          ⟶ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runPlayfair(true)"
+                        >
+                          ⟵ Розшифрувати
+                        </button>
+                      </div>
+                    </div>
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Результат</label>
+                        <div style="position:relative;">
+                          <div
+                            class="result-box"
+                            id="pf-output"
+                            style="height:100px;min-height:unset;overflow-y:auto;box-sizing:border-box;"
+                          >
+                            <span class="result-empty">Результат з'явиться тут...</span>
+                          </div>
+                          <button class="copy-btn" onclick="copyResult('pf-output', this)">copy</button>
+                        </div>
+                        <div id="pf-clean-hint" style="display:none;margin-top:0.5rem;padding:0.5rem 0.75rem;background:rgba(210,183,57,0.07);border:1px solid rgba(210,183,57,0.3);border-radius:4px;font-size:0.62rem;color:var(--text-dim);line-height:1.6;">
+                          <span style="color:#d2b739;letter-spacing:0.08em;">// padding X прибрано</span><br>
+                          Playfair вставляє <code style="color:var(--yellow);">X</code> між однаковими літерами та в кінці — після розшифрування їх видаляють вручну.<br>
+                          <span style="color:var(--text-muted);">Очищений текст:</span>
+                          <strong class="pf-clean-text" style="color:#d2b739;letter-spacing:0.08em;margin-left:0.3rem;"></strong>
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="pf-steps">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PLAYFAIR VISUALIZER -->
+                  <div
+                    class="caesar-vis"
+                    id="pf-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // квадрат Playfair — шифрування біграм за 3 правилами
+                      <span class="cvis-shift-pill"
+                        >ключ:
+                        <strong
+                          id="pf-key-disp"
+                          style="color: var(--yellow); letter-spacing: 0.1em"
+                          >KEYWORD</strong
+                        ></span
+                      >
+                    </div>
+                    <div
+                      class="cvis-body"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 0.85rem;
+                      "
+                    >
+                      <div id="pf-vis-content" style="width: 100%"></div>
+                      <div class="cvis-hint">
+                        <span style="color: #d2b739">■ жовтий</span> — вхідна
+                        біграма &nbsp;·&nbsp;
+                        <span style="color: #39d353">■ зелений</span> —
+                        зашифрована &nbsp;·&nbsp;
+                        <span style="color: var(--cyan)">■ блакитний</span> —
+                        літери ключа
+                        <br />
+                        <span style="color: rgba(210, 183, 57, 0.3)"
+                          >▒ зона</span
+                        >
+                        — активне правило (рядок/стовп/прямокутник) &nbsp;
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── VERNAM ───────────────────────────────────────── -->
+            <section id="vernam">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: var(--cyan);
+                      border-bottom-color: var(--cyan);
+                      background: rgba(88, 212, 245, 0.06);
+                    "
+                  >
+                    // шифр Вернама (XOR / One-Time Pad)
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val">Симетричне XOR-шифрування</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val"
+                        >будь-який рядок (≥ довжина тексту)</span
+                      >
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Операція:</span
+                      ><span class="chip-val">y = x ⊕ k (симетрична)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Результат:</span
+                      ><span class="chip-val">hex-рядок (байти)</span>
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label"
+                          >Текст або hex для дешифрування</label
+                        >
+                        <textarea
+                          class="input-field"
+                          id="vn-text"
+                          placeholder="Текст або hex байти через пробіл..."
+                          style="resize: none; height: 100px; min-height: unset"
+                        >
+HELLO WORLD</textarea
+                        >
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Ключ</label>
+                        <input
+                          class="input-field-sm"
+                          id="vn-key"
+                          value="SECRET"
+                          placeholder="Ключ (будь-які символи)"
+                          style="height: 40px"
+                        />
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runVernam()"
+                        >
+                          ⊕ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runVernamDecrypt()"
+                        >
+                          ⊕ Розшифрувати hex
+                        </button>
+                      </div>
+                    </div>
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Результат</label>
+                        <div style="position:relative;">
+                          <div
+                            class="result-box"
+                            id="vn-output"
+                            style="height:100px;min-height:unset;overflow-y:auto;box-sizing:border-box;font-size:0.72rem;word-break:break-all;"
+                          >
+                            <span class="result-empty">Результат з'явиться тут...</span>
+                          </div>
+                          <button class="copy-btn" onclick="copyResult('vn-output', this)">copy</button>
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="vn-steps">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- VERNAM VISUALIZER -->
+                  <div
+                    class="caesar-vis"
+                    id="vn-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // XOR байт за байтом: текст ⊕ ключ = результат
+                      <span class="cvis-shift-pill"
+                        >ключ:
+                        <strong
+                          id="vn-key-disp"
+                          style="color: var(--cyan); letter-spacing: 0.1em"
+                          >SECRET</strong
+                        ></span
+                      >
+                    </div>
+                    <div
+                      class="cvis-body"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 1.1rem;
+                      "
+                    >
+                      <div id="vn-vis-content"></div>
+                      <div class="cvis-hint" style="text-align: center">
+                        <span style="color: #d2b739">■ жовтий</span> — символ
+                        тексту (ASCII) &nbsp;·&nbsp;
+                        <span style="color: #b57ef5">■ фіолетовий</span> —
+                        символ ключа (ASCII) &nbsp;·&nbsp;
+                        <span style="color: #58d4f5">■ блакитний</span> —
+                        результат XOR (hex)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- NAV BETWEEN LABS -->
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 1rem;
+                border-top: 1px solid var(--border);
+              "
+            >
+              <a href="lab02.html" class="btn-secondary">← Лаб. 02</a>
+              <a href="lab04.html" class="btn-primary">Лаб. 04 →</a>
+            </div>
+          </main>
         </div>
       </div>
     </div>
 
     <footer>
-      <span>© 2026 CryptoLab — Лаб. 03 / Біграмні шифри та шифр Вернама</span>
+      <span>© 2026 CryptoLab — Лаб. 03 / Шифр Playfair та шифр Вернама</span>
       <div class="footer-links">
         <a href="../index.html" class="footer-link">← Головна</a>
+        <a href="lab02.html" class="footer-link">Лаб. 02</a>
+        <a href="lab04.html" class="footer-link">Лаб. 04 →</a>
       </div>
     </footer>
 
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/playfair.js"></script>
+    <script>
+      /* ── helpers ─────────────────────────────────────────── */
+      function mod(a, n) { return ((a % n) + n) % n; }
+      function getVal(id) { return (document.getElementById(id)?.value ?? '').trim(); }
+
+      function copyResult(id, btn) {
+        const text = document.getElementById(id)?.textContent?.trim();
+        const empty = "Результат з'явиться тут...";
+        if (!text || text === empty) return;
+        navigator.clipboard.writeText(text).then(() => {
+          const orig = btn.textContent;
+          btn.textContent = '✓ ok';
+          btn.style.color = 'var(--green)';
+          setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1500);
+        });
+      }
+
+      function displayResult(outId, stepsId, data) {
+        const box = document.getElementById(outId);
+        if (box) {
+          box.innerHTML = "";
+          box.textContent = data.result;
+        }
+        if (stepsId) {
+          const sb = document.getElementById(stepsId);
+          if (sb)
+            sb.innerHTML = (data.steps || [])
+              .map(
+                (s) =>
+                  `<div class="log-line"><span class="log-idx">${s.n}</span><span class="log-text">${s.t}</span>${s.d ? `<span class="log-detail">${s.d}</span>` : ""}</div>`,
+              )
+              .join("");
+        }
+      }
+
+      /* ── Playfair ────────────────────────────────────────── */
+      let _pfDecrypt = false;
+      let _pfBigrams = [];
+      let _pfBigramIdx = 0;
+      let _pfSq = [];
+      let _pfKeySet = new Set();
+
+      function runPlayfair(decrypt) {
+        _pfDecrypt = decrypt;
+        const text = getVal("pf-text");
+        const key  = getVal("pf-key");
+        if (!text) return;
+        const data = CL.Playfair.run(text, key, decrypt);
+        displayResult("pf-output", "pf-steps", data);
+
+        // When decrypting: show cleaned-up hint (remove padding X's)
+        const hint = document.getElementById('pf-clean-hint');
+        if (decrypt && data.result) {
+          // Remove X inserted between doubled letters and trailing X
+          let clean = data.result;
+          // Remove X between identical neighbours (LXL → LL)
+          clean = clean.replace(/([A-Z])X(\1)/g, '$1$1');
+          // Remove trailing X if added as padding
+          clean = clean.replace(/X$/, '');
+          if (clean !== data.result) {
+            hint.style.display = 'block';
+            hint.querySelector('.pf-clean-text').textContent = clean;
+          } else {
+            hint.style.display = 'none';
+          }
+        } else {
+          hint.style.display = 'none';
+        }
+
+        buildPlayfairVis();
+      }
+
+      function buildPlayfairVis() {
+        const key = getVal("pf-key");
+        const sq = CL.Playfair.buildSquare(key);
+        _pfSq = sq;
+        const raw = getVal("pf-text")
+          .toUpperCase()
+          .replace(/J/g, "I")
+          .replace(/[^A-Z]/g, "");
+
+        document.getElementById("pf-key-disp").textContent =
+          key.toUpperCase() || "(без ключа)";
+
+        _pfKeySet = new Set(
+          key
+            .toUpperCase()
+            .split("")
+            .map((c) => (c === "J" ? "I" : c))
+            .filter((c) => /[A-Z]/.test(c)),
+        );
+
+        // Build bigrams with separator-X insertion
+        const chars = [];
+        let i = 0;
+        while (i < raw.length) {
+          const a = raw[i],
+            b = raw[i + 1] || "X";
+          if (a === b) {
+            chars.push(a, "X");
+            i++;
+          } else {
+            chars.push(a, b);
+            i += 2;
+          }
+        }
+        if (chars.length % 2) chars.push("X");
+
+        // Compute all bigrams
+        const d = _pfDecrypt ? -1 : 1;
+        const bigrams = [];
+        for (let j = 0; j < chars.length; j += 2) {
+          const a = chars[j],
+            b = chars[j + 1];
+          const pa = CL.Playfair.pos(sq, a),
+            pb = CL.Playfair.pos(sq, b);
+          let ea, eb, rule;
+          if (pa.r === pb.r) {
+            ea = sq[pa.r * 5 + mod(pa.c + d, 5)];
+            eb = sq[pb.r * 5 + mod(pb.c + d, 5)];
+            rule = "рядок";
+          } else if (pa.c === pb.c) {
+            ea = sq[mod(pa.r + d, 5) * 5 + pa.c];
+            eb = sq[mod(pb.r + d, 5) * 5 + pb.c];
+            rule = "стовпець";
+          } else {
+            ea = sq[pa.r * 5 + pb.c];
+            eb = sq[pb.r * 5 + pa.c];
+            rule = "прямокутник";
+          }
+          bigrams.push({ a, b, ea, eb, rule, pa, pb });
+        }
+
+        _pfBigrams = bigrams;
+        _pfBigramIdx = 0;
+
+        if (!bigrams.length) {
+          document.getElementById("pf-vis-content").innerHTML =
+            '<div style="color:var(--text-dim);font-size:0.75rem;text-align:center;padding:1rem;">Введіть текст для візуалізації</div>';
+          return;
+        }
+
+        // ── Bigram strip ──────────────────────────────────────
+        let strip = '<div class="pf-bigram-strip">';
+        bigrams.forEach((bg, idx) => {
+          strip += `<div class="pf-strip-pill${idx === 0 ? " active" : ""}" onclick="pfGoTo(${idx})">
+            <span class="pf-strip-pill-plain">${bg.a}${bg.b}</span>
+            <span class="pf-strip-pill-arrow">→</span>
+            <span class="pf-strip-pill-cipher">${bg.ea}${bg.eb}</span>
+          </div>`;
+        });
+        strip += "</div>";
+
+        // ── Main interactive layout ───────────────────────────
+        const bg0 = bigrams[0];
+        let main = `<div class="pf-vis-main">
+          <div class="pf-vis-side" id="pf-left-pair">
+            <div class="pf-big-letter plain">${bg0.a}</div>
+            <div class="pf-big-letter plain">${bg0.b}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div id="pf-grid-wrap"></div>
+            <div id="pf-rule-badge" class="pf-rule-badge">${bg0.rule}</div>
+          </div>
+          <div class="pf-vis-arrow">→</div>
+          <div class="pf-vis-side" id="pf-right-pair">
+            <div class="pf-big-letter cipher">${bg0.ea}</div>
+            <div class="pf-big-letter cipher">${bg0.eb}</div>
+          </div>
+        </div>`;
+
+        // ── Navigation ────────────────────────────────────────
+        let nav = `<div class="pf-nav">
+          <button class="pf-nav-btn" onclick="pfStep(-1)">←</button>
+          <span class="pf-step-counter" id="pf-step-counter">1 / ${bigrams.length}</span>
+          <button class="pf-nav-btn" onclick="pfStep(1)">→</button>
+        </div>`;
+
+        document.getElementById("pf-vis-content").innerHTML =
+          strip + main + nav;
+        pfRenderGrid(0);
+      }
+
+      function pfRenderGrid(idx) {
+        if (!_pfBigrams.length) return;
+        const bg = _pfBigrams[idx];
+        const sq = _pfSq;
+        const pea = CL.Playfair.pos(sq, bg.ea);
+        const peb = CL.Playfair.pos(sq, bg.eb);
+
+        // Zone cells
+        const zoneSet = new Set();
+        if (bg.rule === "рядок") {
+          for (let c = 0; c < 5; c++) zoneSet.add(bg.pa.r * 5 + c);
+        } else if (bg.rule === "стовпець") {
+          for (let r = 0; r < 5; r++) {
+            zoneSet.add(r * 5 + bg.pa.c);
+            zoneSet.add(r * 5 + bg.pb.c);
+          }
+        } else {
+          const rMin = Math.min(bg.pa.r, bg.pb.r),
+            rMax = Math.max(bg.pa.r, bg.pb.r);
+          const cMin = Math.min(bg.pa.c, bg.pb.c),
+            cMax = Math.max(bg.pa.c, bg.pb.c);
+          for (let r = rMin; r <= rMax; r++)
+            for (let c = cMin; c <= cMax; c++) zoneSet.add(r * 5 + c);
+        }
+
+        const plainIdx = new Set([
+          bg.pa.r * 5 + bg.pa.c,
+          bg.pb.r * 5 + bg.pb.c,
+        ]);
+        const cipherIdx = new Set([pea.r * 5 + pea.c, peb.r * 5 + peb.c]);
+
+        let grid = `<div class="poly-grid-outer"><div class="poly-grid" style="grid-template-columns:repeat(6,36px);">`;
+        grid += '<div class="poly-cell is-header"></div>';
+        for (let c = 1; c <= 5; c++)
+          grid += `<div class="poly-cell is-header">${c}</div>`;
+        for (let r = 0; r < 5; r++) {
+          grid += `<div class="poly-cell is-header">${r + 1}</div>`;
+          for (let c = 0; c < 5; c++) {
+            const pos2 = r * 5 + c;
+            const letter = sq[pos2];
+            let cls = "";
+            if (plainIdx.has(pos2)) cls = " hi-plain-pos";
+            else if (cipherIdx.has(pos2)) cls = " hi-cipher-pos";
+            else if (zoneSet.has(pos2)) cls = " hi-zone";
+            else if (_pfKeySet.has(letter)) cls = " key-letter";
+            grid += `<div class="poly-cell${cls}">${letter}</div>`;
+          }
+        }
+        grid += "</div></div>";
+
+        const wrap = document.getElementById("pf-grid-wrap");
+        if (wrap) wrap.innerHTML = grid;
+      }
+
+      function pfGoTo(idx) {
+        if (!_pfBigrams.length) return;
+        _pfBigramIdx =
+          ((idx % _pfBigrams.length) + _pfBigrams.length) % _pfBigrams.length;
+        const bg = _pfBigrams[_pfBigramIdx];
+
+        document.getElementById("pf-left-pair").innerHTML =
+          `<div class="pf-big-letter plain">${bg.a}</div><div class="pf-big-letter plain">${bg.b}</div>`;
+        document.getElementById("pf-right-pair").innerHTML =
+          `<div class="pf-big-letter cipher">${bg.ea}</div><div class="pf-big-letter cipher">${bg.eb}</div>`;
+        document.getElementById("pf-rule-badge").textContent = bg.rule;
+        document.getElementById("pf-step-counter").textContent =
+          `${_pfBigramIdx + 1} / ${_pfBigrams.length}`;
+
+        document
+          .querySelectorAll(".pf-strip-pill")
+          .forEach((el, i) =>
+            el.classList.toggle("active", i === _pfBigramIdx),
+          );
+        pfRenderGrid(_pfBigramIdx);
+      }
+
+      function pfStep(dir) {
+        pfGoTo(_pfBigramIdx + dir);
+      }
+
+      /* ── Vernam ──────────────────────────────────────────── */
+      function runVernam() {
+        const text = document.getElementById("vn-text").value;
+        const key = getVal("vn-key");
+        if (!text || !key) return;
+        const data = CL.Vernam.run(text, key);
+        const box = document.getElementById("vn-output");
+        box.innerHTML = "";
+        box.textContent = data.hexResult;
+        displayResult(null, "vn-steps", data);
+        buildVernamVis(text, key);
+        document.getElementById("vn-key-disp").textContent = key;
+      }
+
+      function runVernamDecrypt() {
+        const hexInput = document.getElementById("vn-text").value.trim();
+        const key = getVal("vn-key");
+        if (!hexInput || !key) return;
+        // Convert hex string to bytes
+        const hexParts = hexInput.split(/\s+/);
+        const isHex = hexParts.every((h) => /^[0-9a-fA-F]{2}$/.test(h));
+        if (!isHex) {
+          const box = document.getElementById("vn-output");
+          box.innerHTML = "";
+          box.textContent = "Введіть hex (напр.: 1b 0a 0f ...)";
+          return;
+        }
+        const cipherStr = hexParts
+          .map((h) => String.fromCharCode(parseInt(h, 16)))
+          .join("");
+        const data = CL.Vernam.run(cipherStr, key);
+        const box = document.getElementById("vn-output");
+        box.innerHTML = "";
+        box.textContent = data.result;
+        displayResult(null, "vn-steps", data);
+        buildVernamVis(cipherStr, key);
+        document.getElementById("vn-key-disp").textContent = key;
+      }
+
+      /* ── Vernam interactive vis ──────────────────────────── */
+      let _vnPairs = [];
+      let _vnIdx   = 0;
+
+      function buildVernamVis(textOverride, keyOverride) {
+        const text = textOverride ?? document.getElementById("vn-text").value;
+        const key  = keyOverride  ?? getVal("vn-key");
+        if (!text || !key) return;
+
+        const expandedKey = key.padEnd(text.length, key).slice(0, text.length);
+        document.getElementById("vn-key-disp").textContent = key;
+
+        const pairs = [];
+        for (let i = 0; i < text.length; i++) {
+          const ch  = text[i];
+          const kch = expandedKey[i];
+          const ca  = ch.charCodeAt(0);
+          const ka  = kch.charCodeAt(0);
+          const xv  = ca ^ ka;
+          pairs.push({ ch, kch, ca, ka, xv, hex: xv.toString(16).padStart(2, '0') });
+        }
+
+        if (!pairs.length) {
+          document.getElementById("vn-vis-content").innerHTML =
+            '<div style="color:var(--text-dim);font-size:0.75rem;">Введіть текст та ключ</div>';
+          return;
+        }
+
+        _vnPairs = pairs;
+        _vnIdx   = 0;
+
+        const lbl = v => v >= 32 && v < 127 ? String.fromCharCode(v) : '·';
+
+        // ── Character strip ───────────────────────────────────
+        let strip = '<div class="vn-strip">';
+        pairs.forEach((p, i) => {
+          strip += `<div class="vn-strip-pill${i === 0 ? ' active' : ''}" onclick="vnGoTo(${i})">${lbl(p.ca)}</div>`;
+        });
+        strip += '</div>';
+
+        // ── Focus card placeholder ────────────────────────────
+        const focus = '<div id="vn-focus-card" style="width:100%;"></div>';
+
+        // ── Navigation ────────────────────────────────────────
+        const nav = `<div class="pf-nav">
+          <button class="pf-nav-btn" onclick="vnStep(-1)">←</button>
+          <span class="pf-step-counter" id="vn-step-counter">1 / ${pairs.length}</span>
+          <button class="pf-nav-btn" onclick="vnStep(1)">→</button>
+        </div>`;
+
+        document.getElementById("vn-vis-content").innerHTML = strip + focus + nav;
+        vnRenderFocus(0);
+      }
+
+      function vnFocusBits(val, cls) {
+        let s = '';
+        for (let b = 7; b >= 0; b--) {
+          if (b === 3) s += '<span class="vn-focus-sep"></span>';
+          const bit = (val >> b) & 1;
+          const col = 7 - b;
+          s += `<span class="vn-focus-bit ${bit ? 'b1-' + cls : 'b0'}" data-col="${col}">${bit}</span>`;
+        }
+        return s;
+      }
+
+      function vnRenderFocus(idx) {
+        const p   = _vnPairs[idx];
+        const lbl = v => v >= 32 && v < 127 ? String.fromCharCode(v) : '·';
+        const pCh = lbl(p.ca), kCh = lbl(p.ka), rCh = lbl(p.xv);
+
+        const html = `
+          <div class="vn-focus-title">
+            <span class="fc-plain">${pCh}</span>
+            <span class="fc-dim"> (${p.ca}) </span>
+            <span class="fc-dim">⊕ </span>
+            <span class="fc-key">${kCh}</span>
+            <span class="fc-dim"> (${p.ka}) </span>
+            <span class="fc-dim">= </span>
+            <span class="fc-result">${rCh}</span>
+            <span class="fc-dim"> (${p.xv} = 0x${p.hex})</span>
+          </div>
+          <div class="vn-focus-block" id="vn-focus-block">
+            <div class="vn-focus-row">
+              <div class="vn-focus-char plain">${pCh}</div>
+              <div class="vn-focus-dec">${p.ca}</div>
+              <div class="vn-focus-bits">${vnFocusBits(p.ca, 'plain')}</div>
+            </div>
+            <div class="vn-focus-op">⊕</div>
+            <div class="vn-focus-row">
+              <div class="vn-focus-char key">${kCh}</div>
+              <div class="vn-focus-dec">${p.ka}</div>
+              <div class="vn-focus-bits">${vnFocusBits(p.ka, 'key')}</div>
+            </div>
+            <div class="vn-focus-divider"></div>
+            <div class="vn-focus-row">
+              <div class="vn-focus-char result">${rCh}</div>
+              <div class="vn-focus-dec">${p.xv}</div>
+              <div class="vn-focus-bits">${vnFocusBits(p.xv, 'result')}</div>
+            </div>
+            <div class="vn-focus-hex">hex: <strong>${p.hex}</strong></div>
+          </div>`;
+
+        const card = document.getElementById('vn-focus-card');
+        if (card) {
+          card.innerHTML = html;
+          // Hover column highlight
+          const block = document.getElementById('vn-focus-block');
+          block.addEventListener('mouseover', e => {
+            const bit = e.target.closest('[data-col]');
+            if (!bit) return;
+            const col = bit.dataset.col;
+            block.querySelectorAll('.vn-focus-bit').forEach(b =>
+              b.classList.toggle('col-hi', b.dataset.col === col)
+            );
+          });
+          block.addEventListener('mouseleave', () =>
+            block.querySelectorAll('.vn-focus-bit.col-hi').forEach(b => b.classList.remove('col-hi'))
+          );
+        }
+      }
+
+      function vnGoTo(idx) {
+        if (!_vnPairs.length) return;
+        _vnIdx = ((idx % _vnPairs.length) + _vnPairs.length) % _vnPairs.length;
+        document.querySelectorAll('.vn-strip-pill').forEach((el, i) =>
+          el.classList.toggle('active', i === _vnIdx)
+        );
+        const ctr = document.getElementById('vn-step-counter');
+        if (ctr) ctr.textContent = `${_vnIdx + 1} / ${_vnPairs.length}`;
+        vnRenderFocus(_vnIdx);
+      }
+
+      function vnStep(dir) { vnGoTo(_vnIdx + dir); }
+
+      /* ── Init ──────────────────────────────────────────────── */
+      document.addEventListener("DOMContentLoaded", () => {
+        initScrollSpy(["theory", "playfair", "vernam"]);
+        initAlgoCards();
+        buildPlayfairVis();
+        buildVernamVis();
+
+        document
+          .getElementById("pf-text")
+          .addEventListener("input", buildPlayfairVis);
+        document
+          .getElementById("pf-key")
+          .addEventListener("input", buildPlayfairVis);
+        document
+          .getElementById("vn-text")
+          .addEventListener("input", () => buildVernamVis());
+        document
+          .getElementById("vn-key")
+          .addEventListener("input", () => buildVernamVis());
+      });
+    </script>
   </body>
 </html>
