@@ -654,3 +654,614 @@ footer {
   .input-row { grid-template-columns: 1fr; }
   .action-row { flex-direction: column; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Lab 02 — Polybius Square & Gronsfeld
+   ═══════════════════════════════════════════════════════════ */
+
+/* Polybius grid */
+.poly-grid-outer { overflow-x: auto; display: flex; justify-content: center; }
+.poly-grid {
+  display: inline-grid; gap: 2px;
+}
+.poly-cell {
+  width: 36px; height: 36px; display: flex; align-items: center;
+  justify-content: center; font-size: 0.8rem; font-weight: 700;
+  font-family: var(--font-mono); background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 4px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.poly-cell.is-header {
+  background: transparent; border-color: transparent;
+  color: var(--text-dim); font-size: 0.6rem; font-weight: 400;
+}
+.poly-cell.hi-plain  { color: #d2b739; border-color: rgba(210,183,57,0.6); background: rgba(210,183,57,0.14); }
+.poly-cell.hi-cipher { color: #39d353; border-color: rgba(57,211,83,0.6);  background: rgba(57,211,83,0.14);  }
+.poly-cell.key-letter { color: var(--cyan); border-color: rgba(88,212,245,0.5); background: rgba(88,212,245,0.08); }
+
+/* Gronsfeld strip table */
+.gron-vis-wrap { overflow-x: auto; }
+.gron-table { display: inline-flex; flex-direction: column; gap: 3px; }
+.gron-row   { display: flex; gap: 2px; align-items: center; }
+.gron-lbl {
+  min-width: 72px; font-size: 0.6rem; color: var(--text-dim);
+  font-family: var(--font-mono); text-align: right;
+  padding-right: 6px; flex-shrink: 0;
+}
+.gron-cell {
+  width: 34px; height: 34px; display: flex; align-items: center;
+  justify-content: center; font-size: 0.76rem; font-weight: 700;
+  font-family: var(--font-mono); border: 1px solid var(--border);
+  background: var(--surface2); flex-shrink: 0;
+}
+.gron-cell.plain  { color: #d2b739; border-color: rgba(210,183,57,0.5); background: rgba(210,183,57,0.10); }
+.gron-cell.key    { color: #b57ef5; border-color: rgba(181,126,245,0.5); background: rgba(181,126,245,0.10); }
+.gron-cell.cipher { color: #58d4f5; border-color: rgba(88,212,245,0.5);  background: rgba(88,212,245,0.10); }
+
+/* ── Gronsfeld shift cards ───────────────────────────────────── */
+.gron-cards {
+  display: flex; flex-wrap: wrap; gap: 0.55rem;
+  justify-content: center; margin-top: 0.2rem;
+}
+.gron-card {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 0.45rem 0.5rem;
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+  min-width: 52px;
+}
+.gron-card-letter {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 700; font-family: var(--font-mono);
+  border: 1px solid; border-radius: 4px;
+}
+.gron-card-letter.plain  { color: #d2b739; border-color: rgba(210,183,57,0.6); background: rgba(210,183,57,0.14); }
+.gron-card-letter.cipher { color: #58d4f5; border-color: rgba(88,212,245,0.6);  background: rgba(88,212,245,0.14); }
+.gron-card-shift {
+  font-size: 0.7rem; font-weight: 700; font-family: var(--font-mono);
+  color: #b57ef5; line-height: 1.2;
+}
+.gron-card-arrow { font-size: 0.72rem; color: var(--text-dim); line-height: 1; }
+
+
+/* ═══════════════════════════════════════════════════════════
+   Cipher Visualizer — shared (cvis-*, vig-*, trsp-*, vert-*)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Caesar alphabet visualizer ─────────────────────── */
+.caesar-vis {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+  animation: fadeIn 0.5s ease both;
+}
+.cvis-header {
+  padding: 0.6rem 1rem;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+}
+.cvis-shift-pill {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+.cvis-shift-pill strong {
+  color: var(--green);
+  font-size: 1rem;
+}
+.cvis-body {
+  padding: 1rem 1.1rem 1.1rem;
+  overflow-x: auto;
+}
+.cvis-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  white-space: nowrap;
+}
+.cvis-lbl {
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  min-width: 78px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.cvis-row {
+  display: inline-flex;
+  gap: 2px;
+}
+.cvis-cell {
+  width: 24px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.64rem;
+  font-family: var(--font-mono);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
+  flex-shrink: 0;
+}
+.cvis-cell.hi-plain {
+  background: rgba(57, 211, 83, 0.18);
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 7px rgba(57, 211, 83, 0.3);
+}
+.cvis-cell.hi-cipher {
+  background: rgba(88, 212, 245, 0.14);
+  border-color: rgba(88, 212, 245, 0.55);
+  color: #58d4f5;
+  box-shadow: 0 0 7px rgba(88, 212, 245, 0.22);
+}
+.cvis-mid {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2px 0;
+}
+.cvis-mid-spc {
+  min-width: 78px;
+  flex-shrink: 0;
+}
+.cvis-arrows {
+  display: inline-flex;
+  gap: 2px;
+}
+.cvis-arr {
+  width: 24px;
+  text-align: center;
+  font-size: 0.52rem;
+  color: var(--surface2);
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.cvis-arr.hi {
+  color: var(--green);
+}
+.cvis-hint {
+  margin-top: 0.85rem;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+.cvis-hint .hi-p {
+  color: var(--green);
+}
+.cvis-hint .hi-c {
+  color: #58d4f5;
+}
+
+/* ── Vigenere Tabula Recta ──────────────────────── */
+.vig-tab-wrap {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.vig-tab {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  white-space: nowrap;
+}
+.vig-tab-row {
+  display: flex;
+  gap: 2px;
+}
+.vig-tc {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.58rem;
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+  transition:
+    background 0.12s,
+    color 0.12s;
+}
+.vig-tc-spc {
+  width: 32px;
+  min-width: 32px;
+}
+.vig-tc-head {
+  color: var(--text-dim);
+  background: transparent;
+  font-weight: 700;
+}
+.vig-tc-head.col-hi {
+  color: var(--green);
+}
+.vig-tc-key {
+  width: 32px;
+  min-width: 32px;
+  color: var(--yellow);
+  font-weight: 700;
+  background: rgba(210, 183, 57, 0.1);
+  border: 1px solid rgba(210, 183, 57, 0.3);
+}
+.vig-tc-cell {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.vig-tc-cell.col-hi {
+  background: rgba(57, 211, 83, 0.1);
+  border-color: var(--green-dim);
+  color: var(--green);
+}
+.vig-tc-cell.hit {
+  background: rgba(88, 212, 245, 0.22);
+  border-color: rgba(88, 212, 245, 0.65);
+  color: #58d4f5;
+  font-weight: 700;
+  box-shadow: 0 0 6px rgba(88, 212, 245, 0.28);
+}
+
+/* ── Vigenere key-expansion cells ──────────────── */
+.vig-cell {
+  width: 26px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.64rem;
+  font-family: var(--font-mono);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.vig-cell.vig-plain {
+  color: var(--yellow);
+  border-color: rgba(210, 183, 57, 0.45);
+  background: rgba(210, 183, 57, 0.08);
+}
+.vig-cell.vig-key {
+  color: var(--green);
+  border-color: var(--green-dim);
+  background: var(--green-glow);
+}
+.vig-cell.vig-cipher {
+  color: #58d4f5;
+  border-color: rgba(88, 212, 245, 0.45);
+  background: rgba(88, 212, 245, 0.08);
+}
+.vig-cell.vig-skip {
+  opacity: 0.28;
+}
+.vig-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Transposition visualizer ───────────────────── */
+.trsp-block {
+  display: flex;
+  gap: 3px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+.trsp-cell {
+  width: 36px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.trsp-letter {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+.trsp-pos {
+  font-size: 0.5rem;
+  opacity: 0.7;
+}
+.trsp-arrows {
+  display: flex;
+  gap: 3px;
+  margin: 3px 0;
+}
+.trsp-arr {
+  width: 36px;
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.tp1 {
+  color: #39d353;
+  border-color: rgba(57, 211, 83, 0.5);
+  background: rgba(57, 211, 83, 0.1);
+}
+.tp2 {
+  color: #58d4f5;
+  border-color: rgba(88, 212, 245, 0.5);
+  background: rgba(88, 212, 245, 0.1);
+}
+.tp3 {
+  color: #d2b739;
+  border-color: rgba(210, 183, 57, 0.5);
+  background: rgba(210, 183, 57, 0.1);
+}
+.tp4 {
+  color: #b57ef5;
+  border-color: rgba(181, 126, 245, 0.5);
+  background: rgba(181, 126, 245, 0.1);
+}
+.tp5 {
+  color: #f85149;
+  border-color: rgba(248, 81, 73, 0.5);
+  background: rgba(248, 81, 73, 0.1);
+}
+.tp6 {
+  color: #f0883e;
+  border-color: rgba(240, 136, 62, 0.5);
+  background: rgba(240, 136, 62, 0.1);
+}
+.tp7 {
+  color: #79c0ff;
+  border-color: rgba(121, 192, 255, 0.5);
+  background: rgba(121, 192, 255, 0.1);
+}
+.tp8 {
+  color: #a8ff78;
+  border-color: rgba(168, 255, 120, 0.5);
+  background: rgba(168, 255, 120, 0.1);
+}
+
+/* ── Vertical Transposition — redesigned ───────────── */
+.vert-vis-outer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Key legend row */
+.vert-key-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.vert-kl-label {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+.vert-kpill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  width: 36px;
+  height: 44px;
+  border-radius: 6px;
+  border: 1px solid;
+  justify-content: center;
+  gap: 1px;
+  font-family: var(--font-mono);
+}
+.vert-kpill-step {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.vert-kpill-val {
+  font-size: 0.5rem;
+  opacity: 0.7;
+}
+
+/* Grid */
+.vert-grid-outer {
+  overflow-x: auto;
+}
+
+/* Column strips */
+.vert-strips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.vert-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+.vert-strip-lbl {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 72px;
+  flex-shrink: 0;
+}
+.vert-strip-step {
+  font-size: 0.62rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+.vert-strip-col {
+  font-size: 0.52rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+.vert-strip-cells {
+  display: flex;
+  gap: 2px;
+}
+.vert-strip-cell {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  border-radius: 4px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+.vert-strip-arrow {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  margin: 0 0.2rem;
+}
+.vert-strip-result {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+/* ── Vertical Transposition grid ────────────────── */
+.vert-vis-wrap {
+  overflow-x: auto;
+}
+.vert-table {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  white-space: nowrap;
+}
+.vert-row {
+  display: flex;
+  gap: 2px;
+}
+.vert-hdr {
+  width: 34px;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 1px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+}
+.vert-hdr-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.vert-cell {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+.vc1 {
+  color: #39d353;
+  border-color: rgba(57, 211, 83, 0.45);
+  background: rgba(57, 211, 83, 0.09);
+}
+.vc2 {
+  color: #58d4f5;
+  border-color: rgba(88, 212, 245, 0.45);
+  background: rgba(88, 212, 245, 0.09);
+}
+.vc3 {
+  color: #d2b739;
+  border-color: rgba(210, 183, 57, 0.45);
+  background: rgba(210, 183, 57, 0.09);
+}
+.vc4 {
+  color: #b57ef5;
+  border-color: rgba(181, 126, 245, 0.45);
+  background: rgba(181, 126, 245, 0.09);
+}
+.vc5 {
+  color: #f85149;
+  border-color: rgba(248, 81, 73, 0.45);
+  background: rgba(248, 81, 73, 0.09);
+}
+.vc6 {
+  color: #f0883e;
+  border-color: rgba(240, 136, 62, 0.45);
+  background: rgba(240, 136, 62, 0.09);
+}
+
+/* ── Caesar section — consistent sizing ─────────── */
+#caesar .input-field {
+  resize: none;
+  height: 100px;
+  min-height: unset;
+}
+#caesar .result-box {
+  height: 100px;
+  min-height: unset;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+#caesar .input-field-sm,
+#caesar select.input-field-sm {
+  height: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+  box-sizing: border-box;
+}
+#caesar .action-row .decrypt-btn {
+  flex: 1;
+}
+    
+/* ── Polybius mapping cards (lab02) ─────────────────────────── */
+.poly-maps {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+  justify-content: center; margin-top: 0.2rem;
+}
+.poly-map-card {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 0.45rem 0.5rem;
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+  min-width: 58px;
+}
+.poly-map-coord {
+  font-size: 0.48rem; color: var(--text-dim);
+  font-family: var(--font-mono); letter-spacing: 0.05em;
+}
+.poly-map-letter {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 700; font-family: var(--font-mono);
+  border: 1px solid; border-radius: 4px;
+}
+.poly-map-letter.plain  { color: #d2b739; border-color: rgba(210,183,57,0.6); background: rgba(210,183,57,0.14); }
+.poly-map-letter.cipher { color: #39d353; border-color: rgba(57,211,83,0.6);  background: rgba(57,211,83,0.14); }
+.poly-map-arrow { font-size: 0.75rem; color: var(--text-dim); line-height: 1; }

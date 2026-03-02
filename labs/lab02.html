@@ -25,58 +25,465 @@
     </header>
 
     <div class="lab-page">
+      <!-- LAB HERO -->
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
             <span class="lab-index-badge">ЛАБ 02</span>
+            <span
+              style="
+                font-size: 0.65rem;
+                color: var(--text-dim);
+                letter-spacing: 0.15em;
+              "
+              >КЛАСИЧНА КРИПТОГРАФІЯ</span
+            >
           </div>
-          <h1 class="lab-hero-title">Шифр Полібія та Гронсфельда</h1>
+          <h1 class="lab-hero-title">Шифр Полібія<br />та Гронсфельда</h1>
+          <p class="lab-hero-sub">
+            Квадрат Полібія — заміна за позицією у таблиці з ключовим словом.
+            Шифр Гронсфельда — числовий варіант Виженера з цифровим ключем.
+          </p>
           <div class="lab-hero-chips">
-            <span class="tag">Полібій</span><span class="tag">Гронсфельд</span
-            ><span class="tag">Квадрат</span>
+            <span class="tag">Полібій</span>
+            <span class="tag">Гронсфельд</span>
+            <span class="tag">Квадрат 5×5</span>
+            <span class="tag">Числовий ключ</span>
           </div>
         </div>
       </div>
 
+      <!-- CONTENT -->
       <div class="lab-content">
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-            flex-direction: column;
-            gap: 1.5rem;
-            text-align: center;
-          "
-        >
-          <div style="font-size: 3rem; color: var(--cyan); opacity: 0.3">⚙</div>
-          <div
-            style="
-              font-family: var(--font-sans);
-              font-size: 1.5rem;
-              font-weight: 800;
-              color: var(--text-dim);
-            "
-          >
-            В розробці
-          </div>
-          <p
-            style="
-              font-size: 0.78rem;
-              color: var(--text-dim);
-              max-width: 400px;
-              line-height: 1.7;
-            "
-          >
-            Ця лабораторна робота ще не реалізована.<br />
-            Алгоритм та JS-файл готові — залишилось побудувати UI.
-          </p>
-          <div style="display: flex; gap: 1rem; margin-top: 0.5rem">
-            <a href="lab01.html" class="btn-secondary">← Лаб. 01</a>
-            <a href="../index.html" class="btn-primary">Всі лаби</a>
-            <a href="lab03.html" class="btn-secondary">Лаб. 03 →</a>
-          </div>
+        <div class="lab-layout">
+          <!-- SIDEBAR -->
+          <aside class="lab-sidebar">
+            <nav class="sidebar-nav">
+              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-item active" data-section="theory">
+                <span class="sidebar-nav-num">01</span> Теорія
+              </div>
+              <div class="sidebar-nav-item" data-section="polybius">
+                <span class="sidebar-nav-num">02</span> Квадрат Полібія
+              </div>
+              <div class="sidebar-nav-item" data-section="gronsfeld">
+                <span class="sidebar-nav-num">03</span> Шифр Гронсфельда
+              </div>
+            </nav>
+          </aside>
+
+          <!-- MAIN -->
+          <main>
+            <!-- ── THEORY ──────────────────────────────────────── -->
+            <section id="theory">
+              <div class="theory-block">
+                <div class="theory-header">
+                  <span class="theory-title">Короткі теоретичні відомості</span>
+                  <span class="theory-toggle">▼</span>
+                </div>
+                <div class="theory-body open">
+                  <div class="theory-body-inner">
+                    <p>
+                      У цій лабораторній розглядаються два шифри підстановки на
+                      основі
+                      <strong>таблиці (квадрата)</strong>. Квадрат Полібія
+                      замінює кожну літеру на сусідню у стовпці таблиці. Шифр
+                      Гронсфельда — числовий аналог Виженера, де зсув задається
+                      цифрами ключового числа.
+                    </p>
+
+                    <div class="algo-cards">
+                      <!-- Polybius -->
+                      <div class="algo-card" data-target="polybius">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Квадрат Полібія</span>
+                          <span class="algo-card-badge badge-sub"
+                            >таблична заміна</span
+                          >
+                        </div>
+                        <div class="algo-card-formula">
+                          Квадрат n×n, заповнений з ключем<br />
+                          enc: літера → літера рядком нижче<br />
+                          dec: літера → літера рядком вище
+                        </div>
+                        <p class="algo-card-desc">
+                          Ключове слово записується першим у квадрат (без
+                          повторів), решта алфавіту дописується по порядку. EN:
+                          5×5 (J≡I), UK: 6×6.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+
+                      <!-- Gronsfeld -->
+                      <div class="algo-card" data-target="gronsfeld">
+                        <div class="algo-card-head">
+                          <span class="algo-card-name">Шифр Гронсфельда</span>
+                          <span class="algo-card-badge badge-poly"
+                            >числовий Виженер</span
+                          >
+                        </div>
+                        <div class="algo-card-formula">
+                          b<sub>i</sub> = (a<sub>i</sub> + d<sub>i</sub>) mod
+                          n<br />
+                          d<sub>i</sub> = digit[i mod |key|] &nbsp;(0–9)
+                        </div>
+                        <p class="algo-card-desc">
+                          Ключ — десяткове число. Цифри циклічно підписуються
+                          під літерами тексту, кожна буква зсувається на
+                          відповідну цифру.
+                        </p>
+                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── POLYBIUS ─────────────────────────────────────── -->
+            <section id="polybius">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: var(--cyan);
+                      border-bottom-color: var(--cyan);
+                      background: var(--cyan-dim, rgba(88, 212, 245, 0.08));
+                    "
+                  >
+                    // квадрат Полібія
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val">Таблична підстановка</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val"
+                        >ключове слово (заповнює квадрат)</span
+                      >
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">EN:</span
+                      ><span class="chip-val">5×5, J≡I</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">UK:</span
+                      ><span class="chip-val">6×6, 33 літери</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Особливість:</span
+                      ><span class="chip-val"
+                        >кожна літера → літера знизу у тому ж стовпці</span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Відкритий текст</label>
+                        <textarea
+                          class="input-field"
+                          id="poly-text"
+                          placeholder="Введіть повідомлення..."
+                          style="resize: none; height: 100px; min-height: unset"
+                        >
+HELLO WORLD</textarea
+                        >
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Ключове слово</label>
+                        <input
+                          class="input-field-sm"
+                          id="poly-key"
+                          value="KEYWORD"
+                          placeholder="напр. SECRET"
+                          style="height: 40px"
+                        />
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Мова</label>
+                        <select
+                          class="input-field-sm"
+                          id="poly-lang"
+                          style="height: 40px"
+                        >
+                          <option value="en">English (5×5)</option>
+                          <option value="uk">Українська (6×6)</option>
+                        </select>
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runPolybius(false)"
+                        >
+                          ⟶ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runPolybius(true)"
+                        >
+                          ⟵ Розшифрувати
+                        </button>
+                      </div>
+                    </div>
+                    <div class="workspace-col">
+                      <div>
+                        <label class="input-label">Результат</label>
+                        <div
+                          class="result-box"
+                          id="poly-output"
+                          style="
+                            height: 100px;
+                            min-height: unset;
+                            overflow-y: auto;
+                            box-sizing: border-box;
+                          "
+                        >
+                          <span class="result-empty"
+                            >Результат з'явиться тут...</span
+                          >
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="poly-steps">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- POLYBIUS VISUALIZER -->
+                  <div
+                    class="caesar-vis"
+                    id="poly-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // квадрат Полібія — кожна літера зсувається на рядок
+                      нижче у тому ж стовпці
+                      <span class="cvis-shift-pill"
+                        >ключ:
+                        <strong
+                          id="poly-key-disp"
+                          style="color: var(--cyan); letter-spacing: 0.1em"
+                          >KEYWORD</strong
+                        ></span
+                      >
+                    </div>
+                    <div
+                      class="cvis-body"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 1.1rem;
+                      "
+                    >
+                      <div
+                        id="poly-vis-content"
+                        style="display: flex; justify-content: center"
+                      ></div>
+                      <div id="poly-maps-content"></div>
+                      <div class="cvis-hint">
+                        <span style="color: #d2b739">■ жовтий</span> — вхідна
+                        літера &nbsp;·&nbsp;
+                        <span style="color: #39d353">■ зелений</span> —
+                        зашифрована (рядок нижче) &nbsp;·&nbsp;
+                        <span style="color: var(--cyan)">■ блакитний</span> —
+                        літери ключа
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── GRONSFELD ────────────────────────────────────── -->
+            <section id="gronsfeld">
+              <div class="cipher-workspace" style="margin-bottom: 2rem">
+                <div class="workspace-tabs">
+                  <div
+                    class="workspace-tab active"
+                    style="
+                      cursor: default;
+                      color: var(--purple);
+                      border-bottom-color: var(--purple);
+                      background: var(--purple-dim);
+                    "
+                  >
+                    // шифр Гронсфельда (числовий Виженер)
+                  </div>
+                </div>
+                <div class="workspace-panel active" style="display: block">
+                  <div class="info-chips">
+                    <div class="info-chip">
+                      <span class="chip-label">Тип:</span
+                      ><span class="chip-val"
+                        >Числова багатоалфавітна заміна</span
+                      >
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Ключ:</span
+                      ><span class="chip-val">десяткове число (цифри 0–9)</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Формула:</span
+                      ><span class="chip-val">b = (a + d) mod n</span>
+                    </div>
+                    <div class="info-chip">
+                      <span class="chip-label">Особливість:</span
+                      ><span class="chip-val"
+                        >подібний до Виженера, але зсув 0–9</span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="workspace-grid">
+                    <div class="workspace-col">
+                      <div class="input-group">
+                        <label class="input-label">Відкритий текст</label>
+                        <textarea
+                          class="input-field"
+                          id="gron-text"
+                          placeholder="Введіть повідомлення..."
+                          style="resize: none; height: 100px; min-height: unset"
+                        >
+HELLO WORLD</textarea
+                        >
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Ключ (число)</label>
+                        <input
+                          class="input-field-sm"
+                          id="gron-key"
+                          value="3142"
+                          placeholder="напр. 31415"
+                          style="height: 40px"
+                          type="text"
+                          inputmode="numeric"
+                        />
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label">Мова</label>
+                        <select
+                          class="input-field-sm"
+                          id="gron-lang"
+                          style="height: 40px"
+                        >
+                          <option value="en">English</option>
+                          <option value="uk">Українська</option>
+                        </select>
+                      </div>
+                      <div class="action-row">
+                        <button
+                          class="encrypt-btn"
+                          style="flex: 1"
+                          onclick="runGronsfeld(false)"
+                        >
+                          ⟶ Зашифрувати
+                        </button>
+                        <button
+                          class="decrypt-btn"
+                          style="flex: 1"
+                          onclick="runGronsfeld(true)"
+                        >
+                          ⟵ Розшифрувати
+                        </button>
+                      </div>
+                    </div>
+                    <div class="workspace-col">
+                      <div>
+                        <label class="input-label">Результат</label>
+                        <div
+                          class="result-box"
+                          id="gron-output"
+                          style="
+                            height: 100px;
+                            min-height: unset;
+                            overflow-y: auto;
+                            box-sizing: border-box;
+                          "
+                        >
+                          <span class="result-empty"
+                            >Результат з'явиться тут...</span
+                          >
+                        </div>
+                      </div>
+                      <div class="steps-log">
+                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-body" id="gron-steps">
+                          <div class="log-line">
+                            <span class="log-idx">—</span
+                            ><span class="log-text"
+                              >Натисніть «Зашифрувати»</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- GRONSFELD VISUALIZER -->
+                  <div
+                    class="caesar-vis"
+                    id="gron-vis"
+                    style="margin-top: 1.5rem"
+                  >
+                    <div class="cvis-header">
+                      // розгортання ключа — зашифрування
+                      <span class="cvis-shift-pill"
+                        >ключ:
+                        <strong
+                          id="gron-key-disp"
+                          style="color: var(--purple); letter-spacing: 0.12em"
+                          >3142</strong
+                        ></span
+                      >
+                    </div>
+                    <div
+                      class="cvis-body"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                      "
+                    >
+                      <div id="gron-vis-content"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- NAV BETWEEN LABS -->
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 1rem;
+                border-top: 1px solid var(--border);
+              "
+            >
+              <a href="lab01.html" class="btn-secondary">← Лаб. 01</a>
+              <a href="lab03.html" class="btn-primary">Лаб. 03 →</a>
+            </div>
+          </main>
         </div>
       </div>
     </div>
@@ -85,10 +492,263 @@
       <span>© 2026 CryptoLab — Лаб. 02 / Шифр Полібія та Гронсфельда</span>
       <div class="footer-links">
         <a href="../index.html" class="footer-link">← Головна</a>
+        <a href="lab03.html" class="footer-link">Лаб. 03 →</a>
       </div>
     </footer>
 
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/polybius.js"></script>
+    <script>
+      function getVal(id) {
+        return document.getElementById(id).value;
+      }
+
+      function displayResult(outputId, stepsId, data) {
+        renderOutput(outputId, data.result);
+        renderSteps(stepsId, data.steps);
+      }
+
+      /* ── Polybius ──────────────────────────────────────────── */
+      function runPolybius(decrypt) {
+        const text = getVal("poly-text");
+        const key = getVal("poly-key");
+        const lang = getVal("poly-lang");
+        const data = CL.Polybius.run(text, key, decrypt, lang);
+        displayResult("poly-output", "poly-steps", data);
+        buildPolyVis();
+      }
+
+      function buildPolyVis() {
+        const key = getVal("poly-key");
+        const lang = getVal("poly-lang");
+        const sq = CL.Polybius.buildSquare(key, lang);
+        const sz = CL.Polybius.size(lang);
+        const raw = getVal("poly-text").toUpperCase();
+        const text = lang === "en" ? raw.replace(/J/g, "I") : raw;
+
+        document.getElementById("poly-key-disp").textContent =
+          key.toUpperCase() || "(без ключа)";
+
+        // Key letters set
+        const keyUpper = key
+          .toUpperCase()
+          .split("")
+          .filter((c, i, a) => a.indexOf(c) === i && sq.includes(c));
+        const keySet = new Set(keyUpper.slice(0, sz));
+
+        // Active plain letters and their cipher targets
+        const activePlain = new Set(
+          text.split("").filter((c) => sq.includes(c)),
+        );
+        const plainToCipher = {};
+        activePlain.forEach((ch) => {
+          const idx = sq.indexOf(ch);
+          if (idx === -1) return;
+          const row = Math.floor(idx / sz);
+          const col = idx % sz;
+          plainToCipher[ch] = sq[((row + 1) % sz) * sz + col];
+        });
+        const activeCipher = new Set(Object.values(plainToCipher));
+
+        // ── Grid ─────────────────────────────────────────────
+        let html = `<div class="poly-grid-outer"><div class="poly-grid" style="grid-template-columns:repeat(${sz + 1},36px);">`;
+        html += '<div class="poly-cell is-header"></div>';
+        for (let c = 1; c <= sz; c++)
+          html += `<div class="poly-cell is-header">${c}</div>`;
+        for (let r = 0; r < sz; r++) {
+          html += `<div class="poly-cell is-header">${r + 1}</div>`;
+          for (let c = 0; c < sz; c++) {
+            const letter = sq[r * sz + c];
+            let cls = "";
+            if (activePlain.has(letter)) cls = " hi-plain";
+            else if (activeCipher.has(letter)) cls = " hi-cipher";
+            else if (keySet.has(letter)) cls = " key-letter";
+            html += `<div class="poly-cell${cls}">${letter}</div>`;
+          }
+        }
+        html += "</div></div>";
+        document.getElementById("poly-vis-content").innerHTML = html;
+
+        // ── Mapping cards ─────────────────────────────────────
+        const uniquePlain = [...activePlain].slice(0, 12); // max 12 cards
+        if (uniquePlain.length === 0) {
+          document.getElementById("poly-maps-content").innerHTML = "";
+          return;
+        }
+        let mhtml = `<div style="font-size:0.58rem;color:var(--text-dim);letter-spacing:0.12em;text-align:center;margin-bottom:0.5rem;">// перетворення літер</div>`;
+        mhtml += `<div class="poly-maps">`;
+        uniquePlain.forEach((ch) => {
+          const ci = sq.indexOf(ch);
+          const pr = Math.floor(ci / sz) + 1;
+          const pc = (ci % sz) + 1;
+          const enc = plainToCipher[ch];
+          const ei = sq.indexOf(enc);
+          const er = Math.floor(ei / sz) + 1;
+          const ec = (ei % sz) + 1;
+          mhtml += `<div class="poly-map-card">
+            <div class="poly-map-coord">р.${pr},&nbsp;с.${pc}</div>
+            <div class="poly-map-letter plain">${ch}</div>
+            <div class="poly-map-arrow">↓</div>
+            <div class="poly-map-letter cipher">${enc}</div>
+            <div class="poly-map-coord">р.${er},&nbsp;с.${ec}</div>
+          </div>`;
+        });
+        mhtml += `</div>`;
+        document.getElementById("poly-maps-content").innerHTML = mhtml;
+      }
+
+      /* ── Gronsfeld ─────────────────────────────────────────── */
+      let _gronDecrypt = false;
+
+      function runGronsfeld(decrypt) {
+        _gronDecrypt = decrypt;
+        const text = getVal("gron-text");
+        const key = getVal("gron-key");
+        const lang = getVal("gron-lang");
+        const data = CL.Gronsfeld.run(text, key, decrypt, lang);
+        displayResult("gron-output", "gron-steps", data);
+        buildGronVis();
+      }
+
+      function buildGronVis() {
+        const alpha =
+          getVal("gron-lang") === "uk"
+            ? "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ"
+            : "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const n = alpha.length;
+        const text = getVal("gron-text").toUpperCase();
+        const digits = String(getVal("gron-key")).replace(/\D/g, "") || "0";
+        const decrypt = _gronDecrypt;
+
+        document.getElementById("gron-key-disp").textContent = digits;
+
+        const hdr = document.querySelector("#gron-vis .cvis-header");
+        if (hdr)
+          hdr.childNodes[0].textContent = decrypt
+            ? "// розгортання ключа — розшифрування "
+            : "// розгортання ключа — зашифрування ";
+
+        // Build pairs (up to 20 alpha chars)
+        const pairs = [];
+        let ki = 0;
+        for (const ch of text) {
+          const ai = alpha.indexOf(ch);
+          if (ai === -1) continue;
+          const shift = parseInt(digits[ki % digits.length]);
+          const ci = mod(decrypt ? ai - shift : ai + shift, n);
+          pairs.push({
+            plain: ch,
+            digit: digits[ki % digits.length],
+            cipher: alpha[ci],
+            ai,
+            ci,
+            shift,
+          });
+          ki++;
+          if (pairs.length >= 20) break;
+        }
+
+        if (!pairs.length) {
+          document.getElementById("gron-vis-content").innerHTML =
+            '<div style="color:var(--text-dim);font-size:0.75rem;">Введіть текст для візуалізації</div>';
+          return;
+        }
+
+        // ── Shift cards ──────────────────────────────────────
+        const sign = decrypt ? "−" : "+";
+        let html = `<div style="font-size:0.58rem;color:var(--text-dim);letter-spacing:0.12em;text-align:center;margin-bottom:0.5rem;">// перетворення літер</div>`;
+        html += '<div class="gron-cards">';
+        pairs.forEach((p) => {
+          html += `<div class="gron-card">
+            <div class="gron-card-letter plain">${p.plain}</div>
+            <div class="gron-card-arrow">↓</div>
+            <div class="gron-card-shift">${sign}${p.digit}</div>
+            <div class="gron-card-arrow">↓</div>
+            <div class="gron-card-letter cipher">${p.cipher}</div>
+          </div>`;
+        });
+        html += "</div>";
+
+        // ── Alphabet strip (Caesar-style) ─────────────────────
+        // Unique plain letters and first-seen shift per letter
+        const plainSet = new Set();
+        const cipherSet = new Set();
+        const shiftMap = {};
+        pairs.forEach((p) => {
+          plainSet.add(p.plain);
+          cipherSet.add(p.cipher);
+          if (!(p.plain in shiftMap)) shiftMap[p.plain] = p.digit;
+        });
+
+        html += '<div class="gron-vis-wrap" style="margin-top:3rem;">';
+        html +=
+          '<div style="display:inline-flex;flex-direction:column;gap:2px;">';
+
+        // Row 1 — plain alphabet
+        html +=
+          '<div class="cvis-strip"><span class="cvis-lbl">відкритий</span><div class="cvis-row">';
+        for (const ch of alpha)
+          html += `<span class="cvis-cell${plainSet.has(ch) ? " hi-plain" : ""}">${ch}</span>`;
+        html += "</div></div>";
+
+        // Row 2 — shift arrows
+        html +=
+          '<div class="cvis-mid"><span class="cvis-mid-spc"></span><div class="cvis-arrows">';
+        for (const ch of alpha) {
+          if (plainSet.has(ch))
+            html += `<span class="cvis-arr" style="color:#b57ef5;font-size:0.58rem;">${sign}${shiftMap[ch]}</span>`;
+          else html += '<span class="cvis-arr"> </span>';
+        }
+        html += "</div></div>";
+
+        // Row 3 — cipher alphabet
+        html +=
+          '<div class="cvis-strip"><span class="cvis-lbl">шифртекст</span><div class="cvis-row">';
+        for (const ch of alpha)
+          html += `<span class="cvis-cell${cipherSet.has(ch) ? " hi-cipher" : ""}">${ch}</span>`;
+        html += "</div></div>";
+
+        html += "</div></div>";
+
+        html +=
+          '<div class="cvis-hint" style="margin-top:2.5rem;text-align:center;">';
+        html +=
+          '<span style="color:#d2b739;">■ жовтий</span> — відкритий текст &nbsp;·&nbsp; ';
+        html +=
+          '<span style="color:#b57ef5;">■ фіолетовий</span> — цифра ключа (зсув) &nbsp;·&nbsp; ';
+        html +=
+          '<span style="color:#58d4f5;">■ блакитний</span> — зашифрована буква';
+        html += "</div>";
+
+        document.getElementById("gron-vis-content").innerHTML = html;
+      }
+
+      /* ── Init ──────────────────────────────────────────────── */
+      document.addEventListener("DOMContentLoaded", () => {
+        initScrollSpy(["theory", "polybius", "gronsfeld"]);
+
+        buildPolyVis();
+        document
+          .getElementById("poly-text")
+          .addEventListener("input", buildPolyVis);
+        document
+          .getElementById("poly-key")
+          .addEventListener("input", buildPolyVis);
+        document
+          .getElementById("poly-lang")
+          .addEventListener("change", buildPolyVis);
+
+        buildGronVis();
+        document
+          .getElementById("gron-text")
+          .addEventListener("input", buildGronVis);
+        document
+          .getElementById("gron-key")
+          .addEventListener("input", buildGronVis);
+        document
+          .getElementById("gron-lang")
+          .addEventListener("change", buildGronVis);
+      });
+    </script>
   </body>
 </html>
