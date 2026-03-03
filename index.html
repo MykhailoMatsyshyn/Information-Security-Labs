@@ -1022,6 +1022,12 @@
     <div>
       <div class="section-tag">// лабораторні роботи</div>
       <h2 class="section-title">Всі модулі</h2>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.6rem;max-width:520px;line-height:1.7">
+        Лаби <strong style="color:var(--green)">01–03</strong> — класичні шифри заміни та перестановки,
+        <strong style="color:var(--cyan)">04–05</strong> — блочні симетричні та асиметричні (DES, RSA),
+        <strong style="color:#ff9550">06</strong> — ЕЦП та геш-ланцюжки.
+        <span style="color:var(--text-dim)">07–08 — підготовлені модулі зі стеганографії та захисту PDF.</span>
+      </p>
     </div>
     <span class="section-count">08 робіт / 12 алгоритмів</span>
   </div>
@@ -1240,6 +1246,11 @@
           <button class="cipher-btn" onclick="selectCipher(this,'vigenere')">Віженер</button>
           <button class="cipher-btn" onclick="selectCipher(this,'atbash')">Атбаш</button>
           <button class="cipher-btn" onclick="selectCipher(this,'gronsfeld')">Гронсфельд</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'polybius')">Полібій</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'playfair')">Playfair</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'vernam')">Вернам (XOR)</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'simple-transp')">Перестановка</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'vertical-transp')">Вертикальна</button>
         </div>
 
         <div class="input-group">
@@ -1301,6 +1312,9 @@
   </a>
 </footer>
 
+<script src="js/ciphers/classical.js"></script>
+<script src="js/ciphers/polybius.js"></script>
+<script src="js/ciphers/playfair.js"></script>
 <script src="js/common.js"></script>
 <script>
 let currentCipher = 'caesar';
@@ -1311,22 +1325,48 @@ function selectCipher(btn, cipher) {
   currentCipher = cipher;
   const label = document.getElementById('key-label');
   const keyInput = document.getElementById('key-input');
-  if (cipher === 'caesar') { label.textContent = 'Ключ (зсув 0–25)'; keyInput.value = '3'; keyInput.placeholder = '0–25'; }
-  else if (cipher === 'vigenere') { label.textContent = 'Ключ (слово)'; keyInput.value = 'KEY'; keyInput.placeholder = 'Слово...'; }
-  else if (cipher === 'atbash') { label.textContent = 'Ключ (не потрібен)'; keyInput.value = '—'; }
-  else if (cipher === 'gronsfeld') { label.textContent = 'Ключ (число)'; keyInput.value = '1357'; keyInput.placeholder = '0–9...'; }
-}
-
-function caesarChar(c, shift, decrypt) {
-  const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const idx = alpha.indexOf(c.toUpperCase());
-  if (idx === -1) return c;
-  const s = decrypt ? (26 - shift % 26) % 26 : shift % 26;
-  return alpha[(idx + s) % 26];
+  keyInput.readOnly = false;
+  if (cipher === 'caesar') {
+    label.textContent = 'Ключ (зсув 0–25)';
+    keyInput.value = '3';
+    keyInput.placeholder = '0–25';
+  } else if (cipher === 'vigenere') {
+    label.textContent = 'Ключ (слово)';
+    keyInput.value = 'KEY';
+    keyInput.placeholder = 'Слово...';
+  } else if (cipher === 'atbash') {
+    label.textContent = 'Ключ (не потрібен)';
+    keyInput.value = '—';
+    keyInput.readOnly = true;
+  } else if (cipher === 'gronsfeld') {
+    label.textContent = 'Ключ (числовий, напр. 1357)';
+    keyInput.value = '1357';
+    keyInput.placeholder = '0–9...';
+  } else if (cipher === 'polybius') {
+    label.textContent = 'Ключове слово (для квадрату Полібія)';
+    keyInput.value = 'KEYWORD';
+    keyInput.placeholder = 'Ключове слово...';
+  } else if (cipher === 'playfair') {
+    label.textContent = 'Ключове слово (Playfair)';
+    keyInput.value = 'SECRET';
+    keyInput.placeholder = 'Ключове слово...';
+  } else if (cipher === 'vernam') {
+    label.textContent = 'Ключ (така ж або більша довжина)';
+    keyInput.value = 'SECRETKEY';
+    keyInput.placeholder = 'Ключ...';
+  } else if (cipher === 'simple-transp') {
+    label.textContent = 'Ключ перестановки (напр. 3 1 4 2)';
+    keyInput.value = '3 1 4 2';
+    keyInput.placeholder = '3 1 4 2';
+  } else if (cipher === 'vertical-transp') {
+    label.textContent = 'Ключ слова/чисел (напр. 3 1 4 2 або WORD)';
+    keyInput.value = '3 1 4 2';
+    keyInput.placeholder = '3 1 4 2 або WORD';
+  }
 }
 
 function runCipher() {
-  const text = document.getElementById('plaintext').value.toUpperCase();
+  const text = document.getElementById('plaintext').value;
   const key = document.getElementById('key-input').value;
   const decrypt = document.getElementById('mode-select').value === 'dec';
   let result = '';
@@ -1334,57 +1374,48 @@ function runCipher() {
 
   if (currentCipher === 'caesar') {
     const shift = parseInt(key) || 3;
-    result = text.split('').map(c => caesarChar(c, shift, decrypt)).join('');
-    steps = [
-      { n: '01', t: `Алгоритм: Шифр Цезаря`, d: decrypt ? 'розшифрування' : 'шифрування' },
-      { n: '02', t: `Ключ (зсув): ${shift}`, d: `кожна буква зсувається на ${shift} позицій` },
-      { n: '03', t: `Формула: b = (a ${decrypt?'-':'+'}  ${shift}) mod 26`, d: `де a — номер букви` },
-      { n: '04', t: `Вхід: "${text}"`, d: `→ Вихід: "${result}"` },
-    ];
+    const r = window.CL.Caesar.run(text, shift, decrypt, 'en');
+    result = r.result;
+    steps = r.steps;
   } else if (currentCipher === 'vigenere') {
-    const k = key.replace(/[^A-Za-z]/g,'').toUpperCase() || 'KEY';
-    const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let ki = 0;
-    result = text.split('').map(c => {
-      if (!/[A-Z]/.test(c)) return c;
-      const shift = alpha.indexOf(k[ki % k.length]);
-      ki++;
-      return caesarChar(c, shift, decrypt);
-    }).join('');
-    steps = [
-      { n: '01', t: `Алгоритм: Шифр Віженера`, d: 'багатоалфавітна заміна' },
-      { n: '02', t: `Ключ: "${k}"`, d: `повторюється циклічно під текстом` },
-      { n: '03', t: `Формула: bi = (ai ${decrypt?'-':'+'} ki) mod 26`, d: 'ki — номер букви ключа' },
-      { n: '04', t: `Вхід: "${text}"`, d: `→ Вихід: "${result}"` },
-    ];
+    const k = key || 'KEY';
+    const r = window.CL.Vigenere.run(text, k, decrypt, 'en');
+    result = r.result;
+    steps = r.steps;
   } else if (currentCipher === 'atbash') {
-    const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    result = text.split('').map(c => {
-      const i = alpha.indexOf(c);
-      return i === -1 ? c : alpha[25 - i];
-    }).join('');
-    steps = [
-      { n: '01', t: `Алгоритм: Атбаш`, d: 'дзеркальна заміна алфавіту' },
-      { n: '02', t: `A↔Z, B↔Y, C↔X...`, d: 'ключ не потрібен' },
-      { n: '03', t: `Формула: b = 25 - a`, d: 'де a — порядковий номер букви' },
-      { n: '04', t: `Вхід: "${text}"`, d: `→ Вихід: "${result}"` },
-    ];
+    const r = window.CL.Atbash.run(text, 'en');
+    result = r.result;
+    steps = r.steps;
   } else if (currentCipher === 'gronsfeld') {
-    const digits = key.replace(/[^0-9]/g,'') || '1357';
-    const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let di = 0;
-    result = text.split('').map(c => {
-      if (!/[A-Z]/.test(c)) return c;
-      const shift = parseInt(digits[di % digits.length]);
-      di++;
-      return caesarChar(c, shift, decrypt);
-    }).join('');
-    steps = [
-      { n: '01', t: `Алгоритм: Шифр Гронсфельда`, d: 'числовий варіант Віженера' },
-      { n: '02', t: `Ключ: "${digits}"`, d: `цифри циклічно записуються під буквами` },
-      { n: '03', t: `Формула: bi = (ai ${decrypt?'-':'+'} di) mod 26`, d: 'di — цифра ключа' },
-      { n: '04', t: `Вхід: "${text}"`, d: `→ Вихід: "${result}"` },
-    ];
+    const digits = key || '1357';
+    const r = window.CL.Gronsfeld.run(text, digits, decrypt, 'en');
+    result = r.result;
+    steps = r.steps;
+  } else if (currentCipher === 'polybius') {
+    const kw = key || 'KEYWORD';
+    const r = window.CL.Polybius.run(text, kw, decrypt, 'en');
+    result = r.result;
+    steps = r.steps;
+  } else if (currentCipher === 'playfair') {
+    const kw = key || 'SECRET';
+    const r = window.CL.Playfair.run(text, kw, decrypt);
+    result = r.result;
+    steps = r.steps;
+  } else if (currentCipher === 'vernam') {
+    const k = key || 'SECRETKEY';
+    const r = window.CL.Vernam.run(text, k);
+    result = r.result;
+    steps = r.steps;
+  } else if (currentCipher === 'simple-transp') {
+    const k = key || '3 1 4 2';
+    const r = window.CL.SimpleTransposition.run(text, k, decrypt);
+    result = r.result;
+    steps = r.steps;
+  } else if (currentCipher === 'vertical-transp') {
+    const k = key || '3 1 4 2';
+    const r = window.CL.VerticalTransposition.run(text, k, decrypt);
+    result = r.result;
+    steps = r.steps;
   }
 
   document.getElementById('output').innerHTML = `<span style="color:var(--green)">${result}</span><button class="copy-btn" onclick="copyOutput()">COPY</button>`;

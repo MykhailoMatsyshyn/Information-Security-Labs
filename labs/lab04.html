@@ -25,19 +25,12 @@
     </header>
 
     <div class="lab-page">
-      <!-- LAB HERO -->
+      <!-- HERO -->
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
             <span class="lab-index-badge">ЛАБ 04</span>
-            <span
-              style="
-                font-size: 0.65rem;
-                color: var(--text-dim);
-                letter-spacing: 0.15em;
-              "
-              >БЛОКОВЕ ШИФРУВАННЯ</span
-            >
+            <span style="font-size:.65rem;color:var(--text-dim);letter-spacing:.15em">БЛОКОВЕ ШИФРУВАННЯ</span>
           </div>
           <h1 class="lab-hero-title">Алгоритм<br />шифрування DES</h1>
           <p class="lab-hero-sub">
@@ -57,7 +50,6 @@
         </div>
       </div>
 
-      <!-- CONTENT -->
       <div class="lab-content">
         <div class="lab-layout">
           <!-- SIDEBAR -->
@@ -67,15 +59,39 @@
               <div class="sidebar-nav-item active" data-section="theory">
                 <span class="sidebar-nav-num">01</span> Теорія
               </div>
-              <div class="sidebar-nav-item" data-section="des">
-                <span class="sidebar-nav-num">02</span> DES
+              <div class="sidebar-nav-item" data-section="sec-input">
+                <span class="sidebar-nav-num">02</span> Введення даних
+              </div>
+              <div class="sidebar-nav-item" data-section="sec-text-hex">
+                <span class="sidebar-nav-num">03</span> Текст → Hex → Біти
+              </div>
+              <div class="sidebar-nav-item" data-section="sec-ip-table">
+                <span class="sidebar-nav-num">04</span> Таблиця IP
+              </div>
+              <div class="sidebar-nav-item" data-section="sec-ip-perm">
+                <span class="sidebar-nav-num">05</span> Перестановка IP
+              </div>
+              <div class="sidebar-nav-item" data-section="sec-split">
+                <span class="sidebar-nav-num">06</span> Поділ L₀ / R₀
+              </div>
+              <div class="sidebar-nav-item" data-section="sec-key-schedule">
+                <span class="sidebar-nav-num">07</span> Генерація підключів
+              </div>
+              <div class="sidebar-nav-item" data-section="sec-rounds">
+                <span class="sidebar-nav-num">08</span> 16 Раундів
+              </div>
+              <div class="sidebar-nav-item" data-section="sec-ip-inv">
+                <span class="sidebar-nav-num">09</span> Перестановка IP⁻¹
               </div>
             </nav>
           </aside>
 
           <!-- MAIN -->
           <main>
-            <!-- ── THEORY ──────────────────────────────────────── -->
+
+            <!-- ══════════════════════════════════════════
+                 01 — ТЕОРІЯ
+                 ══════════════════════════════════════════ -->
             <section id="theory">
               <div class="theory-block">
                 <div class="theory-header">
@@ -98,24 +114,19 @@
                       через 8 нелінійних S-блоків і виконує перестановку P.
                     </p>
                     <div class="algo-cards">
-                      <div class="algo-card" data-target="des">
+                      <div class="algo-card" data-target="sec-input">
                         <div class="algo-card-head">
                           <span class="algo-card-name">DES</span>
-                          <span class="algo-card-badge badge-des"
-                            >блоковий</span
-                          >
+                          <span class="algo-card-badge badge-des">блоковий</span>
                         </div>
                         <div class="algo-card-formula">
                           L<sub>i</sub> = R<sub>i-1</sub><br />
-                          R<sub>i</sub> = L<sub>i-1</sub> ⊕ f(R<sub>i-1</sub>,
-                          K<sub>i</sub>)<br />
+                          R<sub>i</sub> = L<sub>i-1</sub> ⊕ f(R<sub>i-1</sub>, K<sub>i</sub>)<br />
                           f: E → ⊕K → S₁..S₈ → P
                         </div>
                         <p class="algo-card-desc">
                           64-бітний блок, 56-бітний ключ. IP → 16×Feistel →
-                          IP⁻¹. Розшифрування — те ж саме, але підключі K₁₆..K₁
-                          у зворотному порядку. 8 S-блоків забезпечують
-                          нелінійність.
+                          IP⁻¹. 8 S-блоків забезпечують нелінійність.
                         </p>
                         <span class="algo-card-goto">перейти до розділу ↓</span>
                       </div>
@@ -125,240 +136,280 @@
               </div>
             </section>
 
-            <!-- ── DES ─────────────────────────────────────────── -->
-            <section id="des">
-              <div class="cipher-workspace" style="margin-bottom: 2rem">
+            <!-- ══════════════════════════════════════════
+                 02 — ВВЕДЕННЯ ДАНИХ
+                 ══════════════════════════════════════════ -->
+            <section id="sec-input" style="margin-bottom:2rem">
+              <div class="cipher-workspace">
                 <div class="workspace-tabs">
-                  <div
-                    class="workspace-tab active"
-          style="
-                      cursor: default;
-                      color: #58d4f5;
-                      border-bottom-color: #58d4f5;
-                      background: rgba(88, 212, 245, 0.06);
-                    "
-                  >
+                  <div class="workspace-tab active"
+                    style="cursor:default;color:#58d4f5;border-bottom-color:#58d4f5;background:rgba(88,212,245,.06)">
                     // DES — блоковий симетричний шифр (мережа Фейстеля)
                   </div>
                 </div>
-                <div class="workspace-panel active" style="display: block">
+                <div class="workspace-panel active" style="display:block">
                   <div class="info-chips">
-                    <div class="info-chip">
-                      <span class="chip-label">Тип:</span
-                      ><span class="chip-val">Симетричний блоковий</span>
-                    </div>
-                    <div class="info-chip">
-                      <span class="chip-label">Блок:</span
-                      ><span class="chip-val">64 біт (8 байт)</span>
-                    </div>
-                    <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val">56 біт (8 байт)</span>
-                    </div>
-                    <div class="info-chip">
-                      <span class="chip-label">Раундів:</span
-                      ><span class="chip-val">16 (мережа Фейстеля)</span>
-                    </div>
-                    <div class="info-chip">
-                      <span class="chip-label">Функція f:</span
-                      ><span class="chip-val">E → ⊕K → S-блоки → P</span>
-                    </div>
+                    <div class="info-chip"><span class="chip-label">Тип:</span><span class="chip-val">Симетричний блоковий</span></div>
+                    <div class="info-chip"><span class="chip-label">Блок:</span><span class="chip-val">64 біт (8 байт)</span></div>
+                    <div class="info-chip"><span class="chip-label">Ключ:</span><span class="chip-val">56 біт (8 байт)</span></div>
+                    <div class="info-chip"><span class="chip-label">Раундів:</span><span class="chip-val">16 (мережа Фейстеля)</span></div>
+                    <div class="info-chip"><span class="chip-label">Функція f:</span><span class="chip-val">E → ⊕K → S-блоки → P</span></div>
                   </div>
-
                   <div class="workspace-grid">
-                    <!-- LEFT COL -->
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label"
-                          >Відкритий текст (до 8 символів)</label
-                        >
-                        <textarea
-                          class="input-field"
-                          id="des-input"
-                          placeholder="до 8 символів; для розшифрування — 16 hex"
-                          style="resize: none; height: 100px; min-height: unset"
-                        >
-HELLO WORLD</textarea
-                        >
+                        <label class="input-label">Відкритий текст</label>
+                        <textarea class="input-field" id="des-input"
+                          placeholder="текст будь-якої довжини; для розшифрування — hex (16, 32, 48… символів)"
+                          style="resize:none;height:100px;min-height:unset">HELLO WORLD</textarea>
                       </div>
                       <div class="input-group">
                         <label class="input-label">Ключ (8 символів)</label>
-                        <input
-                          class="input-field-sm"
-                          id="des-key"
-                          value="SECRETKEY"
-                          placeholder="рівно 8 символів"
-                          style="height: 40px"
-                        />
+                        <input class="input-field-sm" id="des-key" value="SECRETKE"
+                          placeholder="рівно 8 символів" style="height:40px" />
+                        <div class="des-key-hint">Ключ → 64 біти → PC1 → 56 біт (C₀,D₀) → 16× зсув + PC2 → K₁…K₁₆. Кожен Kᵢ використовується в раунді i: E(R) ⊕ Kᵢ (див. секцію «Генерація підключів»).</div>
                       </div>
                       <div class="action-row">
-                        <button
-                          class="encrypt-btn"
-                          style="flex: 1"
-                          onclick="runDes()"
-                        >
-                          ⟶ Зашифрувати
-                        </button>
-                        <button
-                          class="decrypt-btn"
-                          style="flex: 1"
-                          onclick="runDesDecrypt()"
-                        >
-                          ⟵ Розшифрувати hex
-                        </button>
+                        <button class="encrypt-btn" style="flex:1" onclick="runDes()">⟶ Зашифрувати</button>
+                        <button class="decrypt-btn" style="flex:1" onclick="runDesDecrypt()">⟵ Розшифрувати hex</button>
                       </div>
                     </div>
-
-                    <!-- RIGHT COL -->
                     <div class="workspace-col">
                       <div class="input-group">
                         <label class="input-label">Результат</label>
-                        <div style="position: relative">
-                          <div
-                            class="result-box"
-                            id="des-result"
-            style="
-                              height: 100px;
-                              min-height: unset;
-                              overflow-y: auto;
-                              box-sizing: border-box;
-                              font-size: 0.72rem;
-                              word-break: break-all;
-                            "
-                          >
-                            <span class="result-empty"
-                              >Результат з'явиться тут...</span
-                            >
+                        <div style="position:relative">
+                          <div class="result-box" id="des-result"
+                            style="height:100px;min-height:unset;overflow-y:auto;box-sizing:border-box;font-size:.72rem;word-break:break-all">
+                            <span class="result-empty">Результат з'явиться тут...</span>
                           </div>
-                          <button
-                            class="copy-btn"
-                            onclick="copyResult('des-result', this)"
-                          >
-                            copy
-                          </button>
-          </div>
-                        <div
-                          id="des-decrypt-hint"
-            style="
-                            display: none;
-                            margin-top: 0.5rem;
-                            padding: 0.5rem 0.75rem;
-                            background: rgba(88, 212, 245, 0.06);
-                            border: 1px solid rgba(88, 212, 245, 0.25);
-                            border-radius: 4px;
-                            font-size: 0.62rem;
-              color: var(--text-dim);
-                            line-height: 1.6;
-                          "
-                        >
-                          <span style="color: #58d4f5; letter-spacing: 0.08em"
-                            >// hex результат</span
-                          ><br />
-                          <strong
-                            class="des-hint-hex"
-                            style="
-                              color: #58d4f5;
-                              font-family: var(--font-mono);
-                              letter-spacing: 0.08em;
-                            "
-                          ></strong>
+                          <button class="copy-btn" onclick="copyResult('des-result',this)">copy</button>
+                        </div>
+                        <div id="des-decrypt-hint" style="display:none;margin-top:.5rem;padding:.5rem .75rem;background:rgba(88,212,245,.06);border:1px solid rgba(88,212,245,.25);border-radius:4px;font-size:.62rem;color:var(--text-dim);line-height:1.6">
+                          <span style="color:#58d4f5;letter-spacing:.08em">// hex результат</span><br />
+                          <strong class="des-hint-hex" style="color:#58d4f5;font-family:var(--font-mono);letter-spacing:.08em"></strong>
                         </div>
                       </div>
-
                       <div class="steps-log">
                         <div class="steps-log-header">// кроки виконання</div>
                         <div class="steps-log-body" id="des-log">
                           <div class="log-line">
-                            <span class="log-idx">—</span
-                            ><span class="log-text"
-                              >Натисніть «Зашифрувати»</span
-                            >
+                            <span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  <!-- DES VISUALIZER -->
-                  <div class="caesar-vis" id="des-vis" style="margin-top: 1.5rem">
-                    <div class="cvis-header" id="des-vis-header">
-                      // мережа Фейстеля — 16 раундів шифрування
-                    </div>
-                    <div class="cvis-body" style="padding: 0.75rem 0">
-
-                      <!-- Pipeline overview strip -->
-                      <div class="des-pipeline" id="des-pipeline">
-                        <div class="des-pipe-node">Вхід<br /><span class="des-pipe-hex">64 біт</span></div>
-                        <div class="des-pipe-arrow">→</div>
-                        <div class="des-pipe-node des-pipe-ip">IP<br /><span style="font-size:.5rem;opacity:.7">перест.</span></div>
-                        <div class="des-pipe-arrow">→</div>
-                        <div class="des-pipe-node" style="font-size:.55rem;color:#d2b739;padding:.4rem .5rem">L₀<br /><span style="opacity:.5">32b</span></div>
-                        <div class="des-pipe-arrow" style="opacity:.3">│</div>
-                        <div class="des-pipe-node" style="font-size:.55rem;color:#58d4f5;padding:.4rem .5rem">R₀<br /><span style="opacity:.5">32b</span></div>
-                        <div class="des-pipe-arrow">→</div>
-                        <div class="des-pipe-node des-pipe-feistel">16 × Feistel<br /><span style="font-size:.5rem;opacity:.7">K₁..K₁₆</span></div>
-                        <div class="des-pipe-arrow">→</div>
-                        <div class="des-pipe-node des-pipe-ip">IP⁻¹<br /><span style="font-size:.5rem;opacity:.7">обернена</span></div>
-                        <div class="des-pipe-arrow">→</div>
-                        <div class="des-pipe-node">Вихід<br /><span class="des-pipe-hex">64 біт</span></div>
-                      </div>
-
-                      <!-- Interactive round navigator (hidden until encryption runs) -->
-                      <div id="des-ff-wrap" style="display:none; margin-top:1.25rem">
-                        <div class="des-rnav-row">
-                          <button class="des-rnav-btn" onclick="desStep(-1)">←</button>
-                          <div class="des-rstrip" id="des-rstrip"></div>
-                          <button class="des-rnav-btn" onclick="desStep(1)">→</button>
-                          <span class="des-rstep-ctr" id="des-round-counter">1 / 16</span>
-                        </div>
-                        <div id="des-feistel-diagram"></div>
-                      </div>
-
-                      <!-- Collapsible reference table -->
-                      <div style="margin-top:1.25rem">
-                        <div
-                          class="cvis-header"
-                          style="cursor:pointer;user-select:none"
-                          onclick="
-                            const b=document.getElementById('des-rounds-section');
-                            b.style.display=b.style.display===\'none\'?\'block\':\'none\';
-                            this.querySelector(\'[data-arr]\').textContent=b.style.display===\'none\'?\'▶\':\'▼\';
-                          "
-                        >
-                          // таблиця всіх 16 раундів
-                          <span data-arr style="margin-left:.5rem;font-size:.6rem">▶</span>
-                        </div>
-                        <div id="des-rounds-section" style="display:none">
-                          <div class="des-rounds-wrap">
-                            <table class="des-rounds-table">
-                              <thead>
-                                <tr>
-                                  <th>Раунд</th>
-                                  <th>L (32 bit hex)</th>
-                                  <th>R (32 bit hex)</th>
-                                </tr>
-                              </thead>
-                              <tbody id="des-rounds-body">
-                                <tr>
-                                  <td colspan="3" class="des-rounds-empty">
-                                    // запустіть шифрування
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="cvis-hint">
-                      ■ <span style="color:#d2b739">жовтий</span> — L вхід &nbsp;·&nbsp;
-                      ■ <span style="color:#58d4f5">блакитний</span> — R вхід / новий L &nbsp;·&nbsp;
-                      ■ <span style="color:#39d353">зелений</span> — новий R = L⊕f &nbsp;·&nbsp;
-                      ■ <span style="color:#b57ef5">фіолетовий</span> — функція f(R, K<sub>i</sub>)
-                    </div>
-          </div>
+                </div>
+              </div>
             </section>
+
+            <!-- ══════════════════════════════════════════
+                 03 — ТЕКСТ → HEX → БІТИ
+                 ══════════════════════════════════════════ -->
+            <section id="sec-text-hex" style="margin-bottom:2rem">
+              <div class="caesar-vis">
+                <div class="cvis-header">// Як текст стає 64 бітами: символ → ASCII → hex → біти</div>
+                <div id="text-hex-block-selector" class="des-rnav-row des-rnav-row-circles" style="display:none;margin:.6rem 0 .4rem;gap:.25rem"></div>
+                <div class="cvis-body cvis-body-centered" style="padding:1rem">
+                  <div id="text-hex-display">
+                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8">
+                      ← Зашифруй текст (розділ 02), щоб побачити перетворення
+                    </div>
+                  </div>
+                </div>
+                <div class="cvis-hint">
+                  <span class="cvis-legend">
+                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">символ</span></span>·
+                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">hex</span></span>·
+                    <span><span class="cvis-dot green"></span><span class="cvis-label-green" style="color:#39d353">біти</span></span>
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ══════════════════════════════════════════
+                 04 — ТАБЛИЦЯ IP
+                 ══════════════════════════════════════════ -->
+            <section id="sec-ip-table" style="margin-bottom:2rem">
+              <div class="caesar-vis">
+                <div class="cvis-header">// Таблиця IP — початкова перестановка бітів</div>
+                <div class="cvis-body" style="padding:1rem">
+                  <p style="font-size:.72rem;color:var(--text-muted);line-height:1.8;margin-bottom:1rem">
+                    Таблиця IP визначає <strong style="color:var(--text)">новий порядок біт</strong>.
+                    Число в клітинці = <em>звідки</em> беремо біт. Наприклад, перша клітинка = 58:
+                    біт №58 з оригіналу стає бітом №1 після перестановки.
+                  </p>
+                  <div id="ip-table-static"></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ══════════════════════════════════════════
+                 05 — ПЕРЕСТАНОВКА IP (застосована)
+                 ══════════════════════════════════════════ -->
+            <section id="sec-ip-perm" style="margin-bottom:2rem">
+              <div class="caesar-vis">
+                <div class="cvis-header">// Початкова перестановка IP — застосовуємо таблицю до вхідного блоку</div>
+                <div class="cvis-body" style="padding:1rem">
+                  <div id="ip-perm-display">
+                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8">
+                      ← Спочатку зашифруй текст (розділ 02), щоб побачити реальну перестановку бітів
+                    </div>
+                  </div>
+                </div>
+                <div class="cvis-hint">
+                  <span class="cvis-legend">
+                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — вхідний біт (до IP)</span>·
+                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — вихідний біт (після IP)</span>
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ══════════════════════════════════════════
+                 06 — ПОДІЛ НА L₀ / R₀
+                 ══════════════════════════════════════════ -->
+            <section id="sec-split" style="margin-bottom:2rem">
+              <div class="caesar-vis">
+                <div class="cvis-header">// Поділ на L₀ (ліва) та R₀ (права) половини</div>
+                <div class="cvis-body" style="padding:1rem">
+                  <div id="split-display">
+                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8">
+                      ← Спочатку зашифруй текст (розділ 02), щоб побачити реальний поділ
+                    </div>
+                  </div>
+                </div>
+                <div class="cvis-hint">
+                  <span class="cvis-legend">
+                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — L₀ (біти 1–32)</span>·
+                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — R₀ (біти 33–64)</span>
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ══════════════════════════════════════════
+                 07 — ГЕНЕРАЦІЯ ПІДКЛЮЧІВ K₁…K₁₆
+                 ══════════════════════════════════════════ -->
+            <section id="sec-key-schedule" style="margin-bottom:2rem">
+              <div class="caesar-vis">
+                <div class="cvis-header">// Як ключ стає підключами K₁…K₁₆ — етапи перетворення</div>
+                <div class="cvis-body" style="padding:1rem">
+                  <div id="key-schedule-display">
+                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8">
+                      ← Зашифруй текст (розділ 02), щоб побачити перетворення ключа
+                    </div>
+                  </div>
+                </div>
+                <div class="cvis-hint">
+                  <span class="cvis-legend">
+                    <span><span class="cvis-dot purple"></span><span class="cvis-label-purple">фіолетовий</span> — ключ</span>·
+                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — C₀, D₀</span>·
+                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — Kᵢ використовується в раунді i: E(R) ⊕ Kᵢ</span>
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ══════════════════════════════════════════
+                 08 — 16 РАУНДІВ ФЕЙСТЕЛЯ
+                 ══════════════════════════════════════════ -->
+            <section id="sec-rounds" style="margin-bottom:2rem">
+              <div class="caesar-vis" id="des-vis">
+                <div class="cvis-header" id="des-vis-header">
+                  // 16 раундів мережі Фейстеля
+                </div>
+                <div class="cvis-body" style="padding:.75rem 0">
+
+                  <!-- Pipeline overview -->
+                  <div class="des-pipeline" id="des-pipeline">
+                    <div class="des-pipe-node">Вхід<br /><span class="des-pipe-hex">64 біт</span></div>
+                    <div class="des-pipe-arrow">→</div>
+                    <div class="des-pipe-node des-pipe-ip">IP<br /><span style="font-size:.5rem;opacity:.7">перест.</span></div>
+                    <div class="des-pipe-arrow">→</div>
+                    <div class="des-pipe-node" style="font-size:.55rem;color:#d2b739;padding:.4rem .5rem">L₀<br /><span style="opacity:.5">32b</span></div>
+                    <div class="des-pipe-arrow" style="opacity:.3">│</div>
+                    <div class="des-pipe-node" style="font-size:.55rem;color:#58d4f5;padding:.4rem .5rem">R₀<br /><span style="opacity:.5">32b</span></div>
+                    <div class="des-pipe-arrow">→</div>
+                    <div class="des-pipe-node des-pipe-feistel">16 × Feistel<br /><span style="font-size:.5rem;opacity:.7">K₁..K₁₆</span></div>
+                    <div class="des-pipe-arrow">→</div>
+                    <div class="des-pipe-node des-pipe-ip">IP⁻¹<br /><span style="font-size:.5rem;opacity:.7">обернена</span></div>
+                    <div class="des-pipe-arrow">→</div>
+                    <div class="des-pipe-node">Вихід<br /><span class="des-pipe-hex">64 біт</span></div>
+                  </div>
+
+                  <!-- Round navigator (hidden until run) -->
+                  <div id="des-ff-wrap" style="display:none;margin-top:1.25rem;padding:0 1.5rem">
+                    <div class="des-rnav-row des-rnav-row-circles">
+                      <div id="des-round-dots"></div>
+                    </div>
+                    <div id="des-feistel-diagram"></div>
+                  </div>
+
+                  <!-- Collapsible reference table -->
+                  <div style="margin-top:1.25rem;padding:0 1.5rem">
+                    <div class="cvis-header" style="cursor:pointer;user-select:none"
+                      onclick="
+                        const b=document.getElementById('des-rounds-section');
+                        b.style.display=b.style.display==='none'?'block':'none';
+                        this.textContent=b.style.display==='none'?'// таблиця 16 раундів ▶':'// таблиця 16 раундів ▼';
+                      ">// таблиця 16 раундів ▼</div>
+                    <div id="des-rounds-section">
+                      <div class="des-rounds-wrap">
+                        <table class="des-rounds-table">
+                          <thead>
+                            <tr><th>Раунд</th><th>L (hex)</th><th>R (hex)</th><th>K (підключ)</th><th>f (hex)</th><th>Формула</th></tr>
+                          </thead>
+                          <tbody id="des-rounds-body">
+                            <tr><td colspan="6" class="des-rounds-empty">// запустіть шифрування</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="cvis-hint">
+                  <span class="cvis-legend">
+                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — L вхід</span>·
+                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — R вхід / новий L</span>·
+                    <span><span class="cvis-dot green"></span><span class="cvis-label-green">зелений</span> — новий R = L⊕f</span>·
+                    <span><span class="cvis-dot purple"></span><span class="cvis-label-purple">фіолетовий</span> — функція f</span>
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ══════════════════════════════════════════
+                 08 — КІНЦЕВА ПЕРЕСТАНОВКА IP⁻¹
+                 ══════════════════════════════════════════ -->
+            <section id="sec-ip-inv" style="margin-bottom:2rem">
+              <div class="caesar-vis">
+                <div class="cvis-header">// Кінцева перестановка IP⁻¹ — зворотня до початкової</div>
+                <div class="cvis-body" style="padding:1rem">
+                  <p style="font-size:.72rem;color:var(--text-muted);line-height:1.8;margin-bottom:1rem">
+                    Після 16 раундів маємо <strong style="color:#58d4f5">L₁₆</strong> і
+                    <strong style="color:#39d353">R₁₆</strong>.
+                    Їх <strong style="color:var(--text)">міняємо місцями</strong> (R₁₆ | L₁₆)
+                    і застосовуємо таблицю IP⁻¹ — вона є точним оберненням початкової IP.
+                  </p>
+                  <div id="ip-inv-table-display"></div>
+                  <div id="ip-inv-result-display" style="margin-top:1rem">
+                    <div style="font-size:.72rem;color:var(--text-muted)">← Зашифруй текст щоб побачити реальні значення</div>
+                  </div>
+                  <div style="margin-top:1rem;padding:.65rem .9rem;background:rgba(57,211,83,.05);border:1px solid rgba(57,211,83,.2);border-radius:6px;font-size:.65rem;color:var(--text-muted);line-height:1.8">
+                    <span style="color:#39d353;font-weight:700">Пояснення:</span>
+                    IP⁻¹ — це не шифрування, а зворотня операція до початкової IP. Якщо IP переставляє біти вхідного блоку, то IP⁻¹ повертає їх на місця. Тобто IP⁻¹(IP(x)) = x. Криптостійкість DES забезпечується саме 16 раундами Фейстеля з S-блоками, а не цими перестановками. IP та IP⁻¹ були додані в 1977 р. для зручності апаратної реалізації на мікросхемі — вони дозволяли читати/записувати біти в зручному порядку.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- NAV -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--border);margin-top:1.5rem">
+              <a href="lab03.html" class="btn-secondary">← Лаб. 03</a>
+              <a href="lab05.html" class="btn-primary">Лаб. 05 →</a>
+            </div>
           </main>
         </div>
       </div>
@@ -376,14 +427,19 @@ HELLO WORLD</textarea
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/des.js"></script>
     <script>
-      "use strict";
+      'use strict';
 
-      /* ── state ───────────────────────────────────────────────── */
+      /* ── state ── */
+      let _desBlocksData = [];
+      let _desBlockIdx = 0;
       let _desRoundsData = null;
       let _desL0 = '', _desR0 = '';
       let _desRoundIdx = 0;
+      let _desKeyHex = '';
+      let _desFullResult = '';
+      let _desDecrypt = false;
 
-      /* ── helpers ─────────────────────────────────────────────── */
+      /* ── helpers ── */
       function hexToText(hex) {
         let str = '';
         for (let i = 0; i < hex.length; i += 2)
@@ -403,49 +459,414 @@ HELLO WORLD</textarea
         });
       }
 
-      /* ── DES encrypt ─────────────────────────────────────────── */
+      /* ── Bit rendering ── */
+      function renderBits(bits, colorCls, groupBy) {
+        if (!bits || !bits.length) return '<span style="color:var(--text-muted);font-size:.56rem">—</span>';
+        groupBy = groupBy || 8;
+        let html = '<span class="dbv-bits ' + (colorCls || '') + '">';
+        for (let i = 0; i < bits.length; i++) {
+          if (i > 0 && i % groupBy === 0) html += '<span class="dbv-sep"></span>';
+          html += '<span class="dbv-bit b' + bits[i] + '">' + bits[i] + '</span>';
+        }
+        return html + '</span>';
+      }
+
+      /* ── Permutation grid ── */
+      function renderPermGrid(table, cols, hiSet) {
+        let html = '<div class="dbv-perm-wrap"><table class="dbv-perm-table"><tbody>';
+        for (let i = 0; i < table.length; i += cols) {
+          html += '<tr>';
+          for (let j = 0; j < cols && i + j < table.length; j++) {
+            const v = table[i + j];
+            const hi = hiSet && hiSet.has(v);
+            html += '<td class="' + (hi ? 'pt-hi' : '') + '">' + v + '</td>';
+          }
+          html += '</tr>';
+        }
+        return html + '</tbody></table></div>';
+      }
+
+      /* ── S-box table ── */
+      function renderSboxTable(sboxIdx, selRow, selCol) {
+        const DT = window.CL.DES_TABLES;
+        if (!DT) return '';
+        const tbl = DT.S[sboxIdx];
+        let html = '<div class="dbv-sbox-table-wrap"><table class="dbv-sbox-table"><thead><tr>';
+        html += '<th class="srow-lbl"></th>';
+        for (let c = 0; c < 16; c++) html += '<th class="' + (c === selCol ? 'scol-hi' : '') + '">' + c + '</th>';
+        html += '</tr></thead><tbody>';
+        for (let r = 0; r < 4; r++) {
+          html += '<tr class="' + (r === selRow ? 'srow-hi' : '') + '"><td class="srow-lbl">' + (r === selRow ? '→' : '') + r + '</td>';
+          for (let cc = 0; cc < 16; cc++)
+            html += '<td class="' + (r === selRow && cc === selCol ? 'scell-result' : '') + '">' + tbl[r][cc] + '</td>';
+          html += '</tr>';
+        }
+        return html + '</tbody></table></div>';
+      }
+
+      /* ══════════════════════════════════════════════════════
+         Генерація підключів K₁…K₁₆
+         ══════════════════════════════════════════════════════ */
+      function renderKeyScheduleDisplay(keyHex) {
+        const el = document.getElementById('key-schedule-display');
+        if (!el || !keyHex || keyHex.length < 16) return;
+        const ks = window.CL.DES.getKeySchedule(keyHex);
+        if (!ks) return;
+        const { keyBits, bitsWithoutParity, pc1Bits, C0, D0, subkeys } = ks;
+        const keyStr = (keyHex.match(/.{2}/g) || []).slice(0, 8).map(h => String.fromCharCode(parseInt(h, 16))).join('');
+        let html = '';
+        html += '<div style="display:flex;flex-direction:column;gap:1rem;align-items:center">';
+        html += '<div style="text-align:center;width:100%"><div style="font-size:.58rem;color:#b57ef5;margin-bottom:.35rem;font-weight:700">① Ключ (8 символів) → hex → 64 біти</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:.25rem;justify-content:center;margin-bottom:.25rem">';
+        for (let i = 0; i < 8; i++) {
+          const ch = keyStr[i] || '\0';
+          const dc = ch.charCodeAt(0);
+          const hx = dc.toString(16).toUpperCase().padStart(2, '0');
+          const chDisp = dc < 32 || dc > 126 ? '0x' + hx : (ch === ' ' ? '⎵' : ch);
+          html += '<span style="background:rgba(181,126,245,.1);border:1px solid rgba(181,126,245,.3);border-radius:4px;padding:.2rem .35rem;font-family:var(--font-mono);font-size:.7rem;color:#b57ef5">' + chDisp + '→' + hx + '</span>';
+        }
+        html += '</div>';
+        html += '<div style="font-family:var(--font-mono);font-size:.75rem;color:#58d4f5;letter-spacing:.05em">' + keyHex.toUpperCase().slice(0, 16) + '</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:center;margin-top:.2rem">';
+        keyBits.forEach((b, i) => {
+          const isParity = (i + 1) % 8 === 0;
+          const style = isParity ? 'opacity:.4;text-decoration:line-through;background:rgba(255,100,100,.15)!important' : (b ? 'color:#39d353;background:rgba(57,211,83,.2)' : 'color:rgba(57,211,83,.5);background:rgba(57,211,83,.06)');
+          html += '<span class="dbv-bit b' + b + '" style="width:10px;height:12px;font-size:.4rem;border-radius:1px;' + style + '">' + b + '</span>';
+          if ((i+1) % 8 === 0 && i < 63) html += '<span style="width:4px"></span>';
+        });
+        html += '</div>';
+        html += '<div style="font-size:.5rem;color:var(--text-muted);margin-top:.15rem">закреслені — біти парності (кожен 8-й), їх видаляємо</div></div>';
+
+        html += '<div style="text-align:center;width:100%"><div style="font-size:.58rem;color:#d2b739;margin-bottom:.35rem;font-weight:700">② Після видалення кожного 8-го біту → 56 бітів</div>';
+        html += '<div style="font-size:.5rem;color:var(--text-muted);margin-bottom:.2rem">Залишилися біти 1–7, 9–15, 17–23, … (без 8, 16, 24, 32, 40, 48, 56, 64)</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:center">';
+        bitsWithoutParity.forEach((b, i) => {
+          html += '<span class="dbv-bit b' + b + '" style="width:10px;height:12px;font-size:.4rem;color:' + (b ? '#d2b739' : 'rgba(210,183,57,.5)') + ';background:' + (b ? 'rgba(210,183,57,.15)' : 'rgba(210,183,57,.05)') + ';border-radius:1px">' + b + '</span>';
+          if ((i+1) % 7 === 0 && i < 54) html += '<span style="width:6px;color:var(--text-muted);font-size:.45rem">|</span>';
+        });
+        html += '</div></div>';
+
+        html += '<div style="text-align:center;width:100%"><div style="font-size:.58rem;color:#58d4f5;margin-bottom:.35rem;font-weight:700">③ Після застосування таблиці PC1 → перестановка 56 бітів</div>';
+        html += '<div style="font-size:.5rem;color:var(--text-muted);margin-bottom:.35rem">Таблиця PC1 (56 позицій): число = <em>звідки</em> беремо біт у 64-бітному ключі. Напр. 57 → біт №57 стає на місце 1.</div>';
+        const DT = window.CL.DES_TABLES;
+        if (DT && DT.PC1) {
+          html += '<div style="display:flex;justify-content:center;margin-bottom:.5rem">' + renderPermGrid(DT.PC1, 7) + '</div>';
+        }
+        html += '<div style="font-size:.5rem;color:var(--text-muted);margin-bottom:.2rem">Результат застосування PC1:</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:center">';
+        pc1Bits.forEach((b, i) => {
+          html += '<span class="dbv-bit b' + b + '" style="width:10px;height:12px;font-size:.4rem;color:' + (b ? '#58d4f5' : 'rgba(88,212,245,.5)') + ';background:' + (b ? 'rgba(88,212,245,.15)' : 'rgba(88,212,245,.05)') + ';border-radius:1px">' + b + '</span>';
+          if ((i+1) % 28 === 0 && i < 55) html += '<span style="width:8px;color:var(--text-muted);font-size:.5rem">|</span>';
+        });
+        html += '</div>';
+        html += '<div style="font-size:.5rem;color:var(--text-muted);margin-top:.2rem">C₀ (28 біт) | D₀ (28 біт)</div></div>';
+
+        html += '<div style="text-align:center;width:100%"><div style="font-size:.58rem;color:#58d4f5;margin-bottom:.35rem;font-weight:700">④ 16× (зсув C,D + PC2) → K₁…K₁₆ (по 48 біт)</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center">';
+        subkeys.forEach((sk, i) => {
+          const kHex = bitsToHexLocal(sk);
+          html += '<div style="background:rgba(88,212,245,.06);border:1px solid rgba(88,212,245,.25);border-radius:4px;padding:.25rem .4rem;text-align:center"><div style="font-size:.48rem;color:#58d4f5;font-weight:700">K' + (i+1) + '</div><div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.02em">' + kHex + '</div></div>';
+        });
+        html += '</div></div>';
+
+        html += '<div style="padding:.6rem .9rem;background:rgba(57,211,83,.05);border:1px solid rgba(57,211,83,.2);border-radius:6px;font-size:.62rem;color:var(--text-muted);line-height:1.7;text-align:center">';
+        html += '<strong style="color:#39d353">Де використовується:</strong> Кожен Kᵢ — у раунді i у кроці <strong>② XOR з підключем</strong>: E(R) ⊕ Kᵢ. Тобто розширений R (48 біт) XOR-иться з підключем Kᵢ (48 біт).';
+        html += '</div></div>';
+        el.innerHTML = html;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         SEC 03 — Текст → Hex → Біти
+         ══════════════════════════════════════════════════════ */
+      function renderTextHexDisplay(textPadded, textHex, inputBits, blockNum, totalBlocks) {
+        const el = document.getElementById('text-hex-display');
+        if (!el) return;
+        let html = '';
+        if (totalBlocks > 1) html += '<div style="font-size:.58rem;color:#ff9550;margin-bottom:.5rem;font-weight:700">Блок ' + blockNum + ' з ' + totalBlocks + '</div>';
+
+        html += '<div style="font-size:.6rem;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.1em;text-transform:uppercase">Крок 1 — кожен символ → ASCII-код → hex:</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;justify-content:center">';
+        for (let i = 0; i < 8; i++) {
+          const ch  = textPadded[i];
+          const dec = ch.charCodeAt(0);
+          const hex = dec.toString(16).toUpperCase().padStart(2, '0');
+          const bin = dec.toString(2).padStart(8, '0');
+          const isNull = dec === 0;
+          const charDisp = isNull ? '\\0' : (ch === ' ' ? '⎵' : (dec < 32 || dec > 126 ? '0x' + hex : ch));
+          const s = isNull
+            ? 'background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;padding:.55rem .6rem;min-width:64px;text-align:center;opacity:.45'
+            : 'background:rgba(210,183,57,.05);border:1px solid rgba(210,183,57,.25);border-radius:6px;padding:.55rem .6rem;min-width:64px;text-align:center';
+          html += '<div style="' + s + '">';
+          html += '<div style="font-family:var(--font-mono);font-size:1.2rem;font-weight:700;color:#d2b739;line-height:1;margin-bottom:.2rem">' + charDisp + '</div>';
+          html += '<div style="font-size:.46rem;color:var(--text-muted);margin-bottom:.15rem">dec: ' + dec + '</div>';
+          html += '<div style="font-family:var(--font-mono);font-size:.75rem;font-weight:700;color:#58d4f5;background:rgba(88,212,245,.1);border:1px solid rgba(88,212,245,.25);border-radius:3px;padding:.05rem .3rem;display:inline-block;margin-bottom:.2rem">' + hex + '</div>';
+          html += '<div style="font-family:var(--font-mono);font-size:.38rem;color:var(--text-dim);letter-spacing:.02em;margin-top:.15rem">' + bin + '</div>';
+          html += '</div>';
+        }
+        html += '</div>';
+
+        html += '<div style="font-size:.6rem;color:var(--text-muted);margin-bottom:.4rem;letter-spacing:.1em;text-transform:uppercase">Крок 2 — склеюємо всі hex-байти в один рядок:</div>';
+        html += '<div style="display:flex;align-items:center;flex-wrap:wrap;gap:.3rem;margin-bottom:.35rem;padding:.6rem .85rem;background:rgba(88,212,245,.04);border:1px solid rgba(88,212,245,.2);border-radius:6px;justify-content:center">';
+        for (let i = 0; i < 8; i++) {
+          const h = textPadded[i].charCodeAt(0).toString(16).toUpperCase().padStart(2, '0');
+          if (i > 0) html += '<span style="font-size:.6rem;color:var(--text-dim)">+</span>';
+          html += '<span style="font-family:var(--font-mono);font-size:.8rem;font-weight:700;color:#58d4f5">' + h + '</span>';
+        }
+        html += '<span style="font-size:.7rem;color:var(--text-dim);margin:0 .25rem">=</span>';
+        html += '<span style="font-family:var(--font-mono);font-size:.9rem;font-weight:700;color:#58d4f5;letter-spacing:.08em">' + textHex.toUpperCase() + '</span>';
+        html += '</div>';
+
+        html += '<div style="font-size:.6rem;color:var(--text-muted);margin-bottom:.4rem;letter-spacing:.1em;text-transform:uppercase">Крок 3 — hex → 64 біти (по 8 бітів на символ):</div>';
+        html += '<div style="padding:.65rem .85rem;background:rgba(57,211,83,.03);border:1px solid rgba(57,211,83,.18);border-radius:6px">';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:.4rem;justify-content:center">';
+        for (let i = 0; i < 8; i++) {
+          const byteBits = inputBits.slice(i * 8, i * 8 + 8);
+          const ch = textPadded[i];
+          const dc = ch.charCodeAt(0);
+          const hx = dc.toString(16).toUpperCase().padStart(2, '0');
+          const chDisp = dc < 32 || dc > 126 ? '0x' + hx : (ch === ' ' ? '⎵' : ch === '\x00' ? '\\0' : ch);
+          html += '<div style="display:flex;flex-direction:column;align-items:center;gap:2px">';
+          html += '<div style="font-size:.42rem;color:#d2b739;font-family:var(--font-mono);font-weight:700">' + chDisp + '</div>';
+          html += '<div class="dv-green" style="display:flex;gap:1px">';
+          byteBits.forEach(b => {
+            html += '<span class="dbv-bit b' + b + '" style="width:13px;height:16px;font-size:.5rem;color:' + (b ? '#39d353' : 'rgba(57,211,83,.4)') + ';background:' + (b ? 'rgba(57,211,83,.2)' : 'rgba(57,211,83,.06)') + ';border-radius:2px">' + b + '</span>';
+          });
+          html += '</div>';
+          html += '<div style="font-size:.42rem;color:#58d4f5;font-family:var(--font-mono)">' + hx + '</div>';
+          html += '</div>';
+          if (i < 7) html += '<div style="width:1px;background:var(--border);margin:0 1px;align-self:stretch"></div>';
+        }
+        html += '</div>';
+        html += '<div class="dbv-hex" style="color:#39d353;font-size:.65rem;font-weight:700;margin-top:.2rem">' + textHex.toUpperCase() + ' = 64 біти готові до IP</div>';
+        html += '</div>';
+
+        el.innerHTML = html;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         SEC 04 — IP Table (static, rendered on load)
+         ══════════════════════════════════════════════════════ */
+      function renderIPTableStatic() {
+        const DT = window.CL.DES_TABLES;
+        if (!DT) return;
+        const el = document.getElementById('ip-table-static');
+        if (!el) return;
+
+        let html = '<div style="font-size:.6rem;color:var(--text-muted);margin-bottom:.5rem;text-align:center">Таблиця IP — 64 позиції (8×8). Число = <em>звідки</em> беремо біт у вхідному блоці:</div>';
+        html += '<div class="dbv-perm-wrap" style="display:flex;justify-content:center"><table class="dbv-perm-table" style="font-size:.55rem"><tbody>';
+        for (let i = 0; i < 64; i += 8) {
+          html += '<tr>';
+          for (let j = 0; j < 8; j++) html += '<td style="width:28px;height:24px;font-size:.52rem">' + DT.IP[i + j] + '</td>';
+          html += '</tr>';
+        }
+        html += '</tbody></table></div>';
+
+        html += '<div style="font-size:.6rem;color:var(--text-muted);margin:.85rem 0 .5rem;text-align:center">Таблиця IP⁻¹ — зворотня перестановка (застосовується в кінці):</div>';
+        html += '<div class="dbv-perm-wrap" style="display:flex;justify-content:center"><table class="dbv-perm-table" style="font-size:.55rem"><tbody>';
+        for (let i = 0; i < 64; i += 8) {
+          html += '<tr>';
+          for (let j = 0; j < 8; j++) html += '<td style="width:28px;height:24px;font-size:.52rem;background:rgba(57,211,83,.04);color:rgba(57,211,83,.6)">' + DT.IP_INV[i + j] + '</td>';
+          html += '</tr>';
+        }
+        html += '</tbody></table></div>';
+
+        el.innerHTML = html;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         SEC 05 — IP Permutation (after encryption)
+         ══════════════════════════════════════════════════════ */
+      function renderIPPermDisplay(textBits, ipBits) {
+        const DT = window.CL.DES_TABLES;
+        const el = document.getElementById('ip-perm-display');
+        if (!el) return;
+        let html = '';
+
+        html += '<div style="margin-bottom:1rem">';
+        html += '<div style="font-size:.6rem;color:var(--text-muted);margin-bottom:.35rem;letter-spacing:.1em;text-transform:uppercase">Вхідний блок (64 біти — до IP):</div>';
+        html += renderBits(textBits, 'dv-yellow', 8);
+        html += '<div class="dbv-hex">' + bitsToHexLocal(textBits) + '</div>';
+        html += '</div>';
+
+        html += '<div style="text-align:center;color:var(--text-muted);font-size:.7rem;padding:.4rem 0">↓ застосовуємо таблицю IP (кожен біт іде на нове місце)</div>';
+
+        html += '<div style="margin-bottom:1rem">';
+        html += '<div style="font-size:.6rem;color:var(--text-muted);margin-bottom:.35rem;letter-spacing:.1em;text-transform:uppercase">Після IP (64 біти — переставлені):</div>';
+        html += renderBits(ipBits, 'dv-cyan', 8);
+        html += '<div class="dbv-hex">' + bitsToHexLocal(ipBits) + '</div>';
+        html += '</div>';
+
+        html += '<div style="font-size:.6rem;color:var(--text-muted);margin:.85rem 0 .5rem;text-align:center">Приклад перестановки — перші 16 позицій:</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:.3rem;justify-content:center">';
+        for (let i = 0; i < 16; i++) {
+          const srcPos = DT.IP[i];
+          const srcBit = textBits[srcPos - 1];
+          const dstBit = ipBits[i];
+          html += '<div style="display:flex;flex-direction:column;align-items:center;gap:2px;min-width:42px">';
+          html += '<div style="font-size:.45rem;color:var(--text-dim)">біт ' + srcPos + '</div>';
+          html += '<div class="dbv-bit b' + srcBit + ' dv-yellow" style="width:18px;height:18px">' + srcBit + '</div>';
+          html += '<div style="font-size:.5rem;color:var(--text-dim)">↓</div>';
+          html += '<div class="dbv-bit b' + dstBit + ' dv-cyan" style="width:18px;height:18px">' + dstBit + '</div>';
+          html += '<div style="font-size:.45rem;color:var(--text-dim)">поз. ' + (i + 1) + '</div>';
+          html += '</div>';
+        }
+        html += '</div>';
+
+        el.innerHTML = html;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         SEC 06 — Split L₀ / R₀
+         ══════════════════════════════════════════════════════ */
+      function renderSplitDisplay(ipBits, L0hex, R0hex) {
+        const el = document.getElementById('split-display');
+        if (!el) return;
+        const L0bits = ipBits.slice(0, 32);
+        const R0bits = ipBits.slice(32, 64);
+        let html = '';
+
+        html += '<div style="margin-bottom:.75rem">';
+        html += '<div style="font-size:.6rem;color:var(--text-muted);margin-bottom:.35rem;letter-spacing:.1em;text-transform:uppercase">64 біти після IP (ділимо навпіл):</div>';
+        html += '<div class="dbv-bits" style="flex-wrap:wrap">';
+        for (let i = 0; i < 64; i++) {
+          if (i > 0 && i % 8 === 0) html += '<span class="dbv-sep"></span>';
+          const cls = i < 32 ? 'dv-yellow' : 'dv-cyan';
+          html += '<span class="dbv-bits ' + cls + '"><span class="dbv-bit b' + ipBits[i] + '">' + ipBits[i] + '</span></span>';
+        }
+        html += '</div></div>';
+
+        html += '<div style="text-align:center;color:var(--text-muted);font-size:.7rem;padding:.3rem 0">↓ ділимо на дві рівні половини по 32 біти</div>';
+
+        html += '<div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:0;margin-top:.5rem">';
+        html += '<div style="padding:.75rem;background:rgba(210,183,57,.04);border:1px solid rgba(210,183,57,.2);border-radius:6px 0 0 6px">';
+        html += '<div style="font-size:.58rem;color:#d2b739;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;font-weight:700">L₀ — ЛІВА ПОЛОВИНА</div>';
+        html += '<div style="font-size:.52rem;color:var(--text-muted);margin-bottom:.35rem">Біти 1–32:</div>';
+        html += renderBits(L0bits, 'dv-yellow', 8);
+        html += '<div class="dbv-hex" style="color:#d2b739;margin-top:.3rem;font-size:.68rem;font-weight:700">' + L0hex + '</div>';
+        html += '</div>';
+        html += '<div style="background:var(--border)"></div>';
+        html += '<div style="padding:.75rem;background:rgba(88,212,245,.04);border:1px solid rgba(88,212,245,.2);border-radius:0 6px 6px 0">';
+        html += '<div style="font-size:.58rem;color:#58d4f5;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;font-weight:700">R₀ — ПРАВА ПОЛОВИНА</div>';
+        html += '<div style="font-size:.52rem;color:var(--text-muted);margin-bottom:.35rem">Біти 33–64:</div>';
+        html += renderBits(R0bits, 'dv-cyan', 8);
+        html += '<div class="dbv-hex" style="color:#58d4f5;margin-top:.3rem;font-size:.68rem;font-weight:700">' + R0hex + '</div>';
+        html += '</div></div>';
+
+        html += '<div style="margin-top:.85rem;padding:.65rem .9rem;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;font-size:.65rem;color:var(--text-muted);line-height:1.7">';
+        html += '<strong style="color:var(--text)">L₀</strong> і <strong style="color:var(--text)">R₀</strong> — початкові значення для 16 раундів. ';
+        html += 'Далі кожен раунд: <span style="color:#d2b739">Lᵢ = Rᵢ₋₁</span> та <span style="color:#39d353">Rᵢ = Lᵢ₋₁ ⊕ f(Rᵢ₋₁, Kᵢ)</span>';
+        html += '</div>';
+
+        el.innerHTML = html;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         SEC 08 — IP⁻¹ table (static) + result
+         ══════════════════════════════════════════════════════ */
+      function renderIPInvTableStatic() {
+        const DT = window.CL.DES_TABLES;
+        if (!DT) return;
+        const el = document.getElementById('ip-inv-table-display');
+        if (!el) return;
+        let html = '<div style="font-size:.6rem;color:var(--text-muted);margin-bottom:.5rem;text-align:center">Таблиця IP⁻¹ — 64 позиції (8×8):</div>';
+        html += '<div class="dbv-perm-wrap" style="display:flex;justify-content:center"><table class="dbv-perm-table" style="font-size:.55rem"><tbody>';
+        for (let i = 0; i < 64; i += 8) {
+          html += '<tr>';
+          for (let j = 0; j < 8; j++) html += '<td style="width:28px;height:24px;font-size:.52rem;background:rgba(57,211,83,.04);color:rgba(57,211,83,.7)">' + DT.IP_INV[i + j] + '</td>';
+          html += '</tr>';
+        }
+        html += '</tbody></table></div>';
+        el.innerHTML = html;
+      }
+
+      function renderIPInvResult(L16hex, R16hex, resultHex, blockNum, totalBlocks) {
+        const el = document.getElementById('ip-inv-result-display');
+        if (!el) return;
+        const L16bits  = hexToBitsLocal(L16hex);
+        const R16bits  = hexToBitsLocal(R16hex);
+        const combined = [...R16bits, ...L16bits];
+        const resultBits = hexToBitsLocal(resultHex);
+        let html = '';
+        if (totalBlocks > 1) html += '<div style="font-size:.58rem;color:#ff9550;margin-bottom:.5rem;font-weight:700">Блок ' + blockNum + ' з ' + totalBlocks + '</div>';
+
+        html += '<div style="margin-bottom:.75rem">';
+        html += '<div style="font-size:.58rem;color:#58d4f5;letter-spacing:.1em;margin-bottom:.3rem">L₁₆ (після 16 раундів):</div>';
+        html += renderBits(L16bits, 'dv-cyan', 8) + '<div class="dbv-hex">' + L16hex + '</div></div>';
+
+        html += '<div style="margin-bottom:.75rem">';
+        html += '<div style="font-size:.58rem;color:#39d353;letter-spacing:.1em;margin-bottom:.3rem">R₁₆ (після 16 раундів):</div>';
+        html += renderBits(R16bits, 'dv-green', 8) + '<div class="dbv-hex">' + R16hex + '</div></div>';
+
+        html += '<div style="text-align:center;font-size:.65rem;color:var(--text-muted);padding:.3rem 0">↓ міняємо місцями: R₁₆ | L₁₆ і застосовуємо IP⁻¹</div>';
+
+        html += '<div style="margin-top:.5rem;margin-bottom:.75rem">';
+        html += '<div style="font-size:.58rem;color:#b57ef5;letter-spacing:.1em;margin-bottom:.3rem">R₁₆ | L₁₆ разом (до IP⁻¹):</div>';
+        html += renderBits(combined, 'dv-purple', 8) + '</div>';
+
+        html += '<div style="text-align:center;font-size:.65rem;color:var(--text-muted);padding:.3rem 0">↓ застосовуємо IP⁻¹ → фінальний шифротекст</div>';
+
+        html += '<div style="margin-top:.5rem;padding:.85rem;background:rgba(57,211,83,.05);border:1px solid rgba(57,211,83,.25);border-radius:6px">';
+        html += '<div style="font-size:.58rem;color:#39d353;letter-spacing:.1em;margin-bottom:.4rem;font-weight:700;text-transform:uppercase">✓ Результат (шифротекст):</div>';
+        html += renderBits(resultBits, 'dv-green', 8);
+        html += '<div style="font-family:var(--font-mono);font-size:.95rem;font-weight:700;color:#39d353;letter-spacing:.08em;margin-top:.4rem">' + resultHex.toUpperCase() + '</div>';
+        html += '</div>';
+
+        el.innerHTML = html;
+      }
+
+      /* ── bit helpers (local, not from des.js) ── */
+      function hexToBitsLocal(h) {
+        return h.split('').flatMap(c => parseInt(c, 16).toString(2).padStart(4, '0').split('').map(Number));
+      }
+
+      function bitsToHexLocal(bits) {
+        let hex = '';
+        for (let i = 0; i < bits.length; i += 4)
+          hex += parseInt(bits.slice(i, i + 4).join(''), 2).toString(16).toUpperCase();
+        return hex;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         DES ENCRYPT / DECRYPT
+         ══════════════════════════════════════════════════════ */
       function runDes() {
-        const text = document.getElementById('des-input').value || 'HELLO WO';
+        const text = document.getElementById('des-input').value || 'HELLO WORLD';
         const key  = document.getElementById('des-key').value  || 'SECRETKE';
         const r = window.CL.DES.runText(text, key, false);
         document.getElementById('des-result').textContent = r.result.toUpperCase();
         document.getElementById('des-decrypt-hint').style.display = 'none';
         buildDesLog(r.steps);
-        buildDesVis(r.rounds, r.steps, r.textHex, r.keyHex, r.result, false);
+        buildDesVis(r.blocks, r.keyHex, r.result, false);
       }
 
-      /* ── DES decrypt ─────────────────────────────────────────── */
       function runDesDecrypt() {
         const hexInput = document.getElementById('des-input').value.trim().replace(/\s/g, '');
         const key = document.getElementById('des-key').value || 'SECRETKE';
-        if (!/^[0-9a-fA-F]{16}$/.test(hexInput)) {
-          document.getElementById('des-result').textContent =
-            '⚠ Введіть рівно 16 hex символів (скопіюйте результат шифрування)';
+        if (!/^[0-9a-fA-F]+$/.test(hexInput) || hexInput.length % 16 !== 0) {
+          document.getElementById('des-result').textContent = '⚠ Введіть hex кратний 16 символам (16, 32, 48… — скопіюйте результат шифрування)';
           return;
         }
-        const keyPadded = key.padEnd(8, ' ').slice(0, 8);
-        const keyHex = [...keyPadded].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
-        const r = window.CL.DES.runHex(hexInput, keyHex, true);
-        const rawText  = hexToText(r.result).replace(/ +$/g, '');
-        const isPrint  = /^[ -~]*$/.test(rawText);
-        const display  = isPrint && rawText.length ? rawText : r.result.toUpperCase();
+        const r = window.CL.DES.runHexMulti(hexInput, key, true);
+        const rawText = r.result;
+        const isPrint = /^[\x20-\x7E]*$/.test(rawText);
+        const display = isPrint && rawText.length ? rawText : r.resultHex.toUpperCase();
         document.getElementById('des-result').textContent = display;
         const hint = document.getElementById('des-decrypt-hint');
         if (!isPrint || !rawText.length) {
           hint.style.display = 'block';
-          hint.querySelector('.des-hint-hex').textContent = r.result.toUpperCase();
+          hint.querySelector('.des-hint-hex').textContent = r.resultHex.toUpperCase();
         } else {
           hint.style.display = 'none';
         }
         buildDesLog(r.steps);
-        buildDesVis(r.rounds, r.steps, hexInput, keyHex, r.result, true);
+        buildDesVis(r.blocks, r.keyHex, r.resultHex, true);
       }
 
-      /* ── Steps log ───────────────────────────────────────────── */
+      /* ── Steps log ── */
       function buildDesLog(steps) {
-        const logEl = document.getElementById('des-log');
-        if (!logEl) return;
-        logEl.innerHTML = steps.map(s =>
+        const el = document.getElementById('des-log');
+        if (!el) return;
+        el.innerHTML = steps.map(s =>
           '<div class="log-line">' +
             '<span class="log-idx">' + s.n + '</span>' +
             '<span class="log-text">' + s.t + '</span>' +
@@ -454,183 +875,350 @@ HELLO WORLD</textarea
         ).join('');
       }
 
-      /* ── buildDesVis ─────────────────────────────────────────── */
-      function buildDesVis(rounds, steps, inputHex, keyHex, resultHex, decrypt) {
-        /* Extract L0/R0 */
+      /* ══════════════════════════════════════════════════════
+         buildDesVis — головна функція візуалізації (багатоблокова)
+         ══════════════════════════════════════════════════════ */
+      function buildDesVis(blocks, keyHex, resultHex, decrypt) {
+        _desBlocksData = blocks || [];
+        _desBlockIdx = 0;
+        _desKeyHex = keyHex || '';
+        _desFullResult = resultHex || '';
+        _desDecrypt = !!decrypt;
+
+        if (!_desBlocksData.length) return;
+
+        renderKeyScheduleDisplay(keyHex);
+        desSelectBlock(0);
+      }
+
+      function desSelectBlock(blockIdx) {
+        _desBlockIdx = Math.max(0, Math.min(blockIdx, _desBlocksData.length - 1));
+        const block = _desBlocksData[_desBlockIdx];
+        const rounds = block.rounds;
+        const inputHex = block.textHex;
+        const resultHex = block.resultHex;
+
         _desL0 = '—'; _desR0 = '—';
-        const ipStep = steps.find(s => s.t && s.t.includes('Після IP'));
+        const ipStep = block.steps.find(s => s.t && s.t.includes('Після IP'));
         if (ipStep) {
           const m = ipStep.t.match(/L₀=([0-9A-Fa-f]+)\s+R₀=([0-9A-Fa-f]+)/);
           if (m) { _desL0 = m[1].toUpperCase(); _desR0 = m[2].toUpperCase(); }
         }
         _desRoundsData = rounds;
-        _desRoundIdx   = 0;
+        _desRoundIdx = 0;
 
-        /* Update header */
+        const inputBits = hexToBitsLocal(inputHex.padEnd(16, '0').slice(0, 16));
+        const DT = window.CL.DES_TABLES;
+        const ipBits = DT.IP.map(pos => inputBits[pos - 1]);
+
+        /* SEC 03 — Text → Hex → Bits (поточний блок) */
+        const textStr = (inputHex.match(/.{2}/g) || []).map(h => String.fromCharCode(parseInt(h, 16))).join('');
+        renderTextHexDisplay(textStr, inputHex, inputBits, _desBlockIdx + 1, _desBlocksData.length);
+
+        /* SEC 05 — IP permutation */
+        renderIPPermDisplay(inputBits, ipBits);
+
+        /* SEC 06 — Split */
+        renderSplitDisplay(ipBits, _desL0, _desR0);
+
+        /* SEC 08 — IP⁻¹ result */
+        const last = rounds[rounds.length - 1];
+        renderIPInvResult(last.L, last.R, resultHex, _desBlockIdx + 1, _desBlocksData.length);
+
+        /* SEC 07 — pipeline header */
         const vh = document.getElementById('des-vis-header');
-        if (vh) vh.innerHTML =
-          '// мережа Фейстеля — ' +
-          (decrypt ? 'розшифрування (K₁₆..K₁)' :
-                     'шифрування (K₁..K₁₆)') +
-          ' <span class="badge-des">' + (decrypt ? '⟵ decrypt' : '⟶ encrypt') + '</span>';
+        if (vh) vh.innerHTML = '// мережа Фейстеля — ' +
+          (_desDecrypt ? 'розшифрування (K₁₆..K₁)' : 'шифрування (K₁..K₁₆)') +
+          ' <span class="badge-des">' + (_desDecrypt ? '⟵ decrypt' : '⟶ encrypt') + '</span>';
 
-        /* Update pipeline */
+        /* pipeline — показує повний результат, вхід поточного блоку */
         const pl = document.getElementById('des-pipeline');
         if (pl) pl.innerHTML =
-          '<div class="des-pipe-node hi">' + (decrypt ? 'Шифртекст' : 'Текст') +
-            '<br><span class="des-pipe-hex">' + inputHex.toUpperCase() + '</span></div>' +
+          '<div class="des-pipe-node hi">' + (_desDecrypt ? 'Шифртекст' : 'Текст') + '<br/><span class="des-pipe-hex">' + inputHex.toUpperCase() + '</span><span style="font-size:.5rem;opacity:.6;display:block;margin-top:.15rem">блок ' + (_desBlockIdx + 1) + '/' + _desBlocksData.length + '</span></div>' +
           '<div class="des-pipe-arrow">→</div>' +
-          '<div class="des-pipe-node des-pipe-ip">IP<br><span style="font-size:.5rem;opacity:.7">перест.</span></div>' +
+          '<div class="des-pipe-node des-pipe-ip">IP<br/><span style="font-size:.5rem;opacity:.7">перест.</span></div>' +
           '<div class="des-pipe-arrow">→</div>' +
-          '<div class="des-pipe-node" style="font-size:.55rem;color:#d2b739;padding:.4rem .5rem">L₀<br><span style="font-size:.48rem;opacity:.8">' + _desL0 + '</span></div>' +
+          '<div class="des-pipe-node" style="font-size:.55rem;color:#d2b739;padding:.4rem .5rem">L₀<br/><span style="font-size:.48rem;opacity:.8">' + _desL0 + '</span></div>' +
           '<div class="des-pipe-arrow" style="opacity:.3">│</div>' +
-          '<div class="des-pipe-node" style="font-size:.55rem;color:#58d4f5;padding:.4rem .5rem">R₀<br><span style="font-size:.48rem;opacity:.8">' + _desR0 + '</span></div>' +
+          '<div class="des-pipe-node" style="font-size:.55rem;color:#58d4f5;padding:.4rem .5rem">R₀<br/><span style="font-size:.48rem;opacity:.8">' + _desR0 + '</span></div>' +
           '<div class="des-pipe-arrow">→</div>' +
-          '<div class="des-pipe-node des-pipe-feistel">16 × Feistel<br><span style="font-size:.5rem;opacity:.7">' + (decrypt ? 'K₁₆→K₁' : 'K₁→K₁₆') + '</span></div>' +
+          '<div class="des-pipe-node des-pipe-feistel">16 × Feistel<br/><span style="font-size:.5rem;opacity:.7">' + (_desDecrypt ? 'K₁₆→K₁' : 'K₁→K₁₆') + '</span></div>' +
           '<div class="des-pipe-arrow">→</div>' +
-          '<div class="des-pipe-node des-pipe-ip">IP⁻¹<br><span style="font-size:.5rem;opacity:.7">обернена</span></div>' +
+          '<div class="des-pipe-node des-pipe-ip">IP⁻¹<br/><span style="font-size:.5rem;opacity:.7">обернена</span></div>' +
           '<div class="des-pipe-arrow">→</div>' +
-          '<div class="des-pipe-node hi">' + (decrypt ? 'Текст' : 'Шифртекст') +
-            '<br><span class="des-pipe-hex">' + resultHex.toUpperCase() + '</span></div>';
+          '<div class="des-pipe-node hi">' + (_desDecrypt ? 'Текст' : 'Шифртекст') + '<br/><span class="des-pipe-hex">' + _desFullResult.toUpperCase() + '</span>' + (_desBlocksData.length > 1 ? '<span style="font-size:.5rem;opacity:.6;display:block;margin-top:.15rem">' + _desBlocksData.length + ' блоків</span>' : '') + '</div>';
 
-        /* Build round strip */
-        const strip = document.getElementById('des-rstrip');
-        if (strip) {
-          strip.innerHTML = rounds.map(function(r, i) {
-            return '<div class="des-rstrip-pill' + (i === 0 ? ' active' : '') +
-              '" onclick="desGoTo(' + i + ')">' +
-              String(r.round).padStart(2, '0') + '</div>';
-          }).join('');
+        /* block selector (Feistel section + Text→Hex section) */
+        const blockSelectorHtml = _desBlocksData.length > 1
+          ? '<span style="font-size:.6rem;color:var(--text-muted);margin-right:.5rem;align-self:center">Блок:</span>' +
+            '<div class="dbv-prog" style="padding:0">' +
+            _desBlocksData.map((_, i) =>
+              '<div class="dbv-pdot ' + (i === _desBlockIdx ? 'active' : 'future') + '" title="Блок ' + (i + 1) + '" onclick="desSelectBlock(' + i + ')">' + (i + 1) + '</div>'
+            ).join('') + '</div>'
+          : '';
+        ['text-hex-block-selector'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.style.display = _desBlocksData.length > 1 ? 'flex' : 'none';
+            el.innerHTML = blockSelectorHtml;
+          }
+        });
+
+        /* round dots */
+        const dotsEl = document.getElementById('des-round-dots');
+        if (dotsEl) {
+          let dotsHtml = '<div class="dbv-prog">';
+          for (let di = 0; di < 16; di++) {
+            const dc = di === 0 ? 'active' : 'future';
+            dotsHtml += '<div class="dbv-pdot ' + dc + '" title="Раунд ' + (di + 1) + '" onclick="desGoTo(' + di + ')">' + (di + 1) + '</div>';
+          }
+          dotsHtml += '</div>';
+          dotsEl.innerHTML = dotsHtml;
         }
 
-        /* Show navigator */
-        const wrap = document.getElementById('des-ff-wrap');
-        if (wrap) wrap.style.display = 'block';
+        document.getElementById('des-ff-wrap').style.display = 'block';
 
-        /* Populate reference table */
+        /* reference table */
         const tbody = document.getElementById('des-rounds-body');
-        if (tbody) {
-          tbody.innerHTML =
-            '<tr class="des-row-ip"><td class="des-round-num">IP</td>' +
-            '<td class="des-l-cell">' + _desL0 + '</td>' +
-            '<td class="des-r-cell">' + _desR0 + '</td></tr>' +
-            rounds.map(function(r, i) {
-              return '<tr class="' + (i === rounds.length - 1 ? 'des-row-last' : '') + '">' +
-                '<td class="des-round-num">' + String(r.round).padStart(2, '0') + '</td>' +
-                '<td class="des-l-cell">' + r.L.toUpperCase() + '</td>' +
-                '<td class="des-r-cell">' + r.R.toUpperCase() + '</td></tr>';
-            }).join('');
-        }
+        if (tbody) tbody.innerHTML =
+          '<tr class="des-row-ip"><td class="des-round-num">IP</td><td class="des-l-cell">' + _desL0 + '</td><td class="des-r-cell">' + _desR0 + '</td><td class="des-round-num">—</td><td class="des-round-num">—</td><td class="des-round-num" style="font-size:.52rem;color:var(--text-muted)">L₀,R₀ після IP</td></tr>' +
+          rounds.map((r, i) => {
+            const d = r.detail || {};
+            const K = (d.K || '—').toUpperCase();
+            const f = (d.fHex || '—').toUpperCase();
+            const formula = 'L' + r.round + '=R' + (r.round-1) + ', R' + r.round + '=L' + (r.round-1) + '⊕f';
+            return '<tr class="' + (i === rounds.length - 1 ? 'des-row-last' : '') + '">' +
+              '<td class="des-round-num">' + String(r.round).padStart(2, '0') + '</td>' +
+              '<td class="des-l-cell">' + r.L.toUpperCase() + '</td>' +
+              '<td class="des-r-cell">' + r.R.toUpperCase() + '</td>' +
+              '<td class="des-k-cell" style="font-size:.58rem;color:#b57ef5;letter-spacing:.04em">' + K + '</td>' +
+              '<td class="des-f-cell" style="font-size:.58rem;color:#39d353;letter-spacing:.04em">' + f + '</td>' +
+              '<td class="des-formula-cell" style="font-size:.52rem;color:var(--text-muted)">' + formula + '</td>' +
+            '</tr>';
+          }).join('');
 
-        /* Show round 1 */
         desRenderRound(0);
-        const ctr = document.getElementById('des-round-counter');
-        if (ctr) ctr.textContent = '1 / 16';
       }
 
-      /* ── desRenderRound ──────────────────────────────────────── */
+      /* ══════════════════════════════════════════════════════
+         desRenderRound — ПОВНИЙ побітовий розпис раунду
+         ══════════════════════════════════════════════════════ */
       function desRenderRound(idx) {
         if (!_desRoundsData) return;
-        const round  = _desRoundsData[idx];
-        const rnum   = round.round;
-        const l_prev = (idx === 0 ? _desL0 : _desRoundsData[idx - 1].L).toUpperCase();
-        const r_prev = (idx === 0 ? _desR0 : _desRoundsData[idx - 1].R).toUpperCase();
-        const l_curr = round.L.toUpperCase();
-        const r_curr = round.R.toUpperCase();
-        const eq     = (l_curr === r_prev) ? ' ✓' : '';
+        const round = _desRoundsData[idx];
+        const rnum  = round.round;
+        const det   = round.detail || {};
+        const DT    = window.CL.DES_TABLES || {};
+
+        const L_in_bits  = det.L_in_bits   || [];
+        const R_in_bits  = det.R_in_bits   || [];
+        const K_bits     = det.K_bits      || [];
+        const exp_bits   = det.expandedBits || [];
+        const xor_bits   = det.xoredBits   || [];
+        const sOutBits   = det.sOutputBits  || [];
+        const f_bits     = det.fBits       || [];
+        const L_out_bits = det.L_out_bits  || [];
+        const R_out_bits = det.R_out_bits  || [];
+        const sGroups    = det.sGroups     || [];
+
+        const L_in  = (det.L_in  || '—').toUpperCase();
+        const R_in  = (det.R_in  || '—').toUpperCase();
+        const K_hex = (det.K     || '—').toUpperCase();
+        const E_hex = (det.expandedHex || '—').toUpperCase();
+        const EK_hex= (det.xoredHex   || '—').toUpperCase();
+        const S_hex = (det.sHex       || '—').toUpperCase();
+        const f_hex = (det.fHex       || '—').toUpperCase();
+        const L_out = round.L.toUpperCase();
+        const R_out = round.R.toUpperCase();
 
         const el = document.getElementById('des-feistel-diagram');
         if (!el) return;
 
-        el.innerHTML =
-          '<div class="des-ff-card">' +
-
-          '<div class="des-ff-title">РАУНД ' + String(rnum).padStart(2, '0') + ' / 16' +
-            '<span class="des-ff-key-badge">K' + rnum + ' · підключ 48 біт</span></div>' +
-
-          /* INPUTS */
-          '<div class="des-ff-row">' +
-            '<div class="des-ff-half l-in">' +
-              '<div class="des-ff-hlabel">L' + (rnum - 1) + ' &mdash; ліва половина (вхід)</div>' +
-              '<div class="des-ff-hval">' + l_prev + '</div>' +
-              '<div class="des-ff-hbits">32 bit hex</div>' +
+        function sec(color, title, badge, body) {
+          const badgeHtml = badge ? '<span style="padding:.08rem .32rem;border-radius:3px;font-size:.52rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);margin-right:.4rem">' + badge + '</span>' : '';
+          return '<div class="dbv-card">' +
+            '<div class="dbv-card-head" style="background:rgba(0,0,0,.2);color:' + color + '">' +
+              badgeHtml +
+              title +
             '</div>' +
-            '<div class="des-ff-divider"></div>' +
-            '<div class="des-ff-half r-in">' +
-              '<div class="des-ff-hlabel">R' + (rnum - 1) + ' &mdash; права половина (вхід)</div>' +
-              '<div class="des-ff-hval">' + r_prev + '</div>' +
-              '<div class="des-ff-hbits">32 bit hex</div>' +
-            '</div>' +
-          '</div>' +
-
-          /* FEISTEL CROSS */
-          '<div class="des-ff-cross-area">' +
-            '<div class="des-ff-pass-col">' +
-              '<div class="des-ff-pass-arrow">↓</div>' +
-              '<div class="des-ff-pass-desc">' +
-                '<strong>L' + rnum + ' = R' + (rnum - 1) + '</strong><br>' +
-                'права половина<br>стає лівою без змін' +
-              '</div>' +
-              '<div class="des-ff-pass-arrow">↓</div>' +
-            '</div>' +
-            '<div class="des-ff-divider"></div>' +
-            '<div class="des-ff-f-col">' +
-              '<div class="des-ff-f-box">' +
-                '<div class="des-ff-f-title">f(R' + (rnum - 1) + ', K' + rnum + ')</div>' +
-                '<div class="des-ff-f-stages">' +
-                  '<span class="des-ff-f-stage">E(32→48)</span>' +
-                  '<span class="des-ff-op">→</span>' +
-                  '<span class="des-ff-f-stage">⊕ K' + rnum + '</span>' +
-                  '<span class="des-ff-op">→</span>' +
-                  '<span class="des-ff-f-stage">8×S-box</span>' +
-                  '<span class="des-ff-op">→</span>' +
-                  '<span class="des-ff-f-stage">P(32)</span>' +
-                '</div>' +
-              '</div>' +
-              '<div class="des-ff-xor-sym">⊕</div>' +
-              '<div class="des-ff-xor-label">L' + (rnum - 1) + ' ⊕ f(R' + (rnum - 1) + ', K' + rnum + ') = R' + rnum + '</div>' +
-            '</div>' +
-          '</div>' +
-
-          /* OUTPUTS */
-          '<div class="des-ff-row">' +
-            '<div class="des-ff-half l-out">' +
-              '<div class="des-ff-hlabel">L' + rnum + ' = R' + (rnum - 1) + '</div>' +
-              '<div class="des-ff-hval">' + l_curr + '</div>' +
-              '<div class="des-ff-hbits">= R вхід' + eq + '</div>' +
-            '</div>' +
-            '<div class="des-ff-divider"></div>' +
-            '<div class="des-ff-half r-out">' +
-              '<div class="des-ff-hlabel">R' + rnum + ' = L' + (rnum - 1) + ' ⊕ f</div>' +
-              '<div class="des-ff-hval">' + r_curr + '</div>' +
-              '<div class="des-ff-hbits">нова права половина</div>' +
-            '</div>' +
-          '</div>' +
-
+            '<div class="dbv-card-body">' + body + '</div>' +
           '</div>';
+        }
+
+        function brow(lbl, valHtml) {
+          return '<div class="dbv-row"><span class="dbv-lbl">' + lbl + '</span><span class="dbv-val">' + valHtml + '</span></div>';
+        }
+
+        function darr(note) {
+          return '<div style="text-align:center;color:var(--text-muted);font-size:.62rem;padding:.2rem 0 .1rem">↓<div style="font-size:.44rem;margin-top:.05rem">' + (note || '') + '</div></div>';
+        }
+
+        const hdr = '<div style="display:flex;align-items:center;justify-content:space-between;padding:.55rem .9rem .1rem;font-family:var(--font-mono);flex-wrap:wrap;gap:.3rem">' +
+          '<span style="font-size:.8rem;font-weight:800;color:#ff9550;letter-spacing:.04em">РАУНД ' + String(rnum).padStart(2, '0') + ' / 16</span>' +
+          '<span style="font-size:.72rem;color:var(--text-dim);font-weight:600">L<sub>' + rnum + '</sub>=R<sub>' + (rnum-1) + '</sub>, R<sub>' + rnum + '</sub>=L<sub>' + (rnum-1) + '</sub>⊕f(R<sub>' + (rnum-1) + '</sub>,K<sub>' + rnum + '</sub>)</span>' +
+        '</div>';
+
+        /* s0 — вхід */
+        const s0 =
+          brow('L<sub>' + (rnum-1) + '</sub> · 32 біт:', renderBits(L_in_bits, 'dv-yellow', 8) + '<div class="dbv-hex">' + L_in + '</div>') +
+          brow('R<sub>' + (rnum-1) + '</sub> · 32 біт:', renderBits(R_in_bits, 'dv-cyan', 8) + '<div class="dbv-hex">' + R_in + '</div>') +
+          '<div style="font-size:.6rem;color:var(--text-muted);margin-top:.4rem;padding:.4rem .6rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:5px">L залишиться без змін (<em>стане новою L</em>). R пройде через функцію f і XOR з L — <em>стане новою R</em></div>';
+
+        /* s1 — E-розширення */
+        const eTableHtml = DT.E ?
+          '<div style="font-size:.5rem;color:var(--text-muted);margin:.35rem 0 .2rem;text-align:center">Таблиця E (48 позицій — 8×6): деякі позиції R повторюються (для перекриття між S-блоками):</div>' +
+          '<div style="display:flex;justify-content:center">' + renderPermGrid(DT.E, 6) + '</div>' : '';
+        const s1 =
+          brow('R<sub>' + (rnum-1) + '</sub> · вхід (32 біт):', renderBits(R_in_bits, 'dv-cyan', 8)) +
+          eTableHtml +
+          darr('E-розширення: 32 → 48 біт, деякі біти копіюються двічі') +
+          brow('E(R) · вихід (48 біт):', '<span style="white-space:nowrap;display:inline-flex;align-items:center;gap:.3rem;flex-wrap:nowrap">' + renderBits(exp_bits, 'dv-cyan', 6) + '<span class="dbv-hex">' + E_hex + '</span></span>');
+
+        /* s2 — XOR з ключем */
+        const s2 =
+          brow('E(R) · 48 біт:', '<span style="white-space:nowrap;display:inline-flex;align-items:center;gap:.3rem">' + renderBits(exp_bits, 'dv-cyan', 6) + '<span class="dbv-hex">' + E_hex + '</span></span>') +
+          brow('K<sub>' + rnum + '</sub> підключ · 48 біт:', renderBits(K_bits, 'dv-purple', 6) + '<div class="dbv-hex">' + K_hex + '</div>') +
+          '<div class="dbv-xor-wrap" style="margin:.4rem 0">' +
+            '<div class="dbv-xor-line"><span class="dbv-xor-op" style="color:#7ee4f8">E</span>' + renderBits(exp_bits, 'dv-cyan', 6) + '</div>' +
+            '<div class="dbv-xor-line"><span class="dbv-xor-op" style="color:#c8a0f8">K</span>' + renderBits(K_bits, 'dv-purple', 6) + '</div>' +
+            '<div class="dbv-xor-hr"></div>' +
+            '<div class="dbv-xor-line"><span class="dbv-xor-op" style="color:#ffe168">⊕</span>' + renderBits(xor_bits, 'dv-yellow', 6) + '</div>' +
+          '</div>' +
+          brow('E⊕K · результат (48 біт):', renderBits(xor_bits, 'dv-yellow', 6) + '<div class="dbv-hex">' + EK_hex + '</div>') +
+          '<div style="font-size:.5rem;color:var(--text-muted);margin-top:.35rem;padding:.3rem .5rem;background:rgba(255,255,255,.02);border-radius:4px">K<sub>' + rnum + '</sub> — підключ для раунду ' + rnum + ', отриманий з ключа: 64 біти → PC1 → 56 біт (C,D) → зсув + PC2. <a href="#sec-key-schedule" style="color:#58d4f5">→ Генерація підключів</a></div>';
+
+        /* s3 — S-блоки */
+        let splitBarHtml = '<div style="font-size:.5rem;color:var(--text-muted);margin-bottom:.3rem">48 біт розбиваємо на 8 груп по 6 біт — кожна група іде в свій S-блок:</div>' +
+          '<div style="display:flex;align-items:flex-start;gap:4px;flex-wrap:wrap;padding:.2rem 0 .4rem">';
+        for (let gi = 0; gi < 8; gi++) {
+          const gBits = xor_bits.slice(gi * 6, gi * 6 + 6);
+          let gBitsHtml = '';
+          for (let gbi = 0; gbi < 6; gbi++) {
+            const isOuter = gbi === 0 || gbi === 5;
+            const isInner = gbi >= 1 && gbi <= 4;
+            gBitsHtml += '<span class="dbv-bit b' + gBits[gbi] + '"' +
+              (isOuter ? ' style="background:rgba(248,81,73,.25);color:#ff8080"' : '') +
+              (isInner ? ' style="background:rgba(181,126,245,.18);color:#c8a0f8"' : '') +
+              '>' + gBits[gbi] + '</span>';
+          }
+          splitBarHtml += '<div style="display:flex;flex-direction:column;align-items:center;gap:2px">' +
+            '<div style="font-size:.42rem;color:#ff9550;font-family:var(--font-mono)">S' + (gi + 1) + '</div>' +
+            '<span class="dbv-bits" style="background:rgba(255,149,80,.05);border:1px solid rgba(255,149,80,.25);border-radius:4px;padding:2px 3px">' + gBitsHtml + '</span>' +
+            '<div style="font-size:.4rem;color:var(--text-muted);font-family:var(--font-mono)">' + gBits.join('') + '</div>' +
+          '</div>';
+          if (gi < 7) splitBarHtml += '<span style="font-size:.5rem;color:var(--text-muted);padding:10px 1px 0">|</span>';
+        }
+        splitBarHtml += '</div>';
+
+        let sboxItemsHtml = '<div class="dbv-sbox-section">';
+        for (let si = 0; si < sGroups.length; si++) {
+          const sg = sGroups[si];
+          let inputHtml = '';
+          for (let sbi2 = 0; sbi2 < 6; sbi2++) {
+            const bit = sg.bitArr ? sg.bitArr[sbi2] : parseInt((sg.bits || '000000')[sbi2]);
+            const isOuter2 = sbi2 === 0 || sbi2 === 5;
+            const isInner2 = sbi2 >= 1 && sbi2 <= 4;
+            inputHtml += '<span class="dbv-bit b' + bit + '"' +
+              (isOuter2 ? ' style="background:rgba(248,81,73,.28);color:#ff8080;border-radius:3px"' : '') +
+              (isInner2 ? ' style="background:rgba(181,126,245,.2);color:#c8a0f8;border-radius:3px"' : '') +
+              '>' + bit + '</span>';
+          }
+          const outBitsHtml = (sg.outBitArr || []).map(b =>
+            '<span class="dbv-bit b' + b + '" style="background:rgba(255,149,80,.2);color:#ffb070;border-radius:3px">' + b + '</span>'
+          ).join('');
+
+          sboxItemsHtml += '<div class="dbv-sbox-item" style="animation-delay:' + (si * 0.03) + 's">' +
+            '<div class="dbv-sbox-title">S' + (si + 1) + ' — S-блок №' + (si + 1) + '</div>' +
+            '<div class="dbv-sbox-input">' +
+              '<span style="font-size:.5rem;color:var(--text-muted)">Вхід:</span>' +
+              '<span class="dbv-bits" style="gap:1.5px">' + inputHtml + '</span>' +
+            '</div>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-bottom:.35rem;font-size:.52rem">' +
+              '<span style="color:var(--text-muted)">b₀b₅ =</span>' +
+              '<span class="dsb-tag row-tag">' + sg.b0 + sg.b5 + ' → ряд ' + sg.row + '</span>' +
+              '<span style="color:var(--text-muted)">b₁b₂b₃b₄ =</span>' +
+              '<span class="dsb-tag col-tag">' + sg.inner + ' → стовп ' + sg.col + '</span>' +
+            '</div>' +
+            renderSboxTable(si, sg.row, sg.col) +
+            '<div style="margin-top:.35rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">' +
+              '<span style="font-size:.52rem;color:var(--text-muted)">S' + (si + 1) + '[' + sg.row + '][' + sg.col + '] =</span>' +
+              '<span style="font-size:.75rem;font-weight:700;color:#ff9550;font-family:var(--font-mono)">' + sg.val + '</span>' +
+              '<span style="font-size:.52rem;color:var(--text-muted)">→ 4 біти:</span>' +
+              '<span class="dbv-bits" style="gap:2px">' + outBitsHtml + '</span>' +
+              '<span class="dsb-tag out-tag">' + (sg.outBits || '') + '</span>' +
+            '</div>' +
+          '</div>';
+        }
+        sboxItemsHtml += '</div>';
+
+        const s3 = splitBarHtml + sboxItemsHtml +
+          brow('Вихід 8 S-блоків · 32 біт:', renderBits(sOutBits, 'dv-orange', 4) + '<div class="dbv-hex">' + S_hex + '</div>');
+
+        /* s4 — P-перестановка */
+        const pTableHtml = DT.P ?
+          '<div style="font-size:.5rem;color:var(--text-muted);margin:.35rem 0 .2rem;text-align:center">Таблиця P (32 позиції, 4×8) — перемішує вихід S-блоків для дифузії:</div>' +
+          '<div style="display:flex;justify-content:center">' + renderPermGrid(DT.P, 8) + '</div>' : '';
+        const s4 =
+          brow('S-вихід · 32 біт (до P):', '<span style="white-space:nowrap;display:inline-flex;align-items:center;gap:.3rem">' + renderBits(sOutBits, 'dv-orange', 8) + '</span>') +
+          pTableHtml +
+          darr('P-перестановка: перемішує 32 біти для дифузії') +
+          brow('f = P(S) · 32 біт:', renderBits(f_bits, 'dv-green', 8) + '<div class="dbv-hex">' + f_hex + '</div>');
+
+        /* s5 — фінальний XOR */
+        const s5 =
+          brow('L<sub>' + (rnum-1) + '</sub> · 32 біт:', renderBits(L_in_bits, 'dv-yellow', 8) + '<div class="dbv-hex">' + L_in + '</div>') +
+          brow('f(R,K) · 32 біт:', renderBits(f_bits, 'dv-green', 8) + '<div class="dbv-hex">' + f_hex + '</div>') +
+          '<div class="dbv-xor-wrap" style="margin:.4rem 0">' +
+            '<div class="dbv-xor-line"><span class="dbv-xor-op" style="color:#ffe168">L</span>' + renderBits(L_in_bits, 'dv-yellow', 8) + '</div>' +
+            '<div class="dbv-xor-line"><span class="dbv-xor-op" style="color:#6de88a">f</span>' + renderBits(f_bits, 'dv-green', 8) + '</div>' +
+            '<div class="dbv-xor-hr"></div>' +
+            '<div class="dbv-xor-line"><span class="dbv-xor-op" style="color:#6de88a">⊕</span>' + renderBits(R_out_bits, 'dv-green', 8) + '</div>' +
+          '</div>' +
+          brow('R<sub>' + rnum + '</sub> = L⊕f · 32 біт:', renderBits(R_out_bits, 'dv-green', 8) + '<div class="dbv-hex">' + R_out + '</div>');
+
+        /* s6 — вихід */
+        const s6 =
+          brow('L<sub>' + rnum + '</sub> = R<sub>' + (rnum-1) + '</sub> · нова ліва:', renderBits(L_out_bits, 'dv-cyan', 8) + '<div class="dbv-hex">' + L_out + '</div>') +
+          brow('R<sub>' + rnum + '</sub> = L⊕f · нова права:', renderBits(R_out_bits, 'dv-green', 8) + '<div class="dbv-hex">' + R_out + '</div>') +
+          '<div style="font-size:.6rem;color:var(--text-muted);margin-top:.4rem;padding:.4rem .6rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:5px">' +
+          (rnum < 16
+            ? 'Ці значення підуть у раунд ' + (rnum + 1) + ' як L<sub>' + rnum + '</sub> та R<sub>' + rnum + '</sub>'
+            : '✓ Останній раунд! L₁₆ та R₁₆ міняються місцями і проходять IP⁻¹') +
+          '</div>';
+
+        el.innerHTML =
+          hdr +
+          sec('#d2b739', 'Вхід раунду ' + rnum + ' — L<sub>' + (rnum-1) + '</sub> та R<sub>' + (rnum-1) + '</sub>', 'вхід', s0) +
+          sec('#7ee4f8', '<span style="font-size:.82rem;font-weight:800">①</span> E-розширення — R: 32 → 48 біт', '', s1) +
+          sec('#ffe168', '<span style="font-size:.82rem;font-weight:800">②</span> XOR з підключем K<sub>' + rnum + '</sub> — 48 ⊕ 48 = 48 біт', '', s2) +
+          sec('#ffb070', '<span style="font-size:.82rem;font-weight:800">③</span> 8 S-блоків — 48 → 32 біт (нелінійне замінення)', '', s3) +
+          sec('#6de88a', '<span style="font-size:.82rem;font-weight:800">④</span> P-перестановка — 32 → 32 біт (дифузія)', '', s4) +
+          sec('#6de88a', '<span style="font-size:.82rem;font-weight:800">⑤</span> Фінальний XOR: R<sub>' + rnum + '</sub> = L<sub>' + (rnum-1) + '</sub> ⊕ f', '', s5) +
+          sec('#58d4f5', 'Вихід раунду ' + rnum + ' — L<sub>' + rnum + '</sub> та R<sub>' + rnum + '</sub>', 'вихід', s6);
       }
 
-      /* ── Navigation ──────────────────────────────────────────── */
+      /* ── Navigation ── */
       function desGoTo(idx) {
         if (!_desRoundsData) return;
         _desRoundIdx = ((idx % 16) + 16) % 16;
-        document.querySelectorAll('.des-rstrip-pill').forEach(function(el, i) {
-          el.classList.toggle('active', i === _desRoundIdx);
+        document.querySelectorAll('#des-round-dots .dbv-pdot').forEach((el, i) => {
+          el.classList.remove('done', 'active', 'future');
+          el.classList.add(i < _desRoundIdx ? 'done' : i === _desRoundIdx ? 'active' : 'future');
         });
-        const ctr = document.getElementById('des-round-counter');
-        if (ctr) ctr.textContent = (_desRoundIdx + 1) + ' / 16';
         desRenderRound(_desRoundIdx);
-        const active = document.querySelector('.des-rstrip-pill.active');
+        const active = document.querySelector('#des-round-dots .dbv-pdot.active');
         if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
 
       function desStep(dir) { desGoTo(_desRoundIdx + dir); }
 
-      /* ── Init ────────────────────────────────────────────────── */
+      /* ── Init ── */
       document.addEventListener('DOMContentLoaded', function() {
-        initScrollSpy(['theory', 'des']);
+        renderIPTableStatic();
+        renderIPInvTableStatic();
+        initScrollSpy(['theory', 'sec-input', 'sec-text-hex', 'sec-ip-table', 'sec-ip-perm', 'sec-split', 'sec-key-schedule', 'sec-rounds', 'sec-ip-inv']);
         initAlgoCards();
       });
-        </script>
+    </script>
   </body>
 </html>
