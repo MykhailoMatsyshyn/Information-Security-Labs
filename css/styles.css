@@ -489,8 +489,8 @@ header {
   padding-bottom: 0.25rem;
 }
 
-/* ── Lab cards grid ─────────────────────────────────────────── */
-.labs-grid {
+/* ── Lab cards grid (ізольовано в .labs-grid-root) ────────────── */
+.labs-grid-root .labs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 1px;
@@ -499,8 +499,24 @@ header {
 }
 
 @media (min-width: 1024px) {
-  .labs-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .labs-grid-root .labs-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  /* Labs 1–6: each spans 2 columns (3 per row) */
+  .labs-grid-root .labs-grid .lab-card:nth-child(1),
+  .labs-grid-root .labs-grid .lab-card:nth-child(2),
+  .labs-grid-root .labs-grid .lab-card:nth-child(3),
+  .labs-grid-root .labs-grid .lab-card:nth-child(4),
+  .labs-grid-root .labs-grid .lab-card:nth-child(5),
+  .labs-grid-root .labs-grid .lab-card:nth-child(6) {
+    grid-column: span 2;
+  }
+  /* Labs 7–8: each spans 3 columns (2 per row, 50/50) */
+  .labs-grid-root .labs-grid .lab-card:nth-child(7) {
+    grid-column: 1 / 4;
+  }
+  .labs-grid-root .labs-grid .lab-card:nth-child(8) {
+    grid-column: 4 / 7;
   }
 }
 

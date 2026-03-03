@@ -335,14 +335,7 @@
     padding-bottom: 0.25rem;
   }
 
-  /* LABS GRID */
-  .labs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-  }
+  /* LABS GRID — базові стилі в styles.css, layout ізольовано в .labs-grid-root */
 
   .lab-card {
     background: var(--surface);
@@ -1032,6 +1025,7 @@
     <span class="section-count">08 робіт / 12 алгоритмів</span>
   </div>
 
+  <div class="labs-grid-root">
   <div class="labs-grid">
 
     <a href="labs/lab01.html" class="lab-card">
@@ -1222,6 +1216,7 @@
       </div>
     </a>
 
+  </div>
   </div>
 </section>
 
