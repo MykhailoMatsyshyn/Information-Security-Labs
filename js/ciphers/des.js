@@ -144,19 +144,66 @@ function generateSubkeys(keyBits) {
   return subkeys;
 }
 
-/* ── Feistel F-function ───────────────────────────────────────── */
-function fFunction(R, subkey) {
-  const expanded = permute(R, DES_TABLES.E);
-  const xored = xorBits(expanded, subkey);
-  const sOutput = [];
-  for (let i = 0; i < 8; i++) {
-    const block = xored.slice(i * 6, (i + 1) * 6);
-    const row = (block[0] << 1) | block[5];
-    const col = (block[1] << 3) | (block[2] << 2) | (block[3] << 1) | block[4];
-    const val = DES_TABLES.S[i][row][col];
-    sOutput.push(...val.toString(2).padStart(4, '0').split('').map(Number));
+/** Для візуалізації: повертає етапи перетворення ключа */
+function getKeySchedule(keyHex) {
+  const keyBits = hexToBits((keyHex || '').padEnd(16, '0').slice(0, 16));
+  /* Крок 1: видаляємо кожен 8-й біт (парність) — позиції 8,16,24,32,40,48,56,64 */
+  const bitsWithoutParity = keyBits.filter((_, i) => (i + 1) % 8 !== 0);
+  /* Крок 2: PC1 — перестановка 56 бітів згідно таблиці */
+  const pc1 = permute(keyBits, DES_TABLES.PC1);
+  const C0 = pc1.slice(0, 28);
+  const D0 = pc1.slice(28, 56);
+  const subkeys = [];
+  let C = C0, D = D0;
+  for (let i = 0; i < 16; i++) {
+    C = circularLeft(C, DES_TABLES.SHIFTS[i]);
+    D = circularLeft(D, DES_TABLES.SHIFTS[i]);
+    subkeys.push(permute([...C, ...D], DES_TABLES.PC2));
   }
-  return permute(sOutput, DES_TABLES.P);
+  return { keyBits, bitsWithoutParity, pc1Bits: pc1, C0, D0, subkeys };
+}
+
+/* ── Feistel F-function (simple) ─────────────────────────────── */
+function fFunction(R, subkey) {
+  return fFunctionDetailed(R, subkey).fBits;
+}
+
+/* ── Feistel F-function (detailed — усі проміжні значення) ───── */
+function fFunctionDetailed(R, subkey) {
+  const expanded  = permute(R, DES_TABLES.E);         // 48 bits
+  const xored     = xorBits(expanded, subkey);         // 48 bits
+  const sGroups   = [];
+  const sOutput   = [];
+  for (let i = 0; i < 8; i++) {
+    const block   = xored.slice(i * 6, (i + 1) * 6);  // 6 bits
+    const row     = (block[0] << 1) | block[5];
+    const col     = (block[1] << 3) | (block[2] << 2) | (block[3] << 1) | block[4];
+    const val     = DES_TABLES.S[i][row][col];
+    const outBits = val.toString(2).padStart(4, '0').split('').map(Number);
+    sGroups.push({
+      bitArr:  [...block],
+      bits:    block.join(''),
+      b0:      block[0],
+      b5:      block[5],
+      inner:   block.slice(1,5).join(''),
+      row, col, val,
+      outBitArr: [...outBits],
+      outBits:   outBits.join(''),
+    });
+    sOutput.push(...outBits);
+  }
+  const fBits = permute(sOutput, DES_TABLES.P);
+  return {
+    expandedHex:  bitsToHex(expanded),
+    expandedBits: [...expanded],
+    xoredHex:     bitsToHex(xored),
+    xoredBits:    [...xored],
+    sGroups,
+    sOutputBits:  [...sOutput],
+    sHex:         bitsToHex(sOutput),
+    fHex:         bitsToHex(fBits),
+    fBits:        [...fBits],
+  };
 }
 
 /* ── DES core ─────────────────────────────────────────────────── */
@@ -187,10 +234,33 @@ const DES = {
 
     const rounds = [];
     for (let i = 0; i < 16; i++) {
-      const fResult = fFunction(R, subkeys[i]);
-      const newR = xorBits(L, fResult);
+      const det  = fFunctionDetailed(R, subkeys[i]);
+      const newR = xorBits(L, det.fBits);
       const newL = R;
-      rounds.push({ round: i + 1, L: bitsToHex(newL), R: bitsToHex(newR) });
+      rounds.push({
+        round: i + 1,
+        L: bitsToHex(newL),
+        R: bitsToHex(newR),
+        detail: {
+          L_in:         bitsToHex(L),
+          R_in:         bitsToHex(R),
+          L_in_bits:    [...L],
+          R_in_bits:    [...R],
+          K:            bitsToHex(subkeys[i]),
+          K_bits:       [...subkeys[i]],
+          expandedHex:  det.expandedHex,
+          expandedBits: det.expandedBits,
+          xoredHex:     det.xoredHex,
+          xoredBits:    det.xoredBits,
+          sGroups:      det.sGroups,
+          sOutputBits:  det.sOutputBits,
+          sHex:         det.sHex,
+          fHex:         det.fHex,
+          fBits:        det.fBits,
+          R_out_bits:   [...newR],
+          L_out_bits:   [...newL],
+        },
+      });
       if (i < 3) steps.push({ n: `0${5 + i}`, t: `Раунд ${i + 1}: L=${bitsToHex(newL)} R=${bitsToHex(newR)}` });
       L = newL; R = newR;
     }
@@ -202,16 +272,63 @@ const DES = {
     return { result, steps, rounds };
   },
 
-  /** Зручна обгортка для текстового вводу (UTF-8 → hex → DES) */
+  /**
+   * Шифрує текст довільної довжини. PKCS7 padding.
+   * @returns {{ result: string, blocks: Array<{textHex,resultHex,rounds,steps}>, keyHex, steps }}
+   */
   runText(text, keyText, decrypt = false) {
-    const padded = text.padEnd(8, '\0').slice(0, 8);
     const keyPadded = keyText.padEnd(8, '\0').slice(0, 8);
-    const textHex = [...padded].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
-    const keyHex  = [...keyPadded].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
-    const { result, steps, rounds } = this.runHex(textHex, keyHex, decrypt);
-    return { result, textHex, keyHex, steps, rounds };
+    const keyHex = [...keyPadded].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+
+    const padLen = 8 - (text.length % 8);
+    const padByte = padLen > 8 ? 8 : padLen;
+    const padded = text + String.fromCharCode(padByte).repeat(padByte);
+
+    const blocks = [];
+    const allSteps = [];
+    let fullResult = '';
+    for (let i = 0; i < padded.length; i += 8) {
+      const chunk = padded.slice(i, i + 8);
+      const textHex = [...chunk].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+      const r = this.runHex(textHex, keyHex, false);
+      blocks.push({ textHex, resultHex: r.result, rounds: r.rounds, steps: r.steps });
+      fullResult += r.result;
+      r.steps.forEach(s => allSteps.push({ n: String(allSteps.length + 1).padStart(2, '0'), t: `Блок ${blocks.length}: ${s.t}` }));
+    }
+    return { result: fullResult.toUpperCase(), blocks, keyHex, steps: allSteps };
   },
+
+  /**
+   * Розшифровує hex-рядок довільної довжини (кратній 16).
+   * @returns {{ result: string, resultHex: string, blocks: Array, keyHex, steps }}
+   */
+  runHexMulti(hexInput, keyText, decrypt = true) {
+    const keyPadded = keyText.padEnd(8, '\0').slice(0, 8);
+    const keyHex = [...keyPadded].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+    const hex = hexInput.replace(/\s/g, '');
+    if (hex.length % 16 !== 0) return { result: '', resultHex: '', blocks: [], keyHex, steps: [] };
+
+    const blocks = [];
+    const allSteps = [];
+    let fullResult = '';
+    for (let i = 0; i < hex.length; i += 16) {
+      const blockHex = hex.slice(i, i + 16);
+      const r = this.runHex(blockHex, keyHex, true);
+      blocks.push({ textHex: blockHex, resultHex: r.result, rounds: r.rounds, steps: r.steps });
+      fullResult += r.result;
+      r.steps.forEach(s => allSteps.push({ n: String(allSteps.length + 1).padStart(2, '0'), t: `Блок ${blocks.length}: ${s.t}` }));
+    }
+    const rawBytes = [];
+    for (let i = 0; i < fullResult.length; i += 2) rawBytes.push(parseInt(fullResult.slice(i, i + 2), 16));
+    const padLen = rawBytes[rawBytes.length - 1];
+    const validPad = padLen >= 1 && padLen <= 8 && rawBytes.slice(-padLen).every(b => b === padLen);
+    const trim = validPad ? padLen : 0;
+    const resultStr = rawBytes.slice(0, -trim).map(b => String.fromCharCode(b)).join('');
+    return { result: resultStr, resultHex: fullResult, blocks, keyHex, steps: allSteps };
+  },
+
+  getKeySchedule(keyHex) { return getKeySchedule(keyHex); },
 };
 
 window.CL = window.CL || {};
-Object.assign(window.CL, { DES });
+Object.assign(window.CL, { DES, DES_TABLES });
