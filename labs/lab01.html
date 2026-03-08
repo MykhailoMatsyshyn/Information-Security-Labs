@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Лаб. 1 — Шифри заміни і перестановки | CryptoLab</title>
+    <title>Lab 01 — Substitution and transposition ciphers | CryptoLab</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
       rel="stylesheet"
@@ -19,10 +19,17 @@
         <span class="logo-text">CryptoLab</span>
         <span class="logo-bracket">}</span>
       </a>
-      <div class="breadcrumb">
-        <a href="../index.html">Головна</a>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Лаб. 01</span>
+      <div style="display:flex;align-items:center;gap:1.5rem;">
+        <div class="lang-switcher">
+          <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+          <span class="lang-sep">/</span>
+          <button class="lang-btn" data-lang="uk" aria-label="Українська">UA</button>
+        </div>
+        <div class="breadcrumb">
+          <a href="../index.html" data-i18n="home">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" data-i18n="lab01Label">Lab 01</span>
+        </div>
       </div>
     </header>
 
@@ -31,28 +38,17 @@
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
-            <span class="lab-index-badge">ЛАБ 01</span>
-            <span
-              style="
-                font-size: 0.65rem;
-                color: var(--text-dim);
-                letter-spacing: 0.15em;
-              "
-              >КЛАСИЧНА КРИПТОГРАФІЯ</span
-            >
+            <span class="lab-index-badge" data-i18n="labNum01">LAB 01</span>
+            <span style="font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.15em;" data-i18n="lab01Meta">CLASSICAL CRYPTOGRAPHY</span>
           </div>
-          <h1 class="lab-hero-title">Шифри заміни<br />і перестановки</h1>
-          <p class="lab-hero-sub">
-            Практичне освоєння основ побудови шифрів заміни та перестановки.
-            Вибір ключів, процедура зашифрування-розшифрування, покрокова
-            візуалізація.
-          </p>
+          <h1 class="lab-hero-title" data-i18n-html="lab01HeroTitleHtml">Substitution and<br>transposition ciphers</h1>
+          <p class="lab-hero-sub" data-i18n="lab01HeroSub">Practical mastery of substitution and transposition cipher basics. Key selection, encrypt-decrypt procedure, step-by-step visualization.</p>
           <div class="lab-hero-chips">
-            <span class="tag">Цезар</span>
-            <span class="tag">Атбаш</span>
-            <span class="tag">Виженер</span>
-            <span class="tag">Перестановка</span>
-            <span class="tag">Вертикальна перестановка</span>
+            <span class="tag">Caesar</span>
+            <span class="tag">Atbash</span>
+            <span class="tag">Vigenère</span>
+            <span class="tag">Transposition</span>
+            <span class="tag">Vertical transposition</span>
           </div>
         </div>
       </div>
@@ -63,24 +59,24 @@
           <!-- SIDEBAR -->
           <aside class="lab-sidebar">
             <nav class="sidebar-nav">
-              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-title" data-i18n="labNav">// navigation</div>
               <div class="sidebar-nav-item active" data-section="theory">
-                <span class="sidebar-nav-num">01</span> Теорія
+                <span class="sidebar-nav-num">01</span> <span data-i18n="labTheory">Theory</span>
               </div>
               <div class="sidebar-nav-item" data-section="caesar">
-                <span class="sidebar-nav-num">02</span> Шифр Цезаря
+                <span class="sidebar-nav-num">02</span> <span data-i18n="lab01NavCaesar">Caesar cipher</span>
               </div>
               <div class="sidebar-nav-item" data-section="atbash">
-                <span class="sidebar-nav-num">03</span> Пропорційна заміна
+                <span class="sidebar-nav-num">03</span> <span data-i18n="lab01NavAtbash">Proportional substitution</span>
               </div>
               <div class="sidebar-nav-item" data-section="vigenere">
-                <span class="sidebar-nav-num">04</span> Багатоалфавітна заміна
+                <span class="sidebar-nav-num">04</span> <span data-i18n="lab01NavVigenere">Polyalphabetic substitution</span>
               </div>
               <div class="sidebar-nav-item" data-section="transposition">
-                <span class="sidebar-nav-num">05</span> Перестановка
+                <span class="sidebar-nav-num">05</span> <span data-i18n="lab01NavTransp">Transposition</span>
               </div>
               <div class="sidebar-nav-item" data-section="vertical">
-                <span class="sidebar-nav-num">06</span> Вертикальна
+                <span class="sidebar-nav-num">06</span> <span data-i18n="lab01NavVertical">Vertical</span>
               </div>
             </nav>
           </aside>
@@ -91,103 +87,82 @@
             <section id="theory">
               <div class="theory-block">
                 <div class="theory-header">
-                  <span class="theory-title">Короткі теоретичні відомості</span>
+                  <span class="theory-title" data-i18n="lab01TheoryTitle">Brief theory</span>
                   <span class="theory-toggle">▼</span>
                 </div>
                 <div class="theory-body open">
                   <div class="theory-body-inner">
-                    <p>
-                      У цій лабораторній розглядаються два класи класичних шифрів:
-                      <strong>шифри заміни</strong> (кожен символ замінюється іншим)
-                      та <strong>шифри перестановки</strong> (символи міняються місцями).
-                      Обидва класи є основою симетричної криптографії та входять до
-                      складу сучасних блокових шифрів.
-                    </p>
+                    <p data-i18n="lab01TheoryBody">This lab covers two classes of classical ciphers: substitution ciphers (each symbol is replaced by another) and transposition ciphers (symbols are rearranged). Both are foundations of symmetric cryptography and part of modern block ciphers.</p>
 
                     <div class="algo-cards">
 
                       <!-- Caesar -->
                       <div class="algo-card" data-target="caesar">
                         <div class="algo-card-head">
-                          <span class="algo-card-name">Шифр Цезаря</span>
-                          <span class="algo-card-badge badge-sub">проста заміна</span>
+                          <span class="algo-card-name" data-i18n="lab01AlgoCaesar">Caesar cipher</span>
+                          <span class="algo-card-badge badge-sub" data-i18n="lab01BadgeSub">simple substitution</span>
                         </div>
                         <div class="algo-card-formula">
                           b<sub>i</sub> = (a<sub>i</sub> + k) mod n<br>
                           d<sub>i</sub> = (b<sub>i</sub> &minus; k + n) mod n
                         </div>
-                        <p class="algo-card-desc">
-                          Кожна буква циклічно зсувається на постійний ключ <em>k</em>.
-                          Простий, але легко зламується частотним аналізом.
-                        </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <p class="algo-card-desc" data-i18n="lab01CaesarDesc">Each letter is shifted by a constant key k. Simple but easily broken by frequency analysis.</p>
+                        <span class="algo-card-goto" data-i18n="lab01Goto">go to section ↓</span>
                       </div>
 
                       <!-- Atbash -->
                       <div class="algo-card" data-target="atbash">
                         <div class="algo-card-head">
-                          <span class="algo-card-name">Пропорційна заміна <em style="font-weight:400;font-size:0.7rem;">(Атбаш)</em></span>
-                          <span class="algo-card-badge badge-sub">проста заміна</span>
+                          <span class="algo-card-name" data-i18n="lab01AlgoAtbash">Proportional substitution (Atbash)</span>
+                          <span class="algo-card-badge badge-sub" data-i18n="lab01BadgeSub">simple substitution</span>
                         </div>
                         <div class="algo-card-formula">
                           b<sub>i</sub> = n &minus; 1 &minus; a<sub>i</sub>
                         </div>
-                        <p class="algo-card-desc">
-                          Алфавіт відображається сам на себе у зворотному порядку:
-                          A&harr;Z, B&harr;Y&hellip; Самооберненість: шифрування&nbsp;=&nbsp;розшифрування.
-                        </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <p class="algo-card-desc" data-i18n="lab01AtbashDesc">Alphabet maps onto itself in reverse: A↔Z, B↔Y… Self-inverse: encrypt = decrypt.</p>
+                        <span class="algo-card-goto" data-i18n="lab01Goto">go to section ↓</span>
                       </div>
 
                       <!-- Vigenere -->
                       <div class="algo-card" data-target="vigenere">
                         <div class="algo-card-head">
-                          <span class="algo-card-name">Шифр Виженера</span>
-                          <span class="algo-card-badge badge-poly">багатоалф. заміна</span>
+                          <span class="algo-card-name" data-i18n="lab01AlgoVigenere">Vigenère cipher</span>
+                          <span class="algo-card-badge badge-poly" data-i18n="lab01BadgePoly">polyalph. substitution</span>
                         </div>
                         <div class="algo-card-formula">
                           b<sub>i</sub> = (a<sub>i</sub> + k<sub>i</sub>) mod n<br>
                           k<sub>i</sub> = key[i mod |key|]
                         </div>
-                        <p class="algo-card-desc">
-                          Ключ-слово циклічно накладається на відкритий текст.
-                          Різний зсув кожної літери унеможливлює простий частотний аналіз.
-                        </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <p class="algo-card-desc" data-i18n="lab01VigenereDesc">Key-word is cyclically applied to plaintext. Different shift per letter prevents simple frequency analysis.</p>
+                        <span class="algo-card-goto" data-i18n="lab01Goto">go to section ↓</span>
                       </div>
 
                       <!-- Simple transposition -->
                       <div class="algo-card" data-target="transposition">
                         <div class="algo-card-head">
-                          <span class="algo-card-name">Проста перестановка</span>
-                          <span class="algo-card-badge badge-perm">перестановка</span>
+                          <span class="algo-card-name" data-i18n="lab01AlgoTransp">Simple transposition</span>
+                          <span class="algo-card-badge badge-perm" data-i18n="lab01BadgePerm">transposition</span>
                         </div>
                         <div class="algo-card-formula">
                           out[key[i]&minus;1] = block[i]<br>
-                          блок = n символів (|ключ| = n)
+                          block = n symbols (|key| = n)
                         </div>
-                        <p class="algo-card-desc">
-                          Текст ділиться на рівні блоки. В кожному блоці символи
-                          переставляються згідно з ключем-перестановкою.
-                        </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <p class="algo-card-desc" data-i18n="lab01TranspDesc">Text is split into equal blocks. In each block, symbols are rearranged according to the permutation key.</p>
+                        <span class="algo-card-goto" data-i18n="lab01Goto">go to section ↓</span>
                       </div>
 
-                      <!-- Vertical transposition — last + odd → spans 2 cols -->
+                      <!-- Vertical transposition -->
                       <div class="algo-card" data-target="vertical">
                         <div class="algo-card-head">
-                          <span class="algo-card-name">Вертикальна перестановка</span>
-                          <span class="algo-card-badge badge-vperm">маршрутна</span>
+                          <span class="algo-card-name" data-i18n="lab01AlgoVertical">Vertical transposition</span>
+                          <span class="algo-card-badge badge-vperm" data-i18n="lab01BadgeVperm">route</span>
                         </div>
                         <div class="algo-card-formula">
-                          Запис: рядками (cols = |key|)<br>
-                          Зчит.: стовпці за sort(key)
+                          Write: by rows (cols = |key|)<br>
+                          Read: columns by sort(key)
                         </div>
-                        <p class="algo-card-desc">
-                          Текст записується в прямокутну таблицю рядками.
-                          Стовпці зчитуються в порядку, що визначається ключем або ключ-словом.
-                        </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <p class="algo-card-desc" data-i18n="lab01VerticalDesc">Text is written into a rectangular table by rows. Columns are read in the order defined by the key.</p>
+                        <span class="algo-card-goto" data-i18n="lab01Goto">go to section ↓</span>
                       </div>
 
                     </div><!-- /algo-cards -->
@@ -209,22 +184,22 @@
                       background: var(--green-subtle);
                     "
                   >
-                    // шифр цезаря
+                    <span data-i18n="lab01SecCaesar">// Caesar cipher</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Тип:</span
-                      ><span class="chip-val">Проста заміна</span>
+                      <span class="chip-label" data-i18n="lab01ChipType">Type:</span>
+                      <span class="chip-val" data-i18n="lab01ValSimple">Simple substitution</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val">зсув (0–25)</span>
+                      <span class="chip-label" data-i18n="lab01ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab01ValShift">shift (0–25)</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Формула:</span
-                      ><span class="chip-val">b=(a+k) mod n</span>
+                      <span class="chip-label" data-i18n="lab01ChipFormula">Formula:</span>
+                      <span class="chip-val">b=(a+k) mod n</span>
                     </div>
                   </div>
 
@@ -233,11 +208,11 @@
                     <div class="workspace-col">
                       <div class="input-group">
                         <div>
-                          <label class="input-label">Відкритий текст</label>
+                          <label class="input-label" data-i18n="plaintext">Plaintext</label>
                           <textarea
                             class="input-field"
                             id="caesar-text"
-                            placeholder="Введіть повідомлення..."
+                            data-i18n-placeholder="placeholderMsg"
                             style="
                               resize: none;
                               height: 100px;
@@ -251,7 +226,7 @@ HELLO WORLD</textarea
                       </div>
                       <div class="input-row">
                         <div class="input-group">
-                          <label class="input-label">Зсув (0–25)</label>
+                          <label class="input-label" data-i18n="lab01Shift">Shift (0–25)</label>
                           <input
                             class="input-field-sm"
                             id="caesar-shift"
@@ -263,7 +238,7 @@ HELLO WORLD</textarea
                           />
                         </div>
                         <div class="input-group">
-                          <label class="input-label">Алфавіт</label>
+                          <label class="input-label" data-i18n="lab01Alphabet">Alphabet</label>
                           <select
                             class="input-field-sm"
                             id="caesar-lang"
@@ -280,14 +255,14 @@ HELLO WORLD</textarea
                           style="flex: 1"
                           onclick="runCaesar(false)"
                         >
-                          ⟶ Зашифрувати
+                          <span data-i18n="lab01BtnEncrypt">⟶ Encrypt</span>
                         </button>
                         <button
                           class="decrypt-btn"
                           style="flex: 1"
                           onclick="runCaesar(true)"
                         >
-                          ⟵ Розшифрувати
+                          <span data-i18n="lab01BtnDecrypt">⟵ Decrypt</span>
                         </button>
                       </div>
                     </div>
@@ -295,7 +270,7 @@ HELLO WORLD</textarea
                     <!-- RIGHT -->
                     <div class="workspace-col">
                       <div>
-                        <label class="input-label">Результат</label>
+                        <label class="input-label" data-i18n="lab01Result">Result</label>
                         <div
                           class="result-box"
                           id="caesar-output"
@@ -306,19 +281,15 @@ HELLO WORLD</textarea
                             box-sizing: border-box;
                           "
                         >
-                          <span class="result-empty"
-                            >Результат з'явиться тут...</span
-                          >
+                          <span class="result-empty" data-i18n="placeholderResult">Result will appear here...</span>
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab01Steps">// execution steps</div>
                         <div class="steps-log-body" id="caesar-steps">
                           <div class="log-line">
                             <span class="log-idx">—</span>
-                            <span class="log-text"
-                              >Натисніть «Зашифрувати»</span
-                            >
+                            <span class="log-text" data-i18n="lab01ClickEncrypt">Click "Encrypt"</span>
                           </div>
                         </div>
                       </div>
@@ -332,14 +303,12 @@ HELLO WORLD</textarea
                     style="margin-top: 1.5rem"
                   >
                     <div class="cvis-header">
-                      // алфавітний зсув — як працює шифр Цезаря
-                      <span class="cvis-shift-pill"
-                        >зсув: <strong id="cvis-k">3</strong> позиції →</span
-                      >
+                      <span data-i18n="lab01CvisTitle">// alphabet shift — how Caesar cipher works</span>
+                      <span class="cvis-shift-pill"><span data-i18n="lab01CvisShift">shift:</span> <strong id="cvis-k">3</strong> <span data-i18n="lab01CvisPos">positions →</span></span>
                     </div>
                     <div class="cvis-body">
                       <div class="cvis-strip">
-                        <span class="cvis-lbl">відкритий</span>
+                        <span class="cvis-lbl" data-i18n="lab01CvisPlain">plaintext</span>
                         <div class="cvis-row" id="cvis-plain"></div>
                       </div>
                       <div class="cvis-mid">
@@ -347,16 +316,10 @@ HELLO WORLD</textarea
                         <div class="cvis-arrows" id="cvis-arrows"></div>
                       </div>
                       <div class="cvis-strip">
-                        <span class="cvis-lbl">шифр</span>
+                        <span class="cvis-lbl" data-i18n="lab01CvisCipher">cipher</span>
                         <div class="cvis-row" id="cvis-cipher"></div>
                       </div>
-                      <div class="cvis-hint">
-                        <span class="hi-p">■ зелений</span> — літери з вашого
-                        тексту &nbsp;·&nbsp;
-                        <span class="hi-c">■ блакитний</span> — їх зашифровані
-                        відповідники &nbsp;<br />·&nbsp;змінюйте текст або ключ
-                        — таблиця оновиться
-                      </div>
+                      <div class="cvis-hint" data-i18n="lab01CvisHint">■ green — letters from your text  ·  ■ cyan — their encrypted counterparts  ·  change text or key — table updates</div>
                     </div>
                   </div>
                 </div>
@@ -376,26 +339,26 @@ HELLO WORLD</textarea
                       background: var(--cyan-dim);
                     "
                   >
-                    // шифр пропорційної заміни (Атбаш)
+                    <span data-i18n="lab01SecAtbash">// Proportional substitution (Atbash)</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Тип:</span
-                      ><span class="chip-val">Дзеркальна заміна</span>
+                      <span class="chip-label" data-i18n="lab01ChipType">Type:</span>
+                      <span class="chip-val" data-i18n="lab01AtbashValMirror">Mirror substitution</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val">не потрібен</span>
+                      <span class="chip-label" data-i18n="lab01ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab01AtbashValNone">not needed</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Формула:</span
-                      ><span class="chip-val">b = (n−1) − a</span>
+                      <span class="chip-label" data-i18n="lab01ChipFormula">Formula:</span>
+                      <span class="chip-val">b = (n−1) − a</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Властивість:</span
-                      ><span class="chip-val">самооберненість — enc = dec</span>
+                      <span class="chip-label" data-i18n="lab01ChipProp">Property:</span>
+                      <span class="chip-val" data-i18n="lab01AtbashValSelfInv">self-inverse — enc = dec</span>
                     </div>
                   </div>
 
@@ -403,20 +366,19 @@ HELLO WORLD</textarea
                     <!-- LEFT -->
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label"
-                          >Текст (шифр/розшифр — одна операція)</label
+                        <label class="input-label" data-i18n="lab01TextBoth">Text (encrypt/decrypt — same operation)</label>
                         >
                         <textarea
                           class="input-field"
                           id="atbash-text"
-                          placeholder="Введіть повідомлення..."
+                          data-i18n-placeholder="placeholderMsg"
                           style="resize: none; height: 100px; min-height: unset"
                         >
 HELLO WORLD</textarea
                         >
                       </div>
                       <div class="input-group">
-                        <label class="input-label">Алфавіт</label>
+                        <label class="input-label" data-i18n="lab01Alphabet">Alphabet</label>
                         <select
                           class="input-field-sm"
                           id="atbash-lang"
@@ -432,7 +394,7 @@ HELLO WORLD</textarea
                           style="flex: 1"
                           onclick="runAtbash()"
                         >
-                          ⟺ Зашифрувати / Розшифрувати
+                          <span data-i18n="lab01BtnBoth">⟺ Encrypt / Decrypt</span>
                         </button>
                       </div>
                     </div>
@@ -440,7 +402,7 @@ HELLO WORLD</textarea
                     <!-- RIGHT -->
                     <div class="workspace-col">
                       <div>
-                        <label class="input-label">Результат</label>
+                        <label class="input-label" data-i18n="lab01Result">Result</label>
                         <div
                           class="result-box"
                           id="atbash-output"
@@ -451,17 +413,15 @@ HELLO WORLD</textarea
                             box-sizing: border-box;
                           "
                         >
-                          <span class="result-empty"
-                            >Результат з'явиться тут...</span
-                          >
+                          <span class="result-empty" data-i18n="placeholderResult">Result will appear here...</span>
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab01Steps">// execution steps</div>
                         <div class="steps-log-body" id="atbash-steps">
                           <div class="log-line">
                             <span class="log-idx">—</span>
-                            <span class="log-text">Натисніть кнопку</span>
+                            <span class="log-text" data-i18n="lab01ClickBtn">Click button</span>
                           </div>
                         </div>
                       </div>
@@ -475,9 +435,8 @@ HELLO WORLD</textarea
                     style="margin-top: 1.5rem"
                   >
                     <div class="cvis-header">
-                      // дзеркальне відображення — A↔Z, B↔Y, C↔X...
-                      <span class="cvis-shift-pill"
-                        >формула:
+                      <span data-i18n="lab01AtbashCvis">// mirror mapping — A↔Z, B↔Y, C↔X...</span>
+                      <span class="cvis-shift-pill"><span data-i18n="lab01AtbashFormula">formula:</span>
                         <strong style="color: var(--cyan)"
                           >b = (n−1) − a</strong
                         ></span
@@ -485,7 +444,7 @@ HELLO WORLD</textarea
                     </div>
                     <div class="cvis-body">
                       <div class="cvis-strip">
-                        <span class="cvis-lbl">відкритий</span>
+                        <span class="cvis-lbl" data-i18n="lab01CvisPlain">plaintext</span>
                         <div class="cvis-row" id="atbash-cvis-plain"></div>
                       </div>
                       <div class="cvis-mid">
@@ -493,16 +452,10 @@ HELLO WORLD</textarea
                         <div class="cvis-arrows" id="atbash-cvis-arrows"></div>
                       </div>
                       <div class="cvis-strip">
-                        <span class="cvis-lbl">шифр</span>
+                        <span class="cvis-lbl" data-i18n="lab01CvisCipher">cipher</span>
                         <div class="cvis-row" id="atbash-cvis-cipher"></div>
                       </div>
-                      <div class="cvis-hint">
-                        <span class="hi-p">■ зелений</span> — літери з вашого
-                        тексту &nbsp;·&nbsp;
-                        <span class="hi-c">■ блакитний</span> — їх зашифровані
-                        відповідники &nbsp;<br />·&nbsp;Атбаш самооберненний —
-                        результат розшифрування = зашифрування
-                      </div>
+                      <div class="cvis-hint" data-i18n="lab01AtbashHint">■ green — letters from your text  ·  ■ cyan — their encrypted counterparts  ·  Atbash self-inverse — decrypt result = encrypt</div>
                     </div>
                   </div>
                 </div>
@@ -522,28 +475,26 @@ HELLO WORLD</textarea
                       background: var(--yellow-dim);
                     "
                   >
-                    // шифр багатоалфавітної заміни (Виженера)
+                    <span data-i18n="lab01SecVigenere">// Vigenère cipher</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Тип:</span
-                      ><span class="chip-val">Багатоалфавітна заміна</span>
+                      <span class="chip-label" data-i18n="lab01ChipType">Type:</span>
+                      <span class="chip-val" data-i18n="lab01VigenereValPoly">Polyalphabetic substitution</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val">слово-гасло</span>
+                      <span class="chip-label" data-i18n="lab01ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab01VigenereValPass">password</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Формула:</span
+                      <span class="chip-label" data-i18n="lab01ChipFormula">Formula:</span>
                       ><span class="chip-val">bᵢ = (aᵢ + kᵢ) mod n</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Особливість:</span
-                      ><span class="chip-val"
-                        >різний зсув для кожної літери</span
-                      >
+                      <span class="chip-label" data-i18n="lab01VigenereFeature">Feature:</span>
+                      <span class="chip-val" data-i18n="lab01VigenereValShift">different shift per letter</span>
                     </div>
                   </div>
 
@@ -551,11 +502,11 @@ HELLO WORLD</textarea
                     <!-- LEFT -->
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">Відкритий текст</label>
+                        <label class="input-label" data-i18n="plaintext">Plaintext</label>
                         <textarea
                           class="input-field"
                           id="vigenere-text"
-                          placeholder="Введіть повідомлення..."
+                          data-i18n-placeholder="placeholderMsg"
                           style="resize: none; height: 100px; min-height: unset"
                         >
 HELLO WORLD</textarea
@@ -563,17 +514,17 @@ HELLO WORLD</textarea
                       </div>
                       <div class="input-row">
                         <div class="input-group">
-                          <label class="input-label">Ключ (слово)</label>
+                          <label class="input-label" data-i18n="lab01KeyWord">Key word</label>
                           <input
                             class="input-field-sm"
                             id="vigenere-key"
                             value="LEMON"
-                            placeholder="Ключ..."
+                            data-i18n-placeholder="placeholderMsg"
                             style="height: 40px"
                           />
                         </div>
                         <div class="input-group">
-                          <label class="input-label">Алфавіт</label>
+                          <label class="input-label" data-i18n="lab01Alphabet">Alphabet</label>
                           <select class="input-field-sm" id="vigenere-lang">
                             <option value="en">English (A–Z)</option>
                             <option value="uk">Українська</option>
@@ -586,14 +537,14 @@ HELLO WORLD</textarea
                           style="flex: 1"
                           onclick="runVigenere(false)"
                         >
-                          ⟶ Зашифрувати
+                          <span data-i18n="lab01BtnEncrypt">⟶ Encrypt</span>
                         </button>
                         <button
                           class="decrypt-btn"
                           style="flex: 1"
                           onclick="runVigenere(true)"
                         >
-                          ⟵ Розшифрувати
+                          <span data-i18n="lab01BtnDecrypt">⟵ Decrypt</span>
                         </button>
                       </div>
                     </div>
@@ -601,7 +552,7 @@ HELLO WORLD</textarea
                     <!-- RIGHT -->
                     <div class="workspace-col">
                       <div>
-                        <label class="input-label">Результат</label>
+                        <label class="input-label" data-i18n="lab01Result">Result</label>
                         <div
                           class="result-box"
                           id="vigenere-output"
@@ -612,18 +563,16 @@ HELLO WORLD</textarea
                             box-sizing: border-box;
                           "
                         >
-                          <span class="result-empty"
-                            >Результат з'явиться тут...</span
-                          >
+                          <span class="result-empty" data-i18n="placeholderResult">Result will appear here...</span>
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab01Steps">// execution steps</div>
                         <div class="steps-log-body" id="vigenere-steps">
                           <div class="log-line">
                             <span class="log-idx">—</span>
                             <span class="log-text"
-                              >Натисніть «Зашифрувати»</span
+                               data-i18n="lab01ClickEncrypt">Click "Encrypt"</span>
                             >
                           </div>
                         </div>
@@ -638,9 +587,8 @@ HELLO WORLD</textarea
                     style="margin-top: 1.5rem"
                   >
                     <div class="cvis-header">
-                      // розгортання ключа — накладання на відкритий текст
-                      <span class="cvis-shift-pill"
-                        >ключ:
+                      <span data-i18n="lab01VigenereCvis">// key expansion — applied to plaintext</span>
+                      <span class="cvis-shift-pill"><span data-i18n="lab01VigenereKey">key:</span>
                         <strong
                           id="vig-key-disp"
                           style="color: var(--yellow); letter-spacing: 0.12em"
@@ -677,7 +625,7 @@ HELLO WORLD</textarea
                               align-items: center;
                             "
                           >
-                            відкритий
+                            <span data-i18n="lab01CvisPlain">plaintext</span>
                           </div>
                           <div
                             class="cvis-lbl"
@@ -687,7 +635,7 @@ HELLO WORLD</textarea
                               align-items: center;
                             "
                           >
-                            ключ
+                            <span data-i18n="lab01VigenereKey">key</span>
                           </div>
                           <div
                             class="cvis-lbl"
@@ -697,7 +645,7 @@ HELLO WORLD</textarea
                               align-items: center;
                             "
                           >
-                            шифр
+                            <span data-i18n="lab01CvisCipher">cipher</span>
                           </div>
                         </div>
                         <div
@@ -706,12 +654,7 @@ HELLO WORLD</textarea
                         ></div>
                       </div>
                       <div class="cvis-hint">
-                        <span style="color: var(--yellow)">■ жовтий</span> —
-                        відкритий текст &nbsp;·&nbsp;
-                        <span class="hi-p">■ зелений</span> — буква ключа
-                        (повторюється циклічно) &nbsp;·&nbsp;
-                        <span class="hi-c">■ блакитний</span> — зашифрована
-                        буква
+                        <span data-i18n="lab01VigenereHint">■ yellow — plaintext  ·  ■ green — key letter (cyclical)  ·  ■ cyan — encrypted letter</span>
                       </div>
                     </div>
                   </div>
@@ -732,51 +675,46 @@ HELLO WORLD</textarea
                       background: var(--purple-dim);
                     "
                   >
-                    // шифр простої перестановки
+                    <span data-i18n="lab01SecTransp">// Simple transposition</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Тип:</span
-                      ><span class="chip-val"
-                        >Перестановка символів у блоці</span
-                      >
+                      <span class="chip-label" data-i18n="lab01ChipType">Type:</span>
+                      <span class="chip-val" data-i18n="lab01TranspValBlock">Symbol permutation in block</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val"
-                        >"3 1 4 2" — новий порядок позицій</span
-                      >
+                      <span class="chip-label" data-i18n="lab01ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab01TranspValKey">"3 1 4 2" — new position order</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Блок:</span
-                      ><span class="chip-val">= довжина ключа</span>
+                      <span class="chip-label" data-i18n="lab01TranspBlock">Block:</span>
+                      <span class="chip-val" data-i18n="lab01TranspValBlockLen">= key length</span>
                     </div>
                   </div>
 
                   <div class="workspace-grid">
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">Відкритий текст</label>
+                        <label class="input-label" data-i18n="plaintext">Plaintext</label>
                         <textarea
                           class="input-field"
                           id="transp-text"
-                          placeholder="Введіть повідомлення..."
+                          data-i18n-placeholder="placeholderMsg"
                           style="resize: none; height: 100px; min-height: unset"
                         >
 HELLO WORLD</textarea
                         >
                       </div>
                       <div class="input-group">
-                        <label class="input-label"
-                          >Ключ (позиції через пробіл або кому)</label
+                        <label class="input-label" data-i18n="lab01KeyPerm">Key (positions with space or comma)</label>
                         >
                         <input
                           class="input-field-sm"
                           id="transp-key"
                           value="3 1 4 2 5"
-                          placeholder="напр. 3 1 4 2"
+                          data-i18n-placeholder="lab01PlaceholderKey"
                           style="height: 40px"
                         />
                       </div>
@@ -786,20 +724,20 @@ HELLO WORLD</textarea
                           style="flex: 1"
                           onclick="runTransp(false)"
                         >
-                          ⟶ Зашифрувати
+                          <span data-i18n="lab01BtnEncrypt">⟶ Encrypt</span>
                         </button>
                         <button
                           class="decrypt-btn"
                           style="flex: 1"
                           onclick="runTransp(true)"
                         >
-                          ⟵ Розшифрувати
+                          <span data-i18n="lab01BtnDecrypt">⟵ Decrypt</span>
                         </button>
                       </div>
                     </div>
                     <div class="workspace-col">
                       <div>
-                        <label class="input-label">Результат</label>
+                        <label class="input-label" data-i18n="lab01Result">Result</label>
                         <div
                           class="result-box"
                           id="transp-output"
@@ -810,18 +748,16 @@ HELLO WORLD</textarea
                             box-sizing: border-box;
                           "
                         >
-                          <span class="result-empty"
-                            >Результат з'явиться тут...</span
-                          >
+                          <span class="result-empty" data-i18n="placeholderResult">Result will appear here...</span>
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab01Steps">// execution steps</div>
                         <div class="steps-log-body" id="transp-steps">
                           <div class="log-line">
                             <span class="log-idx">—</span
                             ><span class="log-text"
-                              >Натисніть «Зашифрувати»</span
+                               data-i18n="lab01ClickEncrypt">Click "Encrypt"</span>
                             >
                           </div>
                         </div>
@@ -836,9 +772,8 @@ HELLO WORLD</textarea
                     style="margin-top: 1.5rem"
                   >
                     <div class="cvis-header">
-                      // перестановка першого блоку — кожен колір = одна позиція
-                      <span class="cvis-shift-pill"
-                        >ключ:
+                      <span data-i18n="lab01TranspCvis">// first block permutation — each color = one position</span>
+                      <span class="cvis-shift-pill"><span data-i18n="lab01VigenereKey">key:</span>
                         <strong
                           id="transp-key-disp"
                           style="color: var(--purple); letter-spacing: 0.1em"
@@ -863,8 +798,7 @@ HELLO WORLD</textarea
                         "
                       ></div>
                       <div class="cvis-hint" style="margin-top: 0.65rem">
-                        Однакові кольори = одна літера. Мала цифра <em>→N</em> =
-                        куди переміщується. Нижній рядок — результат блоку.
+                        <span data-i18n="lab01TranspHint">Same colors = one letter. Small digit →N = where it moves. Bottom row — block result.</span>
                       </div>
                     </div>
                   </div>
@@ -885,57 +819,50 @@ HELLO WORLD</textarea
                       background: var(--red-dim);
                     "
                   >
-                    // шифр вертикальної (маршрутної) перестановки
+                    <span data-i18n="lab01SecVertical">// Vertical transposition</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Тип:</span
-                      ><span class="chip-val">Маршрутна перестановка</span>
+                      <span class="chip-label" data-i18n="lab01ChipType">Type:</span>
+                      <span class="chip-val" data-i18n="lab01VertValRoute">Route transposition</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val"
-                        >числа або слово (SECRET → алфавітний порядок)</span
-                      >
+                      <span class="chip-label" data-i18n="lab01ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab01VertValKey">numbers or word (SECRET → alphabetical order)</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Метод:</span
-                      ><span class="chip-val"
-                        >запис рядками → зчитування стовпцями</span
-                      >
+                      <span class="chip-label" data-i18n="lab01VertMethod">Method:</span>
+                      <span class="chip-val" data-i18n="lab01VertValMethod">write by rows → read by columns</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Особливість:</span
-                      ><span class="chip-val"
-                        >різний порядок виведення кожного стовпця</span
-                      >
+                      <span class="chip-label" data-i18n="lab01VertFeature">Feature:</span>
+                      <span class="chip-val" data-i18n="lab01VertValFeature">different output order per column</span>
                     </div>
                   </div>
 
                   <div class="workspace-grid">
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">Відкритий текст</label>
+                        <label class="input-label" data-i18n="plaintext">Plaintext</label>
                         <textarea
                           class="input-field"
                           id="vert-text"
-                          placeholder="Введіть повідомлення..."
+                          data-i18n-placeholder="placeholderMsg"
                           style="resize: none; height: 100px; min-height: unset"
                         >
 HELLO WORLD</textarea
                         >
                       </div>
                       <div class="input-group">
-                        <label class="input-label"
-                          >Ключ (числа або слово, напр. SECRET)</label
+                        <label class="input-label" data-i18n="lab01KeyVert">Key (numbers or word, e.g. SECRET)</label>
                         >
                         <input
                           class="input-field-sm"
                           id="vert-key"
                           value="3 1 4 2"
-                          placeholder="напр. 3 1 4 2 або SECRET"
+                          data-i18n-placeholder="lab01PlaceholderKeyWord"
                           style="height: 40px"
                         />
                       </div>
@@ -945,20 +872,20 @@ HELLO WORLD</textarea
                           style="flex: 1"
                           onclick="runVert(false)"
                         >
-                          ⟶ Зашифрувати
+                          <span data-i18n="lab01BtnEncrypt">⟶ Encrypt</span>
                         </button>
                         <button
                           class="decrypt-btn"
                           style="flex: 1"
                           onclick="runVert(true)"
                         >
-                          ⟵ Розшифрувати
+                          <span data-i18n="lab01BtnDecrypt">⟵ Decrypt</span>
                         </button>
                       </div>
                     </div>
                     <div class="workspace-col">
                       <div>
-                        <label class="input-label">Результат</label>
+                        <label class="input-label" data-i18n="lab01Result">Result</label>
                         <div
                           class="result-box"
                           id="vert-output"
@@ -969,18 +896,16 @@ HELLO WORLD</textarea
                             box-sizing: border-box;
                           "
                         >
-                          <span class="result-empty"
-                            >Результат з'явиться тут...</span
-                          >
+                          <span class="result-empty" data-i18n="placeholderResult">Result will appear here...</span>
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab01Steps">// execution steps</div>
                         <div class="steps-log-body" id="vert-steps">
                           <div class="log-line">
                             <span class="log-idx">—</span
                             ><span class="log-text"
-                              >Натисніть «Зашифрувати»</span
+                               data-i18n="lab01ClickEncrypt">Click "Encrypt"</span>
                             >
                           </div>
                         </div>
@@ -995,9 +920,8 @@ HELLO WORLD</textarea
                     style="margin-top: 1.5rem"
                   >
                     <div class="cvis-header">
-                      // текст у сітці → стовпці зчитуються за ключем
-                      <span class="cvis-shift-pill"
-                        >ключ:
+                      <span data-i18n="lab01VertCvis">// text in grid → columns read by key</span>
+                      <span class="cvis-shift-pill"><span data-i18n="lab01VigenereKey">key:</span>
                         <strong
                           id="vert-key-disp"
                           style="color: var(--red); letter-spacing: 0.1em"
@@ -1023,8 +947,8 @@ HELLO WORLD</textarea
                 border-top: 1px solid var(--border);
               "
             >
-              <a href="../index.html" class="btn-secondary">← Всі лаби</a>
-              <a href="lab02.html" class="btn-primary">Лаб. 02 →</a>
+              <a href="../index.html" class="btn-secondary" data-i18n="allLabs">← All labs</a>
+              <a href="lab02.html" class="btn-primary" data-i18n="lab02Link">Lab 02 →</a>
             </div>
           </main>
         </div>
@@ -1033,14 +957,28 @@ HELLO WORLD</textarea
 
     <!-- FOOTER -->
     <footer>
-      <span>© 2026 CryptoLab — Лаб. 01 / Шифри заміни і перестановки</span>
+      <span data-i18n="lab01Footer">© 2026 CryptoLab — Lab 01 / Substitution and transposition ciphers</span>
       <div class="footer-links">
-        <a href="../index.html" class="footer-link">← Головна</a>
-        <a href="lab02.html" class="footer-link">Лаб. 02 →</a>
+        <a href="../index.html" class="footer-link" data-i18n="home">← Home</a>
+        <a href="lab02.html" class="footer-link" data-i18n="lab02Link">Lab 02 →</a>
       </div>
     </footer>
 
     <!-- SCRIPTS -->
+    <script src="../js/i18n.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var lang = window.CL && window.CL.i18n ? window.CL.i18n.getLang() : 'en';
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.lang === lang);
+          btn.addEventListener('click', function() {
+            var l = this.dataset.lang;
+            if (window.CL && window.CL.i18n) window.CL.i18n.setLang(l);
+            document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === l); });
+          });
+        });
+      });
+    </script>
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/classical.js"></script>
     <script>
@@ -1454,7 +1392,7 @@ HELLO WORLD</textarea
           .join("");
         html += `<div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.75rem;
           border:1px solid var(--border);border-radius:6px;background:var(--surface2);flex-wrap:wrap;max-width:600px;justify-content:center;">
-          <span style="font-size:0.62rem;color:var(--text-dim);font-family:var(--font-mono);flex-shrink:0;">// шифртекст:</span>`;
+          <span style="font-size:0.62rem;color:var(--text-dim);font-family:var(--font-mono);flex-shrink:0;">${CL.i18n.t('lab01VertCiphertext')}</span>`;
         let pos = 0;
         sortedCols.forEach((col, step) => {
           const cls = COL_CLS[step % 6];

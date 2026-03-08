@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Лаб. 05 — Алгоритм шифрування RSA | CryptoLab</title>
+    <title>Lab 05 — RSA encryption algorithm | CryptoLab</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
       rel="stylesheet"
@@ -17,10 +17,17 @@
         ><span class="logo-text">CryptoLab</span
         ><span class="logo-bracket">}</span>
       </a>
-      <div class="breadcrumb">
-        <a href="../index.html">Головна</a>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Лаб. 05</span>
+      <div style="display:flex;align-items:center;gap:1.5rem;">
+        <div class="lang-switcher">
+          <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+          <span class="lang-sep">/</span>
+          <button class="lang-btn" data-lang="uk" aria-label="Українська">UA</button>
+        </div>
+        <div class="breadcrumb">
+          <a href="../index.html" data-i18n="home">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" data-i18n="lab05Label">Lab 05</span>
+        </div>
       </div>
     </header>
 
@@ -29,23 +36,11 @@
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
-            <span class="lab-index-badge">ЛАБ 05</span>
-            <span
-              style="
-                font-size: 0.65rem;
-                color: var(--text-dim);
-                letter-spacing: 0.15em;
-              "
-              >АСИМЕТРИЧНЕ ШИФРУВАННЯ</span
-            >
+            <span class="lab-index-badge" data-i18n="labNum05">LAB 05</span>
+            <span style="font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.15em;" data-i18n="lab05Meta">ASYMMETRIC ENCRYPTION</span>
           </div>
-          <h1 class="lab-hero-title">Алгоритм<br />шифрування RSA</h1>
-          <p class="lab-hero-sub">
-            RSA (Rivest–Shamir–Adleman, 1977) — перший практичний алгоритм
-            відкритого ключа. Безпека ґрунтується на складності факторизації
-            добутку великих простих чисел. Відкритий ключ (e, n) шифрує,
-            закритий (d, n) розшифровує.
-          </p>
+          <h1 class="lab-hero-title" data-i18n="lab05HeroTitle">RSA encryption algorithm</h1>
+          <p class="lab-hero-sub" data-i18n="lab05HeroSub">RSA (Rivest–Shamir–Adleman, 1977) — first practical public-key algorithm. Security based on difficulty of factoring product of large primes. Public key (e, n) encrypts, private (d, n) decrypts.</p>
           <div class="lab-hero-chips">
             <span class="tag">RSA</span>
             <span class="tag">Відкритий ключ</span>
@@ -62,9 +57,9 @@
           <!-- SIDEBAR -->
           <aside class="lab-sidebar">
             <nav class="sidebar-nav">
-              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-title" data-i18n="labNav">// navigation</div>
               <div class="sidebar-nav-item active" data-section="theory">
-                <span class="sidebar-nav-num">01</span> Теорія
+                <span class="sidebar-nav-num">01</span> <span data-i18n="labTheory">Theory</span>
               </div>
               <div class="sidebar-nav-item" data-section="keygen">
                 <span class="sidebar-nav-num">02</span> Генерація ключів
@@ -121,12 +116,10 @@
                           c = m<sup>e</sup> mod n<br />
                           m = c<sup>d</sup> mod n
                         </div>
-                        <p class="algo-card-desc">
-                          Текст розбивається на числові блоки m &lt; n. Кожен
-                          блок шифрується незалежно за допомогою швидкого
-                          модульного піднесення до степеня (square-and-multiply).
+                        <p class="algo-card-desc" data-i18n="lab05AlgoDesc">
+                          Text is split into numeric blocks m &lt; n. Each block is encrypted independently using fast modular exponentiation (square-and-multiply).
                         </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <span class="algo-card-goto" data-i18n="lab05GotoSection">go to section ↓</span>
                       </div>
                     </div>
                   </div>
@@ -147,26 +140,26 @@
                       background: rgba(181, 126, 245, 0.06);
                     "
                   >
-                    // RSA — генерація пари ключів
+                    <span data-i18n="lab05SecKeygen">// RSA — key pair generation</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Крок 1:</span
-                      ><span class="chip-val">вибрати прості p та q</span>
+                      <span class="chip-label" data-i18n="lab05Step1">Step 1:</span>
+                      <span class="chip-val" data-i18n="lab05Step1Val">choose primes p and q</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Крок 2:</span
-                      ><span class="chip-val">n = p×q, φ(n) = (p−1)(q−1)</span>
+                      <span class="chip-label" data-i18n="lab05Step2">Step 2:</span>
+                      <span class="chip-val" data-i18n="lab05Step2Val">n = p·q, φ = (p−1)(q−1)</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Крок 3:</span
-                      ><span class="chip-val">e: НСД(e, φ) = 1</span>
+                      <span class="chip-label" data-i18n="lab05Step3">Step 3:</span>
+                      <span class="chip-val" data-i18n="lab05Step3Val">e: GCD(e, φ) = 1</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Крок 4:</span
-                      ><span class="chip-val">d = e⁻¹ mod φ(n)</span>
+                      <span class="chip-label" data-i18n="lab05Step4">Step 4:</span>
+                      <span class="chip-val" data-i18n="lab05Step4Val">d = e⁻¹ mod φ</span>
                     </div>
                   </div>
 
@@ -174,7 +167,7 @@
                     <!-- LEFT COL: inputs -->
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">p — перше просте число</label>
+                        <label class="input-label" data-i18n="lab05LabelP">p — first prime</label>
                         <input
                           class="input-field-sm"
                           id="rsa-p"
@@ -185,7 +178,7 @@
                         />
                       </div>
                       <div class="input-group">
-                        <label class="input-label">q — друге просте число</label>
+                        <label class="input-label" data-i18n="lab05LabelQ">q — second prime</label>
                         <input
                           class="input-field-sm"
                           id="rsa-q"
@@ -196,9 +189,7 @@
                         />
                       </div>
                       <div class="input-group">
-                        <label class="input-label"
-                          >e — показник відкритого ключа</label
-                        >
+                        <label class="input-label" data-i18n="lab05LabelE">e — public exponent</label>
                         <input
                           class="input-field-sm"
                           id="rsa-e"
@@ -215,7 +206,7 @@
                           onclick="runKeyGen()"
                         >
                           <span style="font-size: 1.1rem; margin-right: 0.25rem">⚙</span>
-                          Генерувати ключі
+                          <span data-i18n="lab05BtnGenKeys">Generate keys</span>
                         </button>
                       </div>
                     </div>
@@ -262,30 +253,15 @@
                     </div>
                     <div class="cvis-hint">
                       <span class="cvis-legend">
-                        <span>
-                          <span class="cvis-dot green"></span
-                          ><span class="cvis-label-green">зелений</span> — прості p, q
-                        </span>
+                        <span><span class="cvis-dot green"></span><span class="cvis-label-green" data-i18n="lab04ColorGreen">green</span> — <span data-i18n="lab05KeygenHintGreen">primes p, q</span></span>
                         <span>·</span>
-                        <span>
-                          <span class="cvis-dot yellow"></span
-                          ><span class="cvis-label-yellow">жовтий</span> — модуль n
-                        </span>
+                        <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow" data-i18n="lab04ColorYellow">yellow</span> — <span data-i18n="lab05KeygenHintYellow">modulus n</span></span>
                         <span>·</span>
-                        <span>
-                          <span class="cvis-dot orange"></span
-                          ><span class="cvis-label-orange">помаранч.</span> — функція Ейлера φ(n)
-                        </span>
+                        <span><span class="cvis-dot orange"></span><span class="cvis-label-orange" data-i18n="lab04ColorOrange">orange</span> — <span data-i18n="lab05KeygenHintOrange">Euler φ(n)</span></span>
                         <span>·</span>
-                        <span>
-                          <span class="cvis-dot cyan"></span
-                          ><span class="cvis-label-cyan">блакитний</span> — відкритий показник e
-                        </span>
+                        <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan" data-i18n="lab04ColorCyan">cyan</span> — <span data-i18n="lab05KeygenHintCyan">public exponent e</span></span>
                         <span>·</span>
-                        <span>
-                          <span class="cvis-dot purple"></span
-                          ><span class="cvis-label-purple">фіолетовий</span> — закритий показник d
-                        </span>
+                        <span><span class="cvis-dot purple"></span><span class="cvis-label-purple" data-i18n="lab04ColorPurple">purple</span> — <span data-i18n="lab05KeygenHintPurple">private exponent d</span></span>
                       </span>
                     </div>
                   </div>
@@ -306,26 +282,26 @@
                       background: rgba(210, 183, 57, 0.06);
                     "
                   >
-                    // RSA — шифрування числових блоків
+                    <span data-i18n="lab05SecEncrypt">// RSA — block encryption</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Шифр:</span
-                      ><span class="chip-val">c = m^e mod n</span>
+                      <span class="chip-label" data-i18n="lab05ChipEnc">Encrypt:</span>
+                      <span class="chip-val">c = m^e mod n</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Розшифр:</span
-                      ><span class="chip-val">m = c^d mod n</span>
+                      <span class="chip-label" data-i18n="lab05ChipDec">Decrypt:</span>
+                      <span class="chip-val">m = c^d mod n</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Умова:</span
-                      ><span class="chip-val">m &lt; n для кожного блоку</span>
+                      <span class="chip-label" data-i18n="lab05ChipCond">Condition:</span>
+                      <span class="chip-val" data-i18n="lab05ChipCondVal">m &lt; n for each block</span>
                     </div>
                     <div class="info-chip" id="rsa-current-key-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val">генеруйте ключі спочатку</span>
+                      <span class="chip-label" data-i18n="lab05ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab05ChipKeyVal">generate keys first</span>
                     </div>
                   </div>
 
@@ -333,14 +309,13 @@
                     <!-- LEFT COL -->
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label"
-                          >Числові блоки (через пробіл)</label
-                        >
+                        <label class="input-label" data-i18n="lab05LabelBlocks">Numeric blocks (space-separated)</label>
                         <textarea
                           class="input-field"
                           id="rsa-blocks"
                           style="resize: none; height: 100px; min-height: unset"
-                          placeholder="напр.: 688 232 687 966 668 003"
+                          data-i18n-placeholder="lab05PlaceholderBlocks"
+                          placeholder="e.g.: 688 232 687 966 668 003"
                         >688 232 687 966 668 003</textarea>
                       </div>
                       <div class="action-row">
@@ -349,14 +324,13 @@
                           style="flex: 1"
                           onclick="runRsaEncrypt()"
                         >
-                          ⟶ Зашифрувати
-                        </button>
+                          data-i18n="encrypt">⟶ Encrypt</button>
                         <button
                           class="decrypt-btn"
                           style="flex: 1"
                           onclick="runRsaDecrypt()"
-                        >
-                          ⟵ Розшифрувати
+                          data-i18n="decrypt"
+                        >⟵ Decrypt
                         </button>
                       </div>
                     </div>
@@ -452,22 +426,22 @@
                       <span class="cvis-legend">
                         <span>
                           <span class="cvis-dot yellow"></span
-                          ><span class="cvis-label-yellow">жовтий</span> — відкритий блок m
+                          ><span class="cvis-label-yellow" data-i18n="lab04ColorYellow">yellow</span> — <span data-i18n="lab05CvisYellowM">plaintext block m</span>
                         </span>
                         <span>·</span>
                         <span>
                           <span class="cvis-dot purple"></span
-                          ><span class="cvis-label-purple">фіолетовий</span> — шифроблок c
+                          ><span class="cvis-label-purple" data-i18n="lab04ColorPurple">purple</span> — <span data-i18n="lab05CvisPurpleC">cipher block c</span>
                         </span>
                         <span>·</span>
                         <span>
                           <span class="cvis-dot cyan"></span
-                          ><span class="cvis-label-cyan">блакитний</span> — відкритий показник e
+                          ><span class="cvis-label-cyan" data-i18n="lab04ColorCyan">cyan</span> — <span data-i18n="lab05CvisCyan">public exponent e</span>
                         </span>
                         <span>·</span>
                         <span>
                           <span class="cvis-dot orange"></span
-                          ><span class="cvis-label-orange">помаранчевий</span> — модуль n
+                          ><span class="cvis-label-orange" data-i18n="lab04ColorOrange">orange</span> — <span data-i18n="lab05CvisOrange">modulus n</span>
                         </span>
                       </span>
                     </div>
@@ -487,8 +461,8 @@
                 margin-top: 1.5rem;
               "
             >
-              <a href="lab04.html" class="btn-secondary">← Лаб. 04</a>
-              <a href="lab06.html" class="btn-primary">Лаб. 06 →</a>
+              <a href="lab04.html" class="btn-secondary" data-i18n="lab05NavPrev">← Lab 04</a>
+              <a href="lab06.html" class="btn-primary" data-i18n="lab05NavNext">Lab 06 →</a>
             </div>
           </main>
         </div>
@@ -496,14 +470,28 @@
     </div>
 
     <footer>
-      <span>© 2026 CryptoLab — Лаб. 05 / Алгоритм шифрування RSA</span>
+      <span data-i18n="lab05Footer">© 2026 CryptoLab — Lab 05 / RSA encryption algorithm</span>
       <div class="footer-links">
-        <a href="lab04.html" class="footer-link">← Лаб. 04</a>
-        <a href="../index.html" class="footer-link">Головна</a>
-        <a href="lab06.html" class="footer-link">Лаб. 06 →</a>
+        <a href="lab04.html" class="footer-link" data-i18n="lab05NavPrev">← Lab 04</a>
+        <a href="../index.html" class="footer-link" data-i18n="home">Home</a>
+        <a href="lab06.html" class="footer-link" data-i18n="lab05NavNext">Lab 06 →</a>
       </div>
     </footer>
 
+    <script src="../js/i18n.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var lang = window.CL && window.CL.i18n ? window.CL.i18n.getLang() : 'en';
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.lang === lang);
+          btn.addEventListener('click', function() {
+            var l = this.dataset.lang;
+            if (window.CL && window.CL.i18n) window.CL.i18n.setLang(l);
+            document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === l); });
+          });
+        });
+      });
+    </script>
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/rsa.js"></script>
     <script>
@@ -580,12 +568,12 @@
           /* Row: p × q */
           '<div class="rsa-flow-row">' +
             '<div class="rsa-param-node prime">' +
-              '<div class="rsa-node-label">p (просте)</div>' +
+              '<div class="rsa-node-label">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaNodeP') : 'p (prime)') + '</div>' +
               '<div class="rsa-node-val">' + p + '</div>' +
             '</div>' +
             '<div class="rsa-flow-op">×</div>' +
             '<div class="rsa-param-node prime">' +
-              '<div class="rsa-node-label">q (просте)</div>' +
+              '<div class="rsa-node-label">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaNodeQ') : 'q (prime)') + '</div>' +
               '<div class="rsa-node-val">' + q + '</div>' +
             '</div>' +
           '</div>' +
@@ -596,7 +584,7 @@
           /* Row: n */
           '<div class="rsa-flow-row">' +
             '<div class="rsa-param-node modulus">' +
-              '<div class="rsa-node-label">n — модуль (відкритий)</div>' +
+              '<div class="rsa-node-label">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaNodeN') : 'n — modulus (public)') + '</div>' +
               '<div class="rsa-node-val">' + keys.n + '</div>' +
             '</div>' +
           '</div>' +
@@ -607,30 +595,30 @@
           /* Row: phi */
           '<div class="rsa-flow-row">' +
             '<div class="rsa-param-node phi-node">' +
-              '<div class="rsa-node-label">φ(n) — функція Ейлера</div>' +
+              '<div class="rsa-node-label">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaNodePhi') : 'φ(n) — Euler totient') + '</div>' +
               '<div class="rsa-node-val">' + keys.phi + '</div>' +
             '</div>' +
           '</div>' +
 
           '<div class="rsa-flow-arrow">↓</div>' +
-          '<div class="rsa-flow-label">e: НСД(e, φ(n)) = 1 — взаємно прості</div>' +
+          '<div class="rsa-flow-label">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaFlowGcd') : 'e: GCD(e, φ(n)) = 1 — coprime') + '</div>' +
 
           /* Row: e */
           '<div class="rsa-flow-row">' +
             '<div class="rsa-param-node pub-exp">' +
-              '<div class="rsa-node-label">e — відкритий показник</div>' +
+              '<div class="rsa-node-label">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaNodeE') : 'e — public exponent') + '</div>' +
               '<div class="rsa-node-val">' + keys.e + '</div>' +
-              '<div class="rsa-node-check">НСД(e, φ) = 1 ✓</div>' +
+              '<div class="rsa-node-check">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaNodeGcd') : 'GCD(e, φ) = 1 ✓') + '</div>' +
             '</div>' +
           '</div>' +
 
           '<div class="rsa-flow-arrow">↓</div>' +
-          '<div class="rsa-flow-label">d = e⁻¹ mod φ(n) &nbsp;·&nbsp; розширений алгоритм Евкліда</div>' +
+          '<div class="rsa-flow-label">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaFlowD') : 'd = e⁻¹ mod φ(n) · extended Euclidean algorithm') + '</div>' +
 
           /* Row: d */
           '<div class="rsa-flow-row">' +
             '<div class="rsa-param-node priv-exp">' +
-              '<div class="rsa-node-label">d — закритий показник</div>' +
+              '<div class="rsa-node-label">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaNodeD') : 'd — private exponent') + '</div>' +
               '<div class="rsa-node-val">' + keys.d + '</div>' +
               '<div class="rsa-node-check">e × d mod φ(n) = ' + check + ' ✓</div>' +
             '</div>' +
@@ -642,15 +630,15 @@
           '<div class="rsa-key-cards">' +
             '<div class="rsa-key-card pub">' +
               '<div class="rsa-key-card-icon">🔓</div>' +
-              '<div class="rsa-key-card-title">Відкритий ключ</div>' +
+              '<div class="rsa-key-card-title">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaKeyPub') : 'Public key') + '</div>' +
               '<div class="rsa-key-card-val">e = ' + keys.e + '<br>n = ' + keys.n + '</div>' +
-              '<div class="rsa-key-card-sub">Для шифрування: c = m^e mod n<br>Можна передавати публічно</div>' +
+              '<div class="rsa-key-card-sub">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaKeyPubSub') : 'For encryption: c = m^e mod n. Can be shared publicly.') + '</div>' +
             '</div>' +
             '<div class="rsa-key-card priv">' +
               '<div class="rsa-key-card-icon">🔑</div>' +
-              '<div class="rsa-key-card-title">Закритий ключ</div>' +
+              '<div class="rsa-key-card-title">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaKeyPriv') : 'Private key') + '</div>' +
               '<div class="rsa-key-card-val">d = ' + keys.d + '<br>n = ' + keys.n + '</div>' +
-              '<div class="rsa-key-card-sub">Для розшифрування: m = c^d mod n<br>Залишається в таємниці</div>' +
+              '<div class="rsa-key-card-sub">' + (window.CL && CL.i18n ? CL.i18n.t('lab05RsaKeyPrivSub') : 'For decryption: m = c^d mod n. Keep secret.') + '</div>' +
             '</div>' +
           '</div>' +
 
@@ -661,7 +649,7 @@
       function runRsaEncrypt() {
         if (!_rsaKeys) {
           document.getElementById('rsa-result').textContent =
-            '⚠ Спочатку згенеруйте ключі у розділі «Генерація ключів»';
+            (window.CL && CL.i18n ? CL.i18n.t('lab05WarnGenKeys') : '⚠ Generate keys first in "Key generation" section');
           return;
         }
         var input = document.getElementById('rsa-blocks').value.trim();
@@ -684,7 +672,7 @@
       function runRsaDecrypt() {
         if (!_rsaKeys) {
           document.getElementById('rsa-result').textContent =
-            '⚠ Спочатку згенеруйте ключі у розділі «Генерація ключів»';
+            (window.CL && CL.i18n ? CL.i18n.t('lab05WarnGenKeys') : '⚠ Generate keys first in "Key generation" section');
           return;
         }
         var input = document.getElementById('rsa-blocks').value.trim();
@@ -792,7 +780,7 @@
 
           /* Operation section */
           '<div class="rsa-bfocus-section" style="background:rgba(0,0,0,0.12)">' +
-            '<div class="rsa-bfocus-label">ОПЕРАЦІЯ — модульне піднесення до степеня</div>' +
+            '<div class="rsa-bfocus-label">' + (window.CL && CL.i18n ? CL.i18n.t('lab05OpLabel') : 'OPERATION — modular exponentiation') + '</div>' +
             '<div class="rsa-bfocus-formula">' +
               '<span class="rsa-bfocus-num ' + inClass + '" style="font-size:1rem">' + inputVal + '</span>' +
               '<span class="rsa-bfocus-op"> ^ </span>' +

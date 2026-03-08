@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Лаб. 04 — Алгоритм шифрування DES | CryptoLab</title>
+    <title>Lab 04 — DES encryption algorithm | CryptoLab</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
       rel="stylesheet"
@@ -17,10 +17,17 @@
         ><span class="logo-text">CryptoLab</span
         ><span class="logo-bracket">}</span>
       </a>
-      <div class="breadcrumb">
-        <a href="../index.html">Головна</a>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Лаб. 04</span>
+      <div style="display:flex;align-items:center;gap:1.5rem;">
+        <div class="lang-switcher">
+          <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+          <span class="lang-sep">/</span>
+          <button class="lang-btn" data-lang="uk" aria-label="Українська">UA</button>
+        </div>
+        <div class="breadcrumb">
+          <a href="../index.html" data-i18n="home">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" data-i18n="lab04Label">Lab 04</span>
+        </div>
       </div>
     </header>
 
@@ -29,16 +36,11 @@
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
-            <span class="lab-index-badge">ЛАБ 04</span>
-            <span style="font-size:.65rem;color:var(--text-dim);letter-spacing:.15em">БЛОКОВЕ ШИФРУВАННЯ</span>
+            <span class="lab-index-badge" data-i18n="labNum04">LAB 04</span>
+            <span style="font-size:.65rem;color:var(--text-dim);letter-spacing:.15em" data-i18n="lab04Meta">BLOCK CIPHER</span>
           </div>
-          <h1 class="lab-hero-title">Алгоритм<br />шифрування DES</h1>
-          <p class="lab-hero-sub">
-            DES (Data Encryption Standard) — перший стандартизований блоковий
-            симетричний шифр (FIPS 46-3, 1977). В основі — мережа Фейстеля:
-            64-бітний блок ділиться навпіл і проходить 16 раундів взаємних
-            перетворень із 56-бітним ключем.
-          </p>
+          <h1 class="lab-hero-title" data-i18n="lab04HeroTitle">DES encryption algorithm</h1>
+          <p class="lab-hero-sub" data-i18n="lab04HeroSub">DES (Data Encryption Standard) — first standardized block cipher (FIPS 46-3, 1977). Feistel network: 64-bit block split in half, 16 rounds of transformations with 56-bit key.</p>
           <div class="lab-hero-chips">
             <span class="tag">DES</span>
             <span class="tag">Мережа Фейстеля</span>
@@ -55,9 +57,9 @@
           <!-- SIDEBAR -->
           <aside class="lab-sidebar">
             <nav class="sidebar-nav">
-              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-title" data-i18n="labNav">// navigation</div>
               <div class="sidebar-nav-item active" data-section="theory">
-                <span class="sidebar-nav-num">01</span> Теорія
+                <span class="sidebar-nav-num">01</span> <span data-i18n="labTheory">Theory</span>
               </div>
               <div class="sidebar-nav-item" data-section="sec-input">
                 <span class="sidebar-nav-num">02</span> Введення даних
@@ -252,80 +254,80 @@
                 <div class="cvis-header">// Початкова перестановка IP — застосовуємо таблицю до вхідного блоку</div>
                 <div class="cvis-body" style="padding:1rem">
                   <div id="ip-perm-display">
-                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8">
-                      ← Спочатку зашифруй текст (розділ 02), щоб побачити реальну перестановку бітів
+                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8" data-i18n="lab04EncryptFirst">
+                      ← Encrypt text first (section 02) to see actual bit permutation
                     </div>
                   </div>
                 </div>
                 <div class="cvis-hint">
                   <span class="cvis-legend">
-                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — вхідний біт (до IP)</span>·
-                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — вихідний біт (після IP)</span>
+                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow" data-i18n="lab04ColorYellow">yellow</span> — <span data-i18n="lab04IPHintYellow">input bit (before IP)</span></span>·
+                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan" data-i18n="lab04ColorCyan">cyan</span> — <span data-i18n="lab04IPHintCyan">output bit (after IP)</span></span>
                   </span>
                 </div>
               </div>
             </section>
 
             <!-- ══════════════════════════════════════════
-                 06 — ПОДІЛ НА L₀ / R₀
+                 06 — SPLIT L₀ / R₀
                  ══════════════════════════════════════════ -->
             <section id="sec-split" style="margin-bottom:2rem">
               <div class="caesar-vis">
-                <div class="cvis-header">// Поділ на L₀ (ліва) та R₀ (права) половини</div>
+                <div class="cvis-header" data-i18n="lab04SecSplit">// Split into L₀ (left) and R₀ (right) halves</div>
                 <div class="cvis-body" style="padding:1rem">
                   <div id="split-display">
-                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8">
-                      ← Спочатку зашифруй текст (розділ 02), щоб побачити реальний поділ
+                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8" data-i18n="lab04SplitFirst">
+                      ← Encrypt text first (section 02) to see actual split
                     </div>
                   </div>
                 </div>
                 <div class="cvis-hint">
                   <span class="cvis-legend">
-                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — L₀ (біти 1–32)</span>·
-                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — R₀ (біти 33–64)</span>
+                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow" data-i18n="lab04ColorYellow">yellow</span> — <span data-i18n="lab04SplitHintYellow">L₀ (bits 1–32)</span></span>·
+                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan" data-i18n="lab04ColorCyan">cyan</span> — <span data-i18n="lab04SplitHintCyan">R₀ (bits 33–64)</span></span>
                   </span>
                 </div>
               </div>
             </section>
 
             <!-- ══════════════════════════════════════════
-                 07 — ГЕНЕРАЦІЯ ПІДКЛЮЧІВ K₁…K₁₆
+                 07 — SUBKEY GENERATION K₁…K₁₆
                  ══════════════════════════════════════════ -->
             <section id="sec-key-schedule" style="margin-bottom:2rem">
               <div class="caesar-vis">
-                <div class="cvis-header">// Як ключ стає підключами K₁…K₁₆ — етапи перетворення</div>
+                <div class="cvis-header" data-i18n="lab04SecKeySchedule">// How key becomes subkeys K₁…K₁₆ — transformation stages</div>
                 <div class="cvis-body" style="padding:1rem">
                   <div id="key-schedule-display">
-                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8">
-                      ← Зашифруй текст (розділ 02), щоб побачити перетворення ключа
+                    <div style="font-size:.72rem;color:var(--text-muted);line-height:1.8" data-i18n="lab04KeyFirst">
+                      ← Encrypt text (section 02) to see key transformation
                     </div>
                   </div>
                 </div>
                 <div class="cvis-hint">
                   <span class="cvis-legend">
-                    <span><span class="cvis-dot purple"></span><span class="cvis-label-purple">фіолетовий</span> — ключ</span>·
-                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — C₀, D₀</span>·
-                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — Kᵢ використовується в раунді i: E(R) ⊕ Kᵢ</span>
+                    <span><span class="cvis-dot purple"></span><span class="cvis-label-purple" data-i18n="lab04ColorPurple">purple</span> — <span data-i18n="lab04KeyHintPurple">key</span></span>·
+                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow" data-i18n="lab04ColorYellow">yellow</span> — <span data-i18n="lab04KeyHintYellow">C₀, D₀</span></span>·
+                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan" data-i18n="lab04ColorCyan">cyan</span> — <span data-i18n="lab04KeyHintCyan">Kᵢ used in round i: E(R) ⊕ Kᵢ</span></span>
                   </span>
                 </div>
               </div>
             </section>
 
             <!-- ══════════════════════════════════════════
-                 08 — 16 РАУНДІВ ФЕЙСТЕЛЯ
+                 08 — 16 FEISTEL ROUNDS
                  ══════════════════════════════════════════ -->
             <section id="sec-rounds" style="margin-bottom:2rem">
               <div class="caesar-vis" id="des-vis">
-                <div class="cvis-header" id="des-vis-header">
-                  // 16 раундів мережі Фейстеля
+                <div class="cvis-header" id="des-vis-header" data-i18n="lab04SecRounds">
+                  // 16 rounds of Feistel network
                 </div>
                 <div class="cvis-body" style="padding:.75rem 0">
 
                   <!-- Pipeline overview -->
                   <div class="des-pipeline" id="des-pipeline">
-                    <div class="des-pipe-node">Вхід<br /><span class="des-pipe-hex">64 біт</span></div>
+                    <div class="des-pipe-node" data-i18n="lab04PipeInput">Input<br /><span class="des-pipe-hex" data-i18n="lab04Pipe64bit">64 bits</span></div>
                     <div class="des-pipe-arrow">→</div>
-                    <div class="des-pipe-node des-pipe-ip">IP<br /><span style="font-size:.5rem;opacity:.7">перест.</span></div>
+                    <div class="des-pipe-node des-pipe-ip">IP<br /><span style="font-size:.5rem;opacity:.7" data-i18n="lab04PipePerm">perm.</span></div>
                     <div class="des-pipe-arrow">→</div>
                     <div class="des-pipe-node" style="font-size:.55rem;color:#d2b739;padding:.4rem .5rem">L₀<br /><span style="opacity:.5">32b</span></div>
                     <div class="des-pipe-arrow" style="opacity:.3">│</div>
@@ -333,9 +335,9 @@
                     <div class="des-pipe-arrow">→</div>
                     <div class="des-pipe-node des-pipe-feistel">16 × Feistel<br /><span style="font-size:.5rem;opacity:.7">K₁..K₁₆</span></div>
                     <div class="des-pipe-arrow">→</div>
-                    <div class="des-pipe-node des-pipe-ip">IP⁻¹<br /><span style="font-size:.5rem;opacity:.7">обернена</span></div>
+                    <div class="des-pipe-node des-pipe-ip">IP⁻¹<br /><span style="font-size:.5rem;opacity:.7" data-i18n="lab04PipeInverse">inverse</span></div>
                     <div class="des-pipe-arrow">→</div>
-                    <div class="des-pipe-node">Вихід<br /><span class="des-pipe-hex">64 біт</span></div>
+                    <div class="des-pipe-node" data-i18n="lab04PipeOutput">Output<br /><span class="des-pipe-hex" data-i18n="lab04Pipe64bit">64 bits</span></div>
                   </div>
 
                   <!-- Round navigator (hidden until run) -->
@@ -352,16 +354,18 @@
                       onclick="
                         const b=document.getElementById('des-rounds-section');
                         b.style.display=b.style.display==='none'?'block':'none';
-                        this.textContent=b.style.display==='none'?'// таблиця 16 раундів ▶':'// таблиця 16 раундів ▼';
-                      ">// таблиця 16 раундів ▼</div>
+                        const k=b.style.display==='none'?'lab04RoundsTableExpand':'lab04RoundsTableCollapse';
+                        this.setAttribute('data-i18n',k);
+                        if(window.CL&&window.CL.i18n)CL.i18n.apply();
+                      " data-i18n="lab04RoundsTableCollapse">// 16 rounds table ▼</div>
                     <div id="des-rounds-section">
                       <div class="des-rounds-wrap">
                         <table class="des-rounds-table">
                           <thead>
-                            <tr><th>Раунд</th><th>L (hex)</th><th>R (hex)</th><th>K (підключ)</th><th>f (hex)</th><th>Формула</th></tr>
+                            <tr><th data-i18n="lab04RoundCol">Round</th><th data-i18n="lab04LCol">L (hex)</th><th data-i18n="lab04RCol">R (hex)</th><th data-i18n="lab04KCol">K (subkey)</th><th data-i18n="lab04FCol">f (hex)</th><th data-i18n="lab04FormulaCol">Formula</th></tr>
                           </thead>
                           <tbody id="des-rounds-body">
-                            <tr><td colspan="6" class="des-rounds-empty">// запустіть шифрування</td></tr>
+                            <tr><td colspan="6" class="des-rounds-empty" data-i18n="lab04RunEncrypt">// run encryption</td></tr>
                           </tbody>
                         </table>
                       </div>
@@ -371,35 +375,31 @@
                 </div>
                 <div class="cvis-hint">
                   <span class="cvis-legend">
-                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — L вхід</span>·
-                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — R вхід / новий L</span>·
-                    <span><span class="cvis-dot green"></span><span class="cvis-label-green">зелений</span> — новий R = L⊕f</span>·
-                    <span><span class="cvis-dot purple"></span><span class="cvis-label-purple">фіолетовий</span> — функція f</span>
+                    <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow" data-i18n="lab04ColorYellow">yellow</span> — <span data-i18n="lab04RoundHintYellow">L input</span></span>·
+                    <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan" data-i18n="lab04ColorCyan">cyan</span> — <span data-i18n="lab04RoundHintCyan">R input / new L</span></span>·
+                    <span><span class="cvis-dot green"></span><span class="cvis-label-green" data-i18n="lab04ColorGreen">green</span> — <span data-i18n="lab04RoundHintGreen">new R = L⊕f</span></span>·
+                    <span><span class="cvis-dot purple"></span><span class="cvis-label-purple" data-i18n="lab04ColorPurple">purple</span> — <span data-i18n="lab04RoundHintPurple">function f</span></span>
                   </span>
                 </div>
               </div>
             </section>
 
             <!-- ══════════════════════════════════════════
-                 08 — КІНЦЕВА ПЕРЕСТАНОВКА IP⁻¹
+                 08 — FINAL IP⁻¹ PERMUTATION
                  ══════════════════════════════════════════ -->
             <section id="sec-ip-inv" style="margin-bottom:2rem">
               <div class="caesar-vis">
-                <div class="cvis-header">// Кінцева перестановка IP⁻¹ — зворотня до початкової</div>
+                <div class="cvis-header" data-i18n="lab04SecIPInv">// Final IP⁻¹ permutation — inverse of initial</div>
                 <div class="cvis-body" style="padding:1rem">
-                  <p style="font-size:.72rem;color:var(--text-muted);line-height:1.8;margin-bottom:1rem">
-                    Після 16 раундів маємо <strong style="color:#58d4f5">L₁₆</strong> і
-                    <strong style="color:#39d353">R₁₆</strong>.
-                    Їх <strong style="color:var(--text)">міняємо місцями</strong> (R₁₆ | L₁₆)
-                    і застосовуємо таблицю IP⁻¹ — вона є точним оберненням початкової IP.
+                  <p style="font-size:.72rem;color:var(--text-muted);line-height:1.8;margin-bottom:1rem" data-i18n-html="lab04IPInvParaHtml">
+                    After 16 rounds we have <strong style="color:#58d4f5">L₁₆</strong> and <strong style="color:#39d353">R₁₆</strong>. Swap them (R₁₆ | L₁₆) and apply IP⁻¹ table — it is the exact inverse of initial IP.
                   </p>
                   <div id="ip-inv-table-display"></div>
                   <div id="ip-inv-result-display" style="margin-top:1rem">
-                    <div style="font-size:.72rem;color:var(--text-muted)">← Зашифруй текст щоб побачити реальні значення</div>
+                    <div style="font-size:.72rem;color:var(--text-muted)" data-i18n="lab04IPInvEncryptFirst">← Encrypt text to see actual values</div>
                   </div>
                   <div style="margin-top:1rem;padding:.65rem .9rem;background:rgba(57,211,83,.05);border:1px solid rgba(57,211,83,.2);border-radius:6px;font-size:.65rem;color:var(--text-muted);line-height:1.8">
-                    <span style="color:#39d353;font-weight:700">Пояснення:</span>
-                    IP⁻¹ — це не шифрування, а зворотня операція до початкової IP. Якщо IP переставляє біти вхідного блоку, то IP⁻¹ повертає їх на місця. Тобто IP⁻¹(IP(x)) = x. Криптостійкість DES забезпечується саме 16 раундами Фейстеля з S-блоками, а не цими перестановками. IP та IP⁻¹ були додані в 1977 р. для зручності апаратної реалізації на мікросхемі — вони дозволяли читати/записувати біти в зручному порядку.
+                    <span data-i18n-html="lab04IPInvExplainHtml">Explanation: IP⁻¹ is not encryption but the inverse of initial IP...</span>
                   </div>
                 </div>
               </div>
@@ -407,8 +407,8 @@
 
             <!-- NAV -->
             <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--border);margin-top:1.5rem">
-              <a href="lab03.html" class="btn-secondary">← Лаб. 03</a>
-              <a href="lab05.html" class="btn-primary">Лаб. 05 →</a>
+              <a href="lab03.html" class="btn-secondary" data-i18n="lab04NavPrev">← Lab 03</a>
+              <a href="lab05.html" class="btn-primary" data-i18n="lab04NavNext">Lab 05 →</a>
             </div>
           </main>
         </div>
@@ -416,14 +416,28 @@
     </div>
 
     <footer>
-      <span>© 2026 CryptoLab — Лаб. 04 / Алгоритм шифрування DES</span>
+      <span data-i18n="lab04Footer">© 2026 CryptoLab — Lab 04 / DES encryption algorithm</span>
       <div class="footer-links">
-        <a href="lab03.html" class="footer-link">← Лаб. 03</a>
-        <a href="../index.html" class="footer-link">Головна</a>
-        <a href="lab05.html" class="footer-link">Лаб. 05 →</a>
+        <a href="lab03.html" class="footer-link" data-i18n="lab04NavPrev">← Lab 03</a>
+        <a href="../index.html" class="footer-link" data-i18n="home">Home</a>
+        <a href="lab05.html" class="footer-link" data-i18n="lab04NavNext">Lab 05 →</a>
       </div>
     </footer>
 
+    <script src="../js/i18n.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var lang = window.CL && window.CL.i18n ? window.CL.i18n.getLang() : 'en';
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.lang === lang);
+          btn.addEventListener('click', function() {
+            var l = this.dataset.lang;
+            if (window.CL && window.CL.i18n) window.CL.i18n.setLang(l);
+            document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === l); });
+          });
+        });
+      });
+    </script>
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/des.js"></script>
     <script>

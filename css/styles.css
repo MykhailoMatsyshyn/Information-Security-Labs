@@ -152,6 +152,34 @@ header {
   color: var(--text-muted);
 }
 
+/* Language switcher */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+}
+.lang-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.4rem;
+  transition: color 0.2s;
+}
+.lang-btn:hover {
+  color: var(--text);
+}
+.lang-btn.active {
+  color: var(--green);
+  font-weight: 700;
+}
+.lang-sep {
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+
 .status-dot {
   width: 6px;
   height: 6px;

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Лаб. 02 — Шифр Полібія та Гронсфельда | CryptoLab</title>
+    <title>Lab 02 — Polybius and Gronsfeld ciphers | CryptoLab</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
       rel="stylesheet"
@@ -17,10 +17,17 @@
         ><span class="logo-text">CryptoLab</span
         ><span class="logo-bracket">}</span>
       </a>
-      <div class="breadcrumb">
-        <a href="../index.html">Головна</a>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Лаб. 02</span>
+      <div style="display:flex;align-items:center;gap:1.5rem;">
+        <div class="lang-switcher">
+          <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+          <span class="lang-sep">/</span>
+          <button class="lang-btn" data-lang="uk" aria-label="Українська">UA</button>
+        </div>
+        <div class="breadcrumb">
+          <a href="../index.html" data-i18n="home">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" data-i18n="lab02Label">Lab 02</span>
+        </div>
       </div>
     </header>
 
@@ -29,21 +36,11 @@
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
-            <span class="lab-index-badge">ЛАБ 02</span>
-            <span
-              style="
-                font-size: 0.65rem;
-                color: var(--text-dim);
-                letter-spacing: 0.15em;
-              "
-              >КЛАСИЧНА КРИПТОГРАФІЯ</span
-            >
+            <span class="lab-index-badge" data-i18n="labNum02">LAB 02</span>
+            <span style="font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.15em;" data-i18n="lab02Meta">CLASSICAL CRYPTOGRAPHY</span>
           </div>
-          <h1 class="lab-hero-title">Шифр Полібія<br />та Гронсфельда</h1>
-          <p class="lab-hero-sub">
-            Квадрат Полібія — заміна за позицією у таблиці з ключовим словом.
-            Шифр Гронсфельда — числовий варіант Виженера з цифровим ключем.
-          </p>
+          <h1 class="lab-hero-title" data-i18n="lab02HeroTitle">Polybius and Gronsfeld ciphers</h1>
+          <p class="lab-hero-sub" data-i18n="lab02HeroSub">Polybius square — substitution by table position with keyword. Gronsfeld cipher — numeric variant of Vigenère with digit key.</p>
           <div class="lab-hero-chips">
             <span class="tag">Полібій</span>
             <span class="tag">Гронсфельд</span>
@@ -59,15 +56,15 @@
           <!-- SIDEBAR -->
           <aside class="lab-sidebar">
             <nav class="sidebar-nav">
-              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-title" data-i18n="labNav">// navigation</div>
               <div class="sidebar-nav-item active" data-section="theory">
-                <span class="sidebar-nav-num">01</span> Теорія
+                <span class="sidebar-nav-num">01</span> <span data-i18n="labTheory">Theory</span>
               </div>
               <div class="sidebar-nav-item" data-section="polybius">
-                <span class="sidebar-nav-num">02</span> Квадрат Полібія
+                <span class="sidebar-nav-num">02</span> <span data-i18n="lab02NavPolybius">Polybius square</span>
               </div>
               <div class="sidebar-nav-item" data-section="gronsfeld">
-                <span class="sidebar-nav-num">03</span> Шифр Гронсфельда
+                <span class="sidebar-nav-num">03</span> <span data-i18n="lab02NavGronsfeld">Gronsfeld cipher</span>
               </div>
             </nav>
           </aside>
@@ -78,46 +75,33 @@
             <section id="theory">
               <div class="theory-block">
                 <div class="theory-header">
-                  <span class="theory-title">Короткі теоретичні відомості</span>
+                  <span class="theory-title" data-i18n="lab02TheoryTitle">Brief theory</span>
                   <span class="theory-toggle">▼</span>
                 </div>
                 <div class="theory-body open">
                   <div class="theory-body-inner">
-                    <p>
-                      У цій лабораторній розглядаються два шифри підстановки на
-                      основі
-                      <strong>таблиці (квадрата)</strong>. Квадрат Полібія
-                      замінює кожну літеру на сусідню у стовпці таблиці. Шифр
-                      Гронсфельда — числовий аналог Виженера, де зсув задається
-                      цифрами ключового числа.
-                    </p>
+                    <p data-i18n="lab02TheoryBody">This lab covers two substitution ciphers based on a table (square). Polybius square replaces each letter with the one below in the same column. Gronsfeld cipher — numeric variant of Vigenère where shift is given by key digits.</p>
 
                     <div class="algo-cards">
                       <!-- Polybius -->
                       <div class="algo-card" data-target="polybius">
                         <div class="algo-card-head">
-                          <span class="algo-card-name">Квадрат Полібія</span>
-                          <span class="algo-card-badge badge-sub"
-                            >таблична заміна</span
-                          >
+                          <span class="algo-card-name" data-i18n="lab02PolybiusName">Polybius square</span>
+                          <span class="algo-card-badge badge-sub" data-i18n="lab02PolybiusBadge">table substitution</span>
                         </div>
                         <div class="algo-card-formula">
                           Квадрат n×n, заповнений з ключем<br />
                           enc: літера → літера рядком нижче<br />
                           dec: літера → літера рядком вище
                         </div>
-                        <p class="algo-card-desc">
-                          Ключове слово записується першим у квадрат (без
-                          повторів), решта алфавіту дописується по порядку. EN:
-                          5×5 (J≡I), UK: 6×6.
-                        </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <p class="algo-card-desc" data-i18n="lab02PolybiusDesc">Keyword written first in square (no repeats), rest of alphabet added in order. EN: 5×5 (J≡I), UK: 6×6.</p>
+                        <span class="algo-card-goto" data-i18n="lab01Goto">go to section ↓</span>
                       </div>
 
                       <!-- Gronsfeld -->
                       <div class="algo-card" data-target="gronsfeld">
                         <div class="algo-card-head">
-                          <span class="algo-card-name">Шифр Гронсфельда</span>
+                          <span class="algo-card-name" data-i18n="lab02GronsfeldName">Gronsfeld cipher</span>
                           <span class="algo-card-badge badge-poly"
                             >числовий Виженер</span
                           >
@@ -127,12 +111,8 @@
                           n<br />
                           d<sub>i</sub> = digit[i mod |key|] &nbsp;(0–9)
                         </div>
-                        <p class="algo-card-desc">
-                          Ключ — десяткове число. Цифри циклічно підписуються
-                          під літерами тексту, кожна буква зсувається на
-                          відповідну цифру.
-                        </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <p class="algo-card-desc" data-i18n="lab02GronsfeldDesc">Key is decimal number. Digits cyclically assigned under text letters, each letter shifted by corresponding digit.</p>
+                        <span class="algo-card-goto" data-i18n="lab01Goto">go to section ↓</span>
                       </div>
                     </div>
                   </div>
@@ -153,20 +133,18 @@
                       background: var(--cyan-dim, rgba(88, 212, 245, 0.08));
                     "
                   >
-                    // квадрат Полібія
+                    <span data-i18n="lab02SecPolybius">// Polybius square</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Тип:</span
-                      ><span class="chip-val">Таблична підстановка</span>
+                      <span class="chip-label" data-i18n="lab01ChipType">Type:</span>
+                      <span class="chip-val" data-i18n="lab02ValTable">Table substitution</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val"
-                        >ключове слово (заповнює квадрат)</span
-                      >
+                      <span class="chip-label" data-i18n="lab01ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab02ValKeyWord">keyword (fills square)</span>
                     </div>
                     <div class="info-chip">
                       <span class="chip-label">EN:</span
@@ -174,41 +152,39 @@
                     </div>
                     <div class="info-chip">
                       <span class="chip-label">UK:</span
-                      ><span class="chip-val">6×6, 33 літери</span>
+                      ><span class="chip-val" data-i18n="lab02ValTable66">6×6, 33 letters</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Особливість:</span
-                      ><span class="chip-val"
-                        >кожна літера → літера знизу у тому ж стовпці</span
-                      >
+                      <span class="chip-label" data-i18n="lab01ChipFeature">Feature:</span>
+                      <span class="chip-val" data-i18n="lab02ValLetterBelow">each letter → letter below in same column</span>
                     </div>
                   </div>
 
                   <div class="workspace-grid">
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">Відкритий текст</label>
+                        <label class="input-label" data-i18n="plaintext">Plaintext</label>
                         <textarea
                           class="input-field"
                           id="poly-text"
-                          placeholder="Введіть повідомлення..."
+                          data-i18n-placeholder="placeholderMsg"
                           style="resize: none; height: 100px; min-height: unset"
                         >
 HELLO WORLD</textarea
                         >
                       </div>
                       <div class="input-group">
-                        <label class="input-label">Ключове слово</label>
+                        <label class="input-label" data-i18n="lab02Keyword">Keyword</label>
                         <input
                           class="input-field-sm"
                           id="poly-key"
                           value="KEYWORD"
-                          placeholder="напр. SECRET"
+                          data-i18n-placeholder="lab01PlaceholderKey"
                           style="height: 40px"
                         />
                       </div>
                       <div class="input-group">
-                        <label class="input-label">Мова</label>
+                        <label class="input-label" data-i18n="lab02Lang">Language</label>
                         <select
                           class="input-field-sm"
                           id="poly-lang"
@@ -224,20 +200,20 @@ HELLO WORLD</textarea
                           style="flex: 1"
                           onclick="runPolybius(false)"
                         >
-                          ⟶ Зашифрувати
+                          <span data-i18n="lab01BtnEncrypt">⟶ Encrypt</span>
                         </button>
                         <button
                           class="decrypt-btn"
                           style="flex: 1"
                           onclick="runPolybius(true)"
                         >
-                          ⟵ Розшифрувати
+                          <span data-i18n="lab01BtnDecrypt">⟵ Decrypt</span>
                         </button>
                       </div>
                     </div>
                     <div class="workspace-col">
                       <div>
-                        <label class="input-label">Результат</label>
+                        <label class="input-label" data-i18n="lab01Result">Result</label>
                         <div
                           class="result-box"
                           id="poly-output"
@@ -249,17 +225,17 @@ HELLO WORLD</textarea
                           "
                         >
                           <span class="result-empty"
-                            >Результат з'явиться тут...</span
+                            data-i18n="placeholderResult">Result will appear here...</span
                           >
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab01Steps">// execution steps</div>
                         <div class="steps-log-body" id="poly-steps">
                           <div class="log-line">
                             <span class="log-idx">—</span
                             ><span class="log-text"
-                              >Натисніть «Зашифрувати»</span
+                              data-i18n="lab01ClickEncrypt">Click "Encrypt"</span
                             >
                           </div>
                         </div>
@@ -274,10 +250,9 @@ HELLO WORLD</textarea
                     style="margin-top: 1.5rem"
                   >
                     <div class="cvis-header">
-                      // квадрат Полібія — кожна літера зсувається на рядок
-                      нижче у тому ж стовпці
+                      <span data-i18n="lab02PolybiusCvis">// Polybius square — each letter shifts one row down in same column</span>
                       <span class="cvis-shift-pill"
-                        >ключ:
+                        ><span data-i18n="lab01VigenereKey">key:</span>
                         <strong
                           id="poly-key-disp"
                           style="color: var(--cyan); letter-spacing: 0.1em"
@@ -300,12 +275,7 @@ HELLO WORLD</textarea
                       ></div>
                       <div id="poly-maps-content"></div>
                       <div class="cvis-hint">
-                        <span style="color: #d2b739">■ жовтий</span> — вхідна
-                        літера &nbsp;·&nbsp;
-                        <span style="color: #39d353">■ зелений</span> —
-                        зашифрована (рядок нижче) &nbsp;·&nbsp;
-                        <span style="color: var(--cyan)">■ блакитний</span> —
-                        літери ключа
+                        <span data-i18n="lab02PolybiusHint">■ yellow — input letter  ·  ■ green — encrypted (row below)  ·  ■ cyan — key letters</span>
                       </div>
                     </div>
                   </div>
@@ -326,60 +296,56 @@ HELLO WORLD</textarea
                       background: var(--purple-dim);
                     "
                   >
-                    // шифр Гронсфельда (числовий Виженер)
+                    <span data-i18n="lab02SecGronsfeld">// Gronsfeld cipher</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Тип:</span
-                      ><span class="chip-val"
-                        >Числова багатоалфавітна заміна</span
-                      >
+                      <span class="chip-label" data-i18n="lab01ChipType">Type:</span>
+                      <span class="chip-val" data-i18n="lab02ValNumeric">Numeric polyalphabetic substitution</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val">десяткове число (цифри 0–9)</span>
+                      <span class="chip-label" data-i18n="lab01ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab02ValDecimal">decimal number (digits 0–9)</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Формула:</span
+                      <span class="chip-label" data-i18n="lab01ChipFormula">Formula:</span>
                       ><span class="chip-val">b = (a + d) mod n</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Особливість:</span
-                      ><span class="chip-val"
-                        >подібний до Виженера, але зсув 0–9</span
-                      >
+                      <span class="chip-label" data-i18n="lab01ChipFeature">Feature:</span>
+                      <span class="chip-val" data-i18n="lab02ValLikeVigenere">similar to Vigenère, but shift 0–9</span>
                     </div>
                   </div>
 
                   <div class="workspace-grid">
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">Відкритий текст</label>
+                        <label class="input-label" data-i18n="plaintext">Plaintext</label>
                         <textarea
                           class="input-field"
                           id="gron-text"
-                          placeholder="Введіть повідомлення..."
+                          data-i18n-placeholder="placeholderMsg"
                           style="resize: none; height: 100px; min-height: unset"
                         >
 HELLO WORLD</textarea
                         >
                       </div>
                       <div class="input-group">
-                        <label class="input-label">Ключ (число)</label>
+                        <label class="input-label" data-i18n="lab02KeyNum">Key (number)</label>
                         <input
                           class="input-field-sm"
                           id="gron-key"
                           value="3142"
-                          placeholder="напр. 31415"
+                          data-i18n-placeholder="lab01PlaceholderKey"
                           style="height: 40px"
                           type="text"
                           inputmode="numeric"
                         />
                       </div>
                       <div class="input-group">
-                        <label class="input-label">Мова</label>
+                        <label class="input-label" data-i18n="lab02Lang">Language</label>
                         <select
                           class="input-field-sm"
                           id="gron-lang"
@@ -395,20 +361,20 @@ HELLO WORLD</textarea
                           style="flex: 1"
                           onclick="runGronsfeld(false)"
                         >
-                          ⟶ Зашифрувати
+                          <span data-i18n="lab01BtnEncrypt">⟶ Encrypt</span>
                         </button>
                         <button
                           class="decrypt-btn"
                           style="flex: 1"
                           onclick="runGronsfeld(true)"
                         >
-                          ⟵ Розшифрувати
+                          <span data-i18n="lab01BtnDecrypt">⟵ Decrypt</span>
                         </button>
                       </div>
                     </div>
                     <div class="workspace-col">
                       <div>
-                        <label class="input-label">Результат</label>
+                        <label class="input-label" data-i18n="lab01Result">Result</label>
                         <div
                           class="result-box"
                           id="gron-output"
@@ -420,17 +386,17 @@ HELLO WORLD</textarea
                           "
                         >
                           <span class="result-empty"
-                            >Результат з'явиться тут...</span
+                            data-i18n="placeholderResult">Result will appear here...</span
                           >
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab01Steps">// execution steps</div>
                         <div class="steps-log-body" id="gron-steps">
                           <div class="log-line">
                             <span class="log-idx">—</span
                             ><span class="log-text"
-                              >Натисніть «Зашифрувати»</span
+                              data-i18n="lab01ClickEncrypt">Click "Encrypt"</span
                             >
                           </div>
                         </div>
@@ -445,9 +411,8 @@ HELLO WORLD</textarea
                     style="margin-top: 1.5rem"
                   >
                     <div class="cvis-header">
-                      // розгортання ключа — зашифрування
-                      <span class="cvis-shift-pill"
-                        >ключ:
+                      <span data-i18n="lab02GronsfeldCvis">// key expansion — encryption</span>
+                      <span class="cvis-shift-pill"><span data-i18n="lab01VigenereKey">key:</span>
                         <strong
                           id="gron-key-disp"
                           style="color: var(--purple); letter-spacing: 0.12em"
@@ -480,8 +445,8 @@ HELLO WORLD</textarea
                 border-top: 1px solid var(--border);
               "
             >
-            <a href="lab01.html" class="btn-secondary">← Лаб. 01</a>
-              <a href="lab03.html" class="btn-primary">Лаб. 03 →</a>
+            <a href="lab01.html" class="btn-secondary" data-i18n="lab01Link">← Lab 01</a>
+              <a href="lab03.html" class="btn-primary" data-i18n="lab03Link">Lab 03 →</a>
           </div>
           </main>
         </div>
@@ -489,13 +454,27 @@ HELLO WORLD</textarea
     </div>
 
     <footer>
-      <span>© 2026 CryptoLab — Лаб. 02 / Шифр Полібія та Гронсфельда</span>
+      <span data-i18n="lab02Footer">© 2026 CryptoLab — Lab 02 / Polybius and Gronsfeld ciphers</span>
       <div class="footer-links">
-        <a href="../index.html" class="footer-link">← Головна</a>
-        <a href="lab03.html" class="footer-link">Лаб. 03 →</a>
+        <a href="../index.html" class="footer-link" data-i18n="home">← Home</a>
+        <a href="lab03.html" class="footer-link" data-i18n="lab03Link">Lab 03 →</a>
       </div>
     </footer>
 
+    <script src="../js/i18n.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var lang = window.CL && window.CL.i18n ? window.CL.i18n.getLang() : 'en';
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.lang === lang);
+          btn.addEventListener('click', function() {
+            var l = this.dataset.lang;
+            if (window.CL && window.CL.i18n) window.CL.i18n.setLang(l);
+            document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === l); });
+          });
+        });
+      });
+    </script>
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/polybius.js"></script>
     <script>
@@ -575,7 +554,7 @@ HELLO WORLD</textarea
           document.getElementById("poly-maps-content").innerHTML = "";
           return;
         }
-        let mhtml = `<div style="font-size:0.58rem;color:var(--text-dim);letter-spacing:0.12em;text-align:center;margin-bottom:0.5rem;">// перетворення літер</div>`;
+        let mhtml = `<div style="font-size:0.58rem;color:var(--text-dim);letter-spacing:0.12em;text-align:center;margin-bottom:0.5rem;">${CL.i18n.t('lab02LetterTransform')}</div>`;
         mhtml += `<div class="poly-maps">`;
         uniquePlain.forEach((ch) => {
           const ci = sq.indexOf(ch);
@@ -586,11 +565,11 @@ HELLO WORLD</textarea
           const er = Math.floor(ei / sz) + 1;
           const ec = (ei % sz) + 1;
           mhtml += `<div class="poly-map-card">
-            <div class="poly-map-coord">р.${pr},&nbsp;с.${pc}</div>
+            <div class="poly-map-coord">${CL.i18n.t('lab02Row')}${pr},&nbsp;${CL.i18n.t('lab02Col')}${pc}</div>
             <div class="poly-map-letter plain">${ch}</div>
             <div class="poly-map-arrow">↓</div>
             <div class="poly-map-letter cipher">${enc}</div>
-            <div class="poly-map-coord">р.${er},&nbsp;с.${ec}</div>
+            <div class="poly-map-coord">${CL.i18n.t('lab02Row')}${er},&nbsp;${CL.i18n.t('lab02Col')}${ec}</div>
           </div>`;
         });
         mhtml += `</div>`;
@@ -625,8 +604,8 @@ HELLO WORLD</textarea
         const hdr = document.querySelector("#gron-vis .cvis-header");
         if (hdr)
           hdr.childNodes[0].textContent = decrypt
-            ? "// розгортання ключа — розшифрування "
-            : "// розгортання ключа — зашифрування ";
+            ? CL.i18n.t('lab02GronsfeldCvisDec') + " "
+            : CL.i18n.t('lab02GronsfeldCvis') + " ";
 
         // Build pairs (up to 20 alpha chars)
         const pairs = [];
@@ -650,13 +629,13 @@ HELLO WORLD</textarea
 
         if (!pairs.length) {
           document.getElementById("gron-vis-content").innerHTML =
-            '<div style="color:var(--text-dim);font-size:0.75rem;">Введіть текст для візуалізації</div>';
+            '<div style="color:var(--text-dim);font-size:0.75rem;">' + CL.i18n.t('lab02EnterText') + '</div>';
           return;
         }
 
         // ── Shift cards ──────────────────────────────────────
         const sign = decrypt ? "−" : "+";
-        let html = `<div style="font-size:0.58rem;color:var(--text-dim);letter-spacing:0.12em;text-align:center;margin-bottom:0.5rem;">// перетворення літер</div>`;
+        let html = `<div style="font-size:0.58rem;color:var(--text-dim);letter-spacing:0.12em;text-align:center;margin-bottom:0.5rem;">${CL.i18n.t('lab02LetterTransform')}</div>`;
         html += '<div class="gron-cards">';
         pairs.forEach((p) => {
           html += `<div class="gron-card">
@@ -686,7 +665,7 @@ HELLO WORLD</textarea
 
         // Row 1 — plain alphabet
         html +=
-          '<div class="cvis-strip"><span class="cvis-lbl">відкритий</span><div class="cvis-row">';
+          '<div class="cvis-strip"><span class="cvis-lbl">' + CL.i18n.t('lab01CvisPlain') + '</span><div class="cvis-row">';
         for (const ch of alpha)
           html += `<span class="cvis-cell${plainSet.has(ch) ? " hi-plain" : ""}">${ch}</span>`;
         html += "</div></div>";
@@ -703,7 +682,7 @@ HELLO WORLD</textarea
 
         // Row 3 — cipher alphabet
         html +=
-          '<div class="cvis-strip"><span class="cvis-lbl">шифртекст</span><div class="cvis-row">';
+          '<div class="cvis-strip"><span class="cvis-lbl">' + CL.i18n.t('lab02CvisCiphertext') + '</span><div class="cvis-row">';
         for (const ch of alpha)
           html += `<span class="cvis-cell${cipherSet.has(ch) ? " hi-cipher" : ""}">${ch}</span>`;
         html += "</div></div>";
@@ -712,12 +691,7 @@ HELLO WORLD</textarea
 
         html +=
           '<div class="cvis-hint" style="margin-top:2.5rem;text-align:center;">';
-        html +=
-          '<span style="color:#d2b739;">■ жовтий</span> — відкритий текст &nbsp;·&nbsp; ';
-        html +=
-          '<span style="color:#b57ef5;">■ фіолетовий</span> — цифра ключа (зсув) &nbsp;·&nbsp; ';
-        html +=
-          '<span style="color:#58d4f5;">■ блакитний</span> — зашифрована буква';
+        html += CL.i18n.t('lab02GronsfeldHint');
         html += "</div>";
 
         document.getElementById("gron-vis-content").innerHTML = html;

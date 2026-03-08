@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Лаб. 06 — Електронний цифровий підпис (ЕЦП) | CryptoLab</title>
+    <title>Lab 06 — Digital signature (RSA) | CryptoLab</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
       rel="stylesheet"
@@ -17,10 +17,17 @@
         ><span class="logo-text">CryptoLab</span
         ><span class="logo-bracket">}</span>
       </a>
-      <div class="breadcrumb">
-        <a href="../index.html">Головна</a>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Лаб. 06</span>
+      <div style="display:flex;align-items:center;gap:1.5rem;">
+        <div class="lang-switcher">
+          <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+          <span class="lang-sep">/</span>
+          <button class="lang-btn" data-lang="uk" aria-label="Українська">UA</button>
+        </div>
+        <div class="breadcrumb">
+          <a href="../index.html" data-i18n="home">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" data-i18n="lab06Label">Lab 06</span>
+        </div>
       </div>
     </header>
 
@@ -29,21 +36,11 @@
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
-            <span class="lab-index-badge">ЛАБ 06</span>
-            <span style="font-size:0.65rem;color:var(--text-dim);letter-spacing:0.15em">
-              ПІДПИС · АВТЕНТИЧНІСТЬ
-            </span>
+            <span class="lab-index-badge" data-i18n="labNum06">LAB 06</span>
+            <span style="font-size:0.65rem;color:var(--text-dim);letter-spacing:0.15em" data-i18n="lab06Meta">SIGNATURE · AUTHENTICITY</span>
           </div>
-          <h1 class="lab-hero-title">
-            Електронний цифровий<br />підпис RSA (ЕЦП)
-          </h1>
-          <p class="lab-hero-sub">
-            У цій лабораторній ми досліджуємо, як на базі RSA побудувати
-            електронний цифровий підпис: обчислити геш повідомлення,
-            сформувати підпис <strong>S&nbsp;=&nbsp;m<sup>d</sup>&nbsp;mod&nbsp;n</strong>
-            та перевірити його дійсність
-            <strong>m₁&nbsp;=&nbsp;S<sup>e</sup>&nbsp;mod&nbsp;n</strong>.
-          </p>
+          <h1 class="lab-hero-title" data-i18n="lab06HeroTitle">Digital signature RSA (DSA)</h1>
+          <p class="lab-hero-sub" data-i18n="lab06HeroSub">In this lab we explore how to build a digital signature on RSA: compute message hash, form signature S = m^d mod n, and verify m₁ = S^e mod n.</p>
           <div class="lab-hero-chips">
             <span class="tag">ЕЦП</span>
             <span class="tag">RSA</span>
@@ -59,9 +56,9 @@
           <!-- SIDEBAR -->
           <aside class="lab-sidebar">
             <nav class="sidebar-nav">
-              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-title" data-i18n="labNav">// navigation</div>
               <div class="sidebar-nav-item active" data-section="theory">
-                <span class="sidebar-nav-num">01</span> Теорія
+                <span class="sidebar-nav-num">01</span> <span data-i18n="labTheory">Theory</span>
               </div>
               <div class="sidebar-nav-item" data-section="hash">
                 <span class="sidebar-nav-num">02</span> Гешування
@@ -366,22 +363,22 @@
 
                   <!-- HASH VISUALIZER — chain of H boxes -->
                   <div class="caesar-vis" id="hash-vis" style="margin-top:1.5rem">
-                    <div class="cvis-header" style="justify-content:center;text-align:center;padding:0.65rem 1.25rem">
-                      // Ланцюжок гешів H₀ → H₁ → H₂ → … → m
+                    <div class="cvis-header" style="justify-content:center;text-align:center;padding:0.65rem 1.25rem" data-i18n="lab06HashChainHeader">
+                      // Hash chain H₀ → H₁ → H₂ → … → m
                     </div>
                     <div class="cvis-hint">
                       <span class="cvis-legend">
-                        <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — початкове H₀</span>
+                        <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow" data-i18n="lab04ColorYellow">yellow</span> — <span data-i18n="lab06HashHintYellow">initial H₀</span></span>
                         <span>·</span>
-                        <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — проміжний Hᵢ</span>
+                        <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan" data-i18n="lab04ColorCyan">cyan</span> — <span data-i18n="lab06HashHintCyan">intermediate Hᵢ</span></span>
                         <span>·</span>
-                        <span><span class="cvis-dot purple"></span><span class="cvis-label-purple">фіолетовий</span> — фінальний m</span>
+                        <span><span class="cvis-dot purple"></span><span class="cvis-label-purple" data-i18n="lab04ColorPurple">purple</span> — <span data-i18n="lab06HashHintPurple">final m</span></span>
                       </span>
                     </div>
                     <div class="cvis-body" style="padding:1rem 1.25rem 1.25rem">
                       <div id="hash-vis-body">
                         <span style="color:var(--text-dim);font-size:0.7rem;font-family:var(--font-mono)">
-                          // ланцюжок з'явиться після обчислення
+                          <span data-i18n="lab06HashChainPlaceholder">// chain will appear after computation</span>
                         </span>
                       </div>
                     </div>
@@ -396,22 +393,22 @@
               <div class="cipher-workspace" style="margin-bottom:2rem">
                 <div class="workspace-tabs">
                   <div class="workspace-tab active" style="cursor:default;color:#b57ef5;border-bottom-color:#b57ef5;background:rgba(181,126,245,.06)">
-                    // ЕЦП RSA — генерація, підпис, перевірка
+                    <span data-i18n="lab06SecDSA">// RSA DSA — generation, sign, verify</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display:block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Кроки:</span
-                      ><span class="chip-val">ключі → геш m → підпис S → перевірка</span>
+                      <span class="chip-label" data-i18n="lab06ValSteps">Steps:</span>
+                      <span class="chip-val" data-i18n="lab06ValStepsVal">keys → hash m → sign S → verify</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Приклад:</span
-                      ><span class="chip-val">p=3, q=11, d=7, e=3, n=33</span>
+                      <span class="chip-label" data-i18n="lab06ValExample">Example:</span>
+                      <span class="chip-val">p=3, q=11, d=7, e=3, n=33</span>
                     </div>
                     <div class="info-chip" id="dsa-key-chip">
-                      <span class="chip-label">Ключі:</span
-                      ><span class="chip-val">згенеруйте або використайте приклад</span>
+                      <span class="chip-label" data-i18n="lab06ValKeys">Keys:</span>
+                      <span class="chip-val" data-i18n="lab06ValKeysVal">generate or use example</span>
                     </div>
                   </div>
 
@@ -419,21 +416,21 @@
                     <!-- LEFT COL -->
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">p, q — прості</label>
+                        <label class="input-label" data-i18n="lab06LabelPQ">p, q — primes</label>
                         <div class="input-row">
                           <input class="input-field-sm" id="dsa-p" type="number" value="3" min="2" />
                           <input class="input-field-sm" id="dsa-q" type="number" value="11" min="2" />
                         </div>
                       </div>
                       <div class="input-group">
-                        <label class="input-label">e — відкритий показник (бажане)</label>
+                        <label class="input-label" data-i18n="lab06LabelE">e — public exponent</label>
                         <input class="input-field-sm" id="dsa-e" type="number"
                           value="3" min="2" style="height:40px" />
                       </div>
                       <div class="action-row">
                         <button class="encrypt-btn" style="flex:1" onclick="runDsaKeygen()">
                           <span style="font-size:1.1rem;margin-right:0.25rem">⚙</span>
-                          Генерувати ключі RSA
+                          <span data-i18n="lab06BtnGenKeys">Generate RSA keys</span>
                         </button>
                       </div>
 
@@ -443,16 +440,17 @@
                           placeholder="напр.: 312" style="height:40px" />
                       </div>
                       <div class="input-group">
-                        <label class="input-label">Цифровий підпис S</label>
+                        <label class="input-label" data-i18n="lab06LabelS">Digital signature S</label>
                         <input class="input-field-sm" id="dsa-sig"
-                          placeholder="з'явиться після підпису" style="height:40px" />
+                          data-i18n-placeholder="lab06PlaceholderS"
+                          placeholder="appears after signing" style="height:40px" />
                       </div>
                       <div class="action-row">
-                        <button class="encrypt-btn" style="flex:1" onclick="runDsaSign()">
-                          ⟶ Підписати M
-                        </button>
-                        <button class="decrypt-btn" style="flex:1" onclick="runDsaVerify()">
-                          ⟵ Перевірити підпис
+                        <button class="encrypt-btn" style="flex:1" onclick="runDsaSign()"
+                          data-i18n="lab06BtnSign">⟶ Sign M</button>
+                        <button class="decrypt-btn" style="flex:1" onclick="runDsaVerify()"
+                          data-i18n="lab06BtnVerify"
+                        >⟵ Verify signature
                         </button>
                       </div>
                     </div>
@@ -460,21 +458,21 @@
                     <!-- RIGHT COL -->
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">Результат (m, S, m₁)</label>
+                        <label class="input-label" data-i18n="lab06LabelResultFull">Result (m, S, m₁)</label>
                         <div style="position:relative">
                           <div class="result-box" id="dsa-result"
                             style="min-height:90px;height:auto;overflow-y:visible;box-sizing:border-box;font-size:0.78rem;white-space:pre-line">
-                            <span class="result-empty">Тут будуть m, S та результат перевірки</span>
+                            <span class="result-empty" data-i18n="lab06ResultFullPlaceholder">m, S and verification result will appear here</span>
                           </div>
                           <button class="copy-btn" onclick="copyResult('dsa-result', this)">copy</button>
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки: ключі, геш, підпис, перевірка</div>
+                        <div class="steps-log-header" data-i18n="lab06StepsDSA">// steps: keys, hash, sign, verify</div>
                         <div class="steps-log-body" id="dsa-log">
                           <div class="log-line">
                             <span class="log-idx">—</span
-                            ><span class="log-text">Згенеруйте ключі та натисніть «Підписати»</span>
+                            ><span class="log-text" data-i18n="lab06ClickSign">Generate keys and click "Sign"</span>
                           </div>
                         </div>
                       </div>
@@ -485,23 +483,23 @@
                   <div class="caesar-vis" id="dsa-vis" style="margin-top:1.5rem">
                     <div class="cvis-header" id="dsa-vis-header"
                       style="justify-content:center;text-align:center;padding:0.65rem 1.25rem">
-                      // ЕЦП RSA — M → m → S → m₁
+                      <span data-i18n="lab06DsaVisHeader">// RSA DSA — M → m → S → m₁</span>
                     </div>
                     <div class="cvis-hint">
                       <span class="cvis-legend">
-                        <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow">жовтий</span> — повідомлення M</span>
+                        <span><span class="cvis-dot yellow"></span><span class="cvis-label-yellow" data-i18n="lab04ColorYellow">yellow</span> — <span data-i18n="lab06DsaHintYellow">message M</span></span>
                         <span>·</span>
-                        <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan">блакитний</span> — геш m</span>
+                        <span><span class="cvis-dot cyan"></span><span class="cvis-label-cyan" data-i18n="lab04ColorCyan">cyan</span> — <span data-i18n="lab06DsaHintCyan">hash m</span></span>
                         <span>·</span>
-                        <span><span class="cvis-dot orange"></span><span class="cvis-label-orange">помаранчевий</span> — підпис S</span>
+                        <span><span class="cvis-dot orange"></span><span class="cvis-label-orange" data-i18n="lab04ColorOrange">orange</span> — <span data-i18n="lab06DsaHintOrange">signature S</span></span>
                         <span>·</span>
-                        <span><span class="cvis-dot purple"></span><span class="cvis-label-purple">фіолетовий</span> — ключі (e, d, n)</span>
+                        <span><span class="cvis-dot purple"></span><span class="cvis-label-purple" data-i18n="lab04ColorPurple">purple</span> — <span data-i18n="lab06DsaHintPurple">keys (e, d, n)</span></span>
                       </span>
                     </div>
                     <div class="cvis-body" style="padding:1rem 1.25rem 1.25rem">
                       <div id="dsa-vis-body">
                         <span style="color:var(--text-dim);font-size:0.7rem;font-family:var(--font-mono)">
-                          // натисніть «Підписати M» або «Перевірити підпис» — тут з'явиться візуалізація
+                          <span data-i18n="lab06DsaVisPlaceholder">// click "Sign M" or "Verify signature" — visualization will appear here</span>
                         </span>
                       </div>
                     </div>
@@ -513,7 +511,7 @@
 
             <!-- NAV BETWEEN LABS -->
             <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--border);margin-top:1.5rem">
-            <a href="lab05.html" class="btn-secondary">← Лаб. 05</a>
+            <a href="lab05.html" class="btn-secondary" data-i18n="lab06NavPrev">← Lab 05</a>
               <a href="../index.html" class="btn-primary">Головна</a>
           </div>
           </main>
@@ -522,13 +520,27 @@
     </div>
 
     <footer>
-      <span>© 2026 CryptoLab — Лаб. 06 / Електронний цифровий підпис (ЕЦП)</span>
+      <span data-i18n="lab06Footer">© 2026 CryptoLab — Lab 06 / Digital signature</span>
       <div class="footer-links">
         <a href="lab05.html" class="footer-link">← Лаб. 05</a>
         <a href="../index.html" class="footer-link">Головна</a>
       </div>
     </footer>
 
+    <script src="../js/i18n.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var lang = window.CL && window.CL.i18n ? window.CL.i18n.getLang() : 'en';
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.lang === lang);
+          btn.addEventListener('click', function() {
+            var l = this.dataset.lang;
+            if (window.CL && window.CL.i18n) window.CL.i18n.setLang(l);
+            document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === l); });
+          });
+        });
+      });
+    </script>
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/rsa.js"></script>
     <script>

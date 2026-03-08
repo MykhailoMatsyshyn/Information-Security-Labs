@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Лаб. 03 — Шифр Playfair та шифр Вернама | CryptoLab</title>
+    <title>Lab 03 — Playfair and Vernam ciphers | CryptoLab</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
       rel="stylesheet"
@@ -17,10 +17,17 @@
         ><span class="logo-text">CryptoLab</span
         ><span class="logo-bracket">}</span>
       </a>
-      <div class="breadcrumb">
-        <a href="../index.html">Головна</a>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Лаб. 03</span>
+      <div style="display:flex;align-items:center;gap:1.5rem;">
+        <div class="lang-switcher">
+          <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+          <span class="lang-sep">/</span>
+          <button class="lang-btn" data-lang="uk" aria-label="Українська">UA</button>
+        </div>
+        <div class="breadcrumb">
+          <a href="../index.html" data-i18n="home">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" data-i18n="lab03Label">Lab 03</span>
+        </div>
       </div>
     </header>
 
@@ -29,22 +36,11 @@
       <div class="lab-hero">
         <div class="lab-hero-inner">
           <div class="lab-hero-meta">
-            <span class="lab-index-badge">ЛАБ 03</span>
-            <span
-              style="
-                font-size: 0.65rem;
-                color: var(--text-dim);
-                letter-spacing: 0.15em;
-              "
-              >КЛАСИЧНА КРИПТОГРАФІЯ</span
-            >
+            <span class="lab-index-badge" data-i18n="labNum03">LAB 03</span>
+            <span style="font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.15em;" data-i18n="lab03Meta">CLASSICAL CRYPTOGRAPHY</span>
           </div>
-          <h1 class="lab-hero-title">Шифр Playfair<br />та шифр Вернама</h1>
-          <p class="lab-hero-sub">
-            Playfair — перший практичний біграмний шифр на 5×5 квадраті. Шифр
-            Вернама — симетричне XOR-шифрування, єдиний теоретично абсолютно
-            стійкий шифр (OTP).
-          </p>
+          <h1 class="lab-hero-title" data-i18n="lab03HeroTitle">Playfair and Vernam ciphers</h1>
+          <p class="lab-hero-sub" data-i18n="lab03HeroSub">Playfair — first practical bigram cipher on 5×5 square. Vernam — symmetric XOR encryption, the only theoretically unbreakable cipher (OTP).</p>
           <div class="lab-hero-chips">
             <span class="tag">Playfair</span>
             <span class="tag">Біграмний</span>
@@ -61,15 +57,15 @@
           <!-- SIDEBAR -->
           <aside class="lab-sidebar">
             <nav class="sidebar-nav">
-              <div class="sidebar-nav-title">// навігація</div>
+              <div class="sidebar-nav-title" data-i18n="labNav">// navigation</div>
               <div class="sidebar-nav-item active" data-section="theory">
-                <span class="sidebar-nav-num">01</span> Теорія
+                <span class="sidebar-nav-num">01</span> <span data-i18n="labTheory">Theory</span>
               </div>
               <div class="sidebar-nav-item" data-section="playfair">
-                <span class="sidebar-nav-num">02</span> Playfair
+                <span class="sidebar-nav-num">02</span> <span data-i18n="lab03NavPlayfair">Playfair</span>
               </div>
               <div class="sidebar-nav-item" data-section="vernam">
-                <span class="sidebar-nav-num">03</span> Шифр Вернама
+                <span class="sidebar-nav-num">03</span> <span data-i18n="lab03NavVernam">Vernam cipher</span>
               </div>
             </nav>
           </aside>
@@ -168,41 +164,41 @@
                       ><span class="chip-val">Біграмна підстановка</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val">слово (5×5 квадрат, J≡I)</span>
+                      <span class="chip-label" data-i18n="lab01ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab03ValWord">word (5×5 square, J≡I)</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Алфавіт:</span
-                      ><span class="chip-val">англійський (25 літер)</span>
+                      <span class="chip-label" data-i18n="lab03ChipAlphabet">Alphabet:</span>
+                      <span class="chip-val" data-i18n="lab03ValEnAlphabet">English (25 letters)</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Правила:</span
-                      ><span class="chip-val"
-                        >рядок / стовпець / прямокутник</span
-                      >
+                      <span class="chip-label" data-i18n="lab03ValRules">Rules:</span>
+                      <span class="chip-val" data-i18n="lab03ValRulesVal">row / column / rectangle</span>
                     </div>
                   </div>
 
                   <div class="workspace-grid">
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">Відкритий текст</label>
+                        <label class="input-label" data-i18n="plaintext">Plaintext</label>
                         <textarea
                           class="input-field"
                           id="pf-text"
-                          placeholder="Введіть повідомлення..."
+                          data-i18n-placeholder="placeholderMsg"
+                          placeholder="Enter message..."
                           style="resize: none; height: 100px; min-height: unset"
                         >
 HELLO WORLD</textarea
                         >
                       </div>
                       <div class="input-group">
-                        <label class="input-label">Ключове слово</label>
+                        <label class="input-label" data-i18n="lab02Keyword">Keyword</label>
                         <input
                           class="input-field-sm"
                           id="pf-key"
                           value="KEYWORD"
-                          placeholder="напр. SECRET"
+                          data-i18n-placeholder="lab01PlaceholderKey"
+                          placeholder="e.g. SECRET"
                           style="height: 40px"
                         />
                       </div>
@@ -212,44 +208,42 @@ HELLO WORLD</textarea
                           style="flex: 1"
                           onclick="runPlayfair(false)"
                         >
-                          ⟶ Зашифрувати
-                        </button>
+                          data-i18n="encrypt">⟶ Encrypt</button>
                         <button
                           class="decrypt-btn"
                           style="flex: 1"
                           onclick="runPlayfair(true)"
                         >
-                          ⟵ Розшифрувати
-                        </button>
+                          data-i18n="decrypt">⟵ Decrypt</button>
                       </div>
                     </div>
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">Результат</label>
+                        <label class="input-label" data-i18n="resultTag">Result</label>
                         <div style="position:relative;">
                           <div
                             class="result-box"
                             id="pf-output"
                             style="height:100px;min-height:unset;overflow-y:auto;box-sizing:border-box;"
                           >
-                            <span class="result-empty">Результат з'явиться тут...</span>
+                            <span class="result-empty" data-i18n="resultEmpty">Result will appear here...</span>
                           </div>
                           <button class="copy-btn" onclick="copyResult('pf-output', this)">copy</button>
                         </div>
                         <div id="pf-clean-hint" style="display:none;margin-top:0.5rem;padding:0.5rem 0.75rem;background:rgba(210,183,57,0.07);border:1px solid rgba(210,183,57,0.3);border-radius:4px;font-size:0.62rem;color:var(--text-dim);line-height:1.6;">
-                          <span style="color:#d2b739;letter-spacing:0.08em;">// padding X прибрано</span><br>
-                          Playfair вставляє <code style="color:var(--yellow);">X</code> між однаковими літерами та в кінці — після розшифрування їх видаляють вручну.<br>
-                          <span style="color:var(--text-muted);">Очищений текст:</span>
+                          <span style="color:#d2b739;letter-spacing:0.08em;" data-i18n="lab03PfPaddingRemoved">// padding X removed</span><br>
+                          <span data-i18n-html="lab03PfPaddingDesc">Playfair inserts X between same letters and at end — after decryption remove manually.</span><br>
+                          <span style="color:var(--text-muted);" data-i18n="lab03PfCleanedText">Cleaned text:</span>
                           <strong class="pf-clean-text" style="color:#d2b739;letter-spacing:0.08em;margin-left:0.3rem;"></strong>
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab03StepsHeader">// execution steps</div>
                         <div class="steps-log-body" id="pf-steps">
                           <div class="log-line">
                             <span class="log-idx">—</span
-                            ><span class="log-text"
-                              >Натисніть «Зашифрувати»</span
+                            ><span class="log-text" data-i18n="lab03ClickEnc"
+                              >Click «Encrypt»</span
                             >
                           </div>
                         </div>
@@ -264,7 +258,7 @@ HELLO WORLD</textarea
                     style="margin-top: 1.5rem"
                   >
                     <div class="cvis-header">
-                      // квадрат Playfair — шифрування біграм за 3 правилами
+                      <span data-i18n="lab03PlayfairCvis">// Playfair square — encrypt bigrams by 3 rules</span>
                       <span class="cvis-shift-pill"
                         >ключ:
                         <strong
@@ -284,18 +278,8 @@ HELLO WORLD</textarea
                       "
                     >
                       <div id="pf-vis-content" style="width: 100%"></div>
-                      <div class="cvis-hint">
-                        <span style="color: #d2b739">■ жовтий</span> — вхідна
-                        біграма &nbsp;·&nbsp;
-                        <span style="color: #39d353">■ зелений</span> —
-                        зашифрована &nbsp;·&nbsp;
-                        <span style="color: var(--cyan)">■ блакитний</span> —
-                        літери ключа
-                        <br />
-                        <span style="color: rgba(210, 183, 57, 0.3)"
-                          >▒ зона</span
-                        >
-                        — активне правило (рядок/стовп/прямокутник) &nbsp;
+                      <div class="cvis-hint" data-i18n-html="lab03PlayfairHintFull">
+                        <span style="color: #d2b739">■ yellow</span> — input bigram  ·  <span style="color: #39d353">■ green</span> — encrypted  ·  <span style="color: var(--cyan)">■ cyan</span> — key letters<br><span style="color: rgba(210, 183, 57, 0.3)">▒ zone</span> — active rule (row/column/rectangle)
                       </div>
                     </div>
                   </div>
@@ -316,53 +300,51 @@ HELLO WORLD</textarea
                       background: rgba(88, 212, 245, 0.06);
                     "
                   >
-                    // шифр Вернама (XOR / One-Time Pad)
+                    <span data-i18n="lab03SecVernam">// Vernam cipher (XOR / One-Time Pad)</span>
                   </div>
                 </div>
                 <div class="workspace-panel active" style="display: block">
                   <div class="info-chips">
                     <div class="info-chip">
-                      <span class="chip-label">Тип:</span
-                      ><span class="chip-val">Симетричне XOR-шифрування</span>
+                      <span class="chip-label" data-i18n="lab01ChipType">Type:</span>
+                      <span class="chip-val" data-i18n="lab03ValXor">Symmetric XOR encryption</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Ключ:</span
-                      ><span class="chip-val"
-                        >будь-який рядок (≥ довжина тексту)</span
-                      >
+                      <span class="chip-label" data-i18n="lab01ChipKey">Key:</span>
+                      <span class="chip-val" data-i18n="lab03ValAnyKey">any string (≥ text length)</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Операція:</span
-                      ><span class="chip-val">y = x ⊕ k (симетрична)</span>
+                      <span class="chip-label" data-i18n="lab03ValOp">Operation:</span>
+                      <span class="chip-val" data-i18n="lab03ValOpVal">y = x ⊕ k (symmetric)</span>
                     </div>
                     <div class="info-chip">
-                      <span class="chip-label">Результат:</span
-                      ><span class="chip-val">hex-рядок (байти)</span>
+                      <span class="chip-label" data-i18n="lab03ValResult">Result:</span>
+                      <span class="chip-val" data-i18n="lab03ValHex">hex string (bytes)</span>
                     </div>
                   </div>
 
                   <div class="workspace-grid">
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label"
-                          >Текст або hex для дешифрування</label
-                        >
+                        <label class="input-label" data-i18n="lab03TextOrHex">Text or hex for decryption</label>
                         <textarea
                           class="input-field"
                           id="vn-text"
-                          placeholder="Текст або hex байти через пробіл..."
+                          data-i18n-placeholder="lab03PlaceholderText"
+                          placeholder="Text or hex bytes separated by space..."
                           style="resize: none; height: 100px; min-height: unset"
                         >
 HELLO WORLD</textarea
                         >
                       </div>
                       <div class="input-group">
-                        <label class="input-label">Ключ</label>
+                        <label class="input-label" data-i18n="lab01ChipKey">Key</label>
                         <input
                           class="input-field-sm"
                           id="vn-key"
                           value="SECRET"
-                          placeholder="Ключ (будь-які символи)"
+                          data-i18n-placeholder="lab03PlaceholderKey"
+                          placeholder="Key (any characters)"
                           style="height: 40px"
                         />
                       </div>
@@ -371,39 +353,38 @@ HELLO WORLD</textarea
                           class="encrypt-btn"
                           style="flex: 1"
                           onclick="runVernam()"
-                        >
-                          ⊕ Зашифрувати
-                        </button>
+                          data-i18n="lab03BtnXorEnc"
+                        >⊕ Encrypt</button>
                         <button
                           class="decrypt-btn"
                           style="flex: 1"
                           onclick="runVernamDecrypt()"
-                        >
-                          ⊕ Розшифрувати hex
+                          data-i18n="lab03BtnXorDec"
+                        >⊕ Decrypt hex</button>
                         </button>
                       </div>
                     </div>
                     <div class="workspace-col">
                       <div class="input-group">
-                        <label class="input-label">Результат</label>
+                        <label class="input-label" data-i18n="resultTag">Result</label>
                         <div style="position:relative;">
                           <div
                             class="result-box"
                             id="vn-output"
                             style="height:100px;min-height:unset;overflow-y:auto;box-sizing:border-box;font-size:0.72rem;word-break:break-all;"
                           >
-                            <span class="result-empty">Результат з'явиться тут...</span>
+                            <span class="result-empty" data-i18n="resultEmpty">Result will appear here...</span>
                           </div>
                           <button class="copy-btn" onclick="copyResult('vn-output', this)">copy</button>
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab03StepsHeader">// execution steps</div>
                         <div class="steps-log-body" id="vn-steps">
                           <div class="log-line">
                             <span class="log-idx">—</span
-                            ><span class="log-text"
-                              >Натисніть «Зашифрувати»</span
+                            ><span class="log-text" data-i18n="lab03ClickEnc"
+                              >Click «Encrypt»</span
                             >
                           </div>
                         </div>
@@ -418,9 +399,8 @@ HELLO WORLD</textarea
                     style="margin-top: 1.5rem"
                   >
                     <div class="cvis-header">
-                      // XOR байт за байтом: текст ⊕ ключ = результат
-                      <span class="cvis-shift-pill"
-                        >ключ:
+                      <span data-i18n="lab03VernamCvis">// XOR byte by byte: text ⊕ key = result</span>
+                      <span class="cvis-shift-pill"><span data-i18n="lab01VigenereKey">key:</span>
                         <strong
                           id="vn-key-disp"
                           style="color: var(--cyan); letter-spacing: 0.1em"
@@ -438,13 +418,8 @@ HELLO WORLD</textarea
                       "
                     >
                       <div id="vn-vis-content"></div>
-                      <div class="cvis-hint" style="text-align: center">
-                        <span style="color: #d2b739">■ жовтий</span> — символ
-                        тексту (ASCII) &nbsp;·&nbsp;
-                        <span style="color: #b57ef5">■ фіолетовий</span> —
-                        символ ключа (ASCII) &nbsp;·&nbsp;
-                        <span style="color: #58d4f5">■ блакитний</span> —
-                        результат XOR (hex)
+                      <div class="cvis-hint" style="text-align: center" data-i18n="lab03VernamHint">
+                        ■ yellow — text char (ASCII)  ·  ■ purple — key char (ASCII)  ·  ■ cyan — XOR result (hex)
                       </div>
                     </div>
                   </div>
@@ -479,6 +454,20 @@ HELLO WORLD</textarea
       </div>
     </footer>
 
+    <script src="../js/i18n.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var lang = window.CL && window.CL.i18n ? window.CL.i18n.getLang() : 'en';
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.lang === lang);
+          btn.addEventListener('click', function() {
+            var l = this.dataset.lang;
+            if (window.CL && window.CL.i18n) window.CL.i18n.setLang(l);
+            document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === l); });
+          });
+        });
+      });
+    </script>
     <script src="../js/common.js"></script>
     <script src="../js/ciphers/playfair.js"></script>
     <script>
@@ -563,7 +552,7 @@ HELLO WORLD</textarea
           .replace(/[^A-Z]/g, "");
 
         document.getElementById("pf-key-disp").textContent =
-          key.toUpperCase() || "(без ключа)";
+          key.toUpperCase() || (window.CL && CL.i18n ? CL.i18n.t('lab03NoKey') : '(no key)');
 
         _pfKeySet = new Set(
           key

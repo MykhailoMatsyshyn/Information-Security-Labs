@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoLab — Лабораторні роботи</title>
+<title>CryptoLab — Cyber Security Labs</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 <style>
@@ -177,6 +177,10 @@
     letter-spacing: -0.03em;
     max-width: 900px;
     animation: fadeUp 0.8s ease 0.1s both;
+  }
+  /* English title: smaller (looks oversized vs Ukrainian) */
+  .lang-en .hero-title {
+    font-size: clamp(2.2rem, 5.5vw, 4.2rem);
   }
 
   .hero-title .accent { color: var(--green); }
@@ -717,6 +721,13 @@
   .footer-link { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
   .footer-link:hover { color: var(--green); }
 
+  /* Language switcher */
+  .lang-switcher { display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; }
+  .lang-btn { background: none; border: none; color: var(--text-dim); cursor: pointer; font-family: var(--font-mono); padding: 0.2rem 0.4rem; transition: color 0.2s; }
+  .lang-btn:hover { color: var(--text); }
+  .lang-btn.active { color: var(--green); font-weight: 700; }
+  .lang-sep { color: var(--text-dim); opacity: 0.6; }
+
   /* ============ ANIMATIONS ============ */
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -782,6 +793,11 @@
     <span class="logo-text">CryptoLab</span>
     <span class="logo-bracket">}</span>
   </div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en" aria-label="English">EN</button>
+    <span class="lang-sep">/</span>
+    <button class="lang-btn" data-lang="uk" aria-label="Українська">UA</button>
+  </div>
 </header>
 
 <!-- HERO -->
@@ -790,26 +806,19 @@
   <div class="hero-glow"></div>
 
   <div class="hero-content">
-    <div class="hero-label">Інформаційна безпека / Криптографія</div>
+    <div class="hero-label" data-i18n="heroLabel">Cyber Security / Cryptography</div>
 
     <h1 class="hero-title">
-      <span class="accent">Шифри</span><br>
-      та протоколи<br>
-      <span class="dim">безпеки</span>
+      <span class="accent" data-i18n="heroTitle1">Ciphers</span><br>
+      <span data-i18n="heroTitle2">and protocols</span><br>
+      <span class="dim" data-i18n="heroTitle3">of security</span>
     </h1>
 
-    <p class="hero-sub">
-      Інтерактивні реалізації класичних та сучасних криптографічних алгоритмів. 
-      Від шифру Цезаря до RSA — все в одному місці.
-    </p>
+    <p class="hero-sub" data-i18n="heroSub">Interactive implementations of classical and modern cryptographic algorithms. From Caesar cipher to RSA — all in one place.</p>
 
     <div class="hero-actions">
-      <button class="btn-primary" onclick="document.querySelector('.section').scrollIntoView({behavior:'smooth'})">
-        → Відкрити лаби
-      </button>
-      <button class="btn-secondary" onclick="document.querySelector('.demo-section').scrollIntoView({behavior:'smooth'})">
-        Спробувати демо
-      </button>
+      <button class="btn-primary" onclick="document.querySelector('.section').scrollIntoView({behavior:'smooth'})" data-i18n="openLabs">→ Open labs</button>
+      <button class="btn-secondary" onclick="document.querySelector('.demo-section').scrollIntoView({behavior:'smooth'})" data-i18n="tryDemo">Try demo</button>
     </div>
   </div>
 
@@ -990,22 +999,22 @@
 <div class="stats-bar" style="justify-content:center;">
   <div class="stat-item">
     <span class="stat-val">6</span>
-    <span class="stat-label">Лабораторних робіт</span>
+    <span class="stat-label" data-i18n="statLabs">Lab works</span>
   </div>
   <div class="stat-divider"></div>
   <div class="stat-item">
     <span class="stat-val">12+</span>
-    <span class="stat-label">Алгоритмів</span>
+    <span class="stat-label" data-i18n="statAlgos">Algorithms</span>
   </div>
   <div class="stat-divider"></div>
   <div class="stat-item">
     <span class="stat-val">100%</span>
-    <span class="stat-label">Інтерактивно</span>
+    <span class="stat-label" data-i18n="statInteractive">Interactive</span>
   </div>
   <div class="stat-divider"></div>
   <div class="stat-item">
     <span class="stat-val">live</span>
-    <span class="stat-label">Шифрування в браузері</span>
+    <span class="stat-label" data-i18n="statBrowser">Encryption in browser</span>
   </div>
 </div>
 
@@ -1013,33 +1022,29 @@
 <section class="section">
   <div class="section-header">
     <div>
-      <div class="section-tag">// лабораторні роботи</div>
-      <h2 class="section-title">Всі модулі</h2>
-      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.6rem;max-width:520px;line-height:1.7">
-        Лаби <strong style="color:var(--green)">01–03</strong> — класичні шифри заміни та перестановки,
-        <strong style="color:var(--cyan)">04–05</strong> — блочні симетричні та асиметричні (DES, RSA),
-        <strong style="color:#ff9550">06</strong> — ЕЦП та геш-ланцюжки.
-      </p>
+      <div class="section-tag" data-i18n="labsTag">// laboratory work</div>
+      <h2 class="section-title" data-i18n="labsTitle">All modules</h2>
+      <p class="labs-desc-p" style="font-size:0.75rem;color:var(--text-muted);margin-top:0.6rem;max-width:520px;line-height:1.7" data-i18n-html="labsDescHtml"></p>
     </div>
-    <span class="section-count">06 робіт / 12 алгоритмів</span>
+    <span class="section-count" data-i18n="labsCount">06 works / 12 algorithms</span>
   </div>
 
   <div class="labs-grid-root">
   <div class="labs-grid">
 
     <a href="labs/lab01.html" class="lab-card">
-      <div class="lab-num">ЛАБ 01</div>
-      <div class="lab-title">Шифри заміни і перестановки</div>
-      <div class="lab-desc">Шифр Цезаря, Атбаш, Віженер та перестановки. Базові принципи класичної криптографії.</div>
+      <div class="lab-num" data-i18n="labNum01">LAB 01</div>
+      <div class="lab-title" data-i18n="lab01Title">Substitution and transposition ciphers</div>
+      <div class="lab-desc" data-i18n="lab01Desc">Caesar, Atbash, Vigenère and transpositions. Basic principles of classical cryptography.</div>
       <div class="lab-tags">
         <span class="tag">Цезар</span>
         <span class="tag">Віженер</span>
         <span class="tag">Перестановка</span>
         <span class="tag">Атбаш</span>
       </div>
-      <div class="lab-footer">
+        <div class="lab-footer">
         <div class="lab-difficulty">
-          <span>Складність</span>
+          <span data-i18n="difficulty">Difficulty</span>
           <div class="diff-bars">
             <div class="diff-bar active"></div>
             <div class="diff-bar active"></div>
@@ -1052,17 +1057,17 @@
     </a>
 
     <a href="labs/lab02.html" class="lab-card">
-      <div class="lab-num">ЛАБ 02</div>
-      <div class="lab-title">Шифр Полібія та Гронсфельда</div>
-      <div class="lab-desc">Квадрат Полібія з ключовим словом. Числовий ключ Гронсфельда для зсуву алфавіту.</div>
+      <div class="lab-num" data-i18n="labNum02">LAB 02</div>
+      <div class="lab-title" data-i18n="lab02Title">Polybius and Gronsfeld ciphers</div>
+      <div class="lab-desc" data-i18n="lab02Desc">Polybius square with keyword. Gronsfeld numeric key for alphabet shift.</div>
       <div class="lab-tags">
         <span class="tag">Полібій</span>
         <span class="tag">Гронсфельд</span>
         <span class="tag">Квадрат</span>
       </div>
-      <div class="lab-footer">
+        <div class="lab-footer">
         <div class="lab-difficulty">
-          <span>Складність</span>
+          <span data-i18n="difficulty">Difficulty</span>
           <div class="diff-bars">
             <div class="diff-bar active"></div>
             <div class="diff-bar active"></div>
@@ -1075,18 +1080,18 @@
     </a>
 
     <a href="labs/lab03.html" class="lab-card">
-      <div class="lab-num">ЛАБ 03</div>
-      <div class="lab-title">Біграмні шифри та шифр Вернама</div>
-      <div class="lab-desc">Playfair на квадраті Полібія. Double Playfair. XOR шифр Вернама — абсолютно стійкий.</div>
+      <div class="lab-num" data-i18n="labNum03">LAB 03</div>
+      <div class="lab-title" data-i18n="lab03Title">Bigram ciphers and Vernam cipher</div>
+      <div class="lab-desc" data-i18n="lab03Desc">Playfair on Polybius square. Double Playfair. XOR Vernam cipher — perfectly secure.</div>
       <div class="lab-tags">
         <span class="tag">Playfair</span>
         <span class="tag">Вернам</span>
         <span class="tag">XOR</span>
         <span class="tag">OTP</span>
       </div>
-      <div class="lab-footer">
+        <div class="lab-footer">
         <div class="lab-difficulty">
-          <span>Складність</span>
+          <span data-i18n="difficulty">Difficulty</span>
           <div class="diff-bars">
             <div class="diff-bar active"></div>
             <div class="diff-bar active"></div>
@@ -1099,18 +1104,18 @@
     </a>
 
     <a href="labs/lab04.html" class="lab-card">
-      <div class="lab-num">ЛАБ 04</div>
-      <div class="lab-title">Алгоритм шифрування DES</div>
-      <div class="lab-desc">Мережа Фейстеля, 16 раундів, S-блоки. Симетричний стандарт шифрування даних.</div>
+      <div class="lab-num" data-i18n="labNum04">LAB 04</div>
+      <div class="lab-title" data-i18n="lab04Title">DES encryption algorithm</div>
+      <div class="lab-desc" data-i18n="lab04Desc">Feistel network, 16 rounds, S-boxes. Symmetric data encryption standard.</div>
       <div class="lab-tags">
         <span class="tag">DES</span>
         <span class="tag">Фейстель</span>
         <span class="tag">S-блоки</span>
         <span class="tag">56-bit</span>
       </div>
-      <div class="lab-footer">
+        <div class="lab-footer">
         <div class="lab-difficulty">
-          <span>Складність</span>
+          <span data-i18n="difficulty">Difficulty</span>
           <div class="diff-bars">
             <div class="diff-bar active"></div>
             <div class="diff-bar active"></div>
@@ -1123,17 +1128,17 @@
     </a>
 
     <a href="labs/lab05.html" class="lab-card">
-      <div class="lab-num">ЛАБ 05</div>
-      <div class="lab-title">Алгоритм шифрування RSA</div>
-      <div class="lab-desc">Асиметричне шифрування. Відкритий та закритий ключ. Стійкість на задачі факторизації.</div>
+      <div class="lab-num" data-i18n="labNum05">LAB 05</div>
+      <div class="lab-title" data-i18n="lab05Title">RSA encryption algorithm</div>
+      <div class="lab-desc" data-i18n="lab05Desc">Asymmetric encryption. Public and private key. Security based on factorization problem.</div>
       <div class="lab-tags">
         <span class="tag">RSA</span>
         <span class="tag">Відкритий ключ</span>
         <span class="tag">Евклід</span>
       </div>
-      <div class="lab-footer">
+        <div class="lab-footer">
         <div class="lab-difficulty">
-          <span>Складність</span>
+          <span data-i18n="difficulty">Difficulty</span>
           <div class="diff-bars">
             <div class="diff-bar active"></div>
             <div class="diff-bar active"></div>
@@ -1146,18 +1151,18 @@
     </a>
 
     <a href="labs/lab06.html" class="lab-card">
-      <div class="lab-num">ЛАБ 06</div>
-      <div class="lab-title">Електронний цифровий підпис</div>
-      <div class="lab-desc">ЕЦП на базі RSA. Гешування повідомлення. Перевірка автентичності та цілісності.</div>
+      <div class="lab-num" data-i18n="labNum06">LAB 06</div>
+      <div class="lab-title" data-i18n="lab06Title">Digital signature</div>
+      <div class="lab-desc" data-i18n="lab06Desc">Digital signature based on RSA. Message hashing. Authentication and integrity verification.</div>
       <div class="lab-tags">
         <span class="tag">ЕЦП</span>
         <span class="tag">Геш</span>
         <span class="tag">RSA</span>
         <span class="tag">Ель-Гамаль</span>
       </div>
-      <div class="lab-footer">
+        <div class="lab-footer">
         <div class="lab-difficulty">
-          <span>Складність</span>
+          <span data-i18n="difficulty">Difficulty</span>
           <div class="diff-bars">
             <div class="diff-bar active"></div>
             <div class="diff-bar active"></div>
@@ -1176,72 +1181,68 @@
 <!-- DEMO SECTION -->
 <div class="demo-section">
   <div class="demo-wrapper">
-    <div class="section-tag">// живе демо</div>
-    <h2 class="section-title" style="font-family:var(--font-sans);font-size:2.5rem;font-weight:800;letter-spacing:-0.03em;margin-top:0.5rem;">
-      Спробуй прямо зараз
-    </h2>
+    <div class="section-tag" data-i18n="demoTag">// live demo</div>
+    <h2 class="section-title" style="font-family:var(--font-sans);font-size:2.5rem;font-weight:800;letter-spacing:-0.03em;margin-top:0.5rem;" data-i18n="demoTry">Try it now</h2>
 
     <div class="demo-container">
       <!-- INPUT PANEL -->
       <div class="demo-panel">
         <div class="demo-panel-header">
-          <span class="demo-panel-title">// введення</span>
+          <span class="demo-panel-title" data-i18n="inputTag">// input</span>
           <span class="demo-badge">LIVE</span>
         </div>
 
         <div class="cipher-selector">
-          <button class="cipher-btn active" onclick="selectCipher(this,'caesar')">Цезар</button>
-          <button class="cipher-btn" onclick="selectCipher(this,'vigenere')">Віженер</button>
-          <button class="cipher-btn" onclick="selectCipher(this,'atbash')">Атбаш</button>
-          <button class="cipher-btn" onclick="selectCipher(this,'gronsfeld')">Гронсфельд</button>
-          <button class="cipher-btn" onclick="selectCipher(this,'polybius')">Полібій</button>
+          <button class="cipher-btn active" onclick="selectCipher(this,'caesar')">Caesar</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'vigenere')">Vigenère</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'atbash')">Atbash</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'gronsfeld')">Gronsfeld</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'polybius')">Polybius</button>
           <button class="cipher-btn" onclick="selectCipher(this,'playfair')">Playfair</button>
-          <button class="cipher-btn" onclick="selectCipher(this,'vernam')">Вернам (XOR)</button>
-          <button class="cipher-btn" onclick="selectCipher(this,'simple-transp')">Перестановка</button>
-          <button class="cipher-btn" onclick="selectCipher(this,'vertical-transp')">Вертикальна</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'vernam')">Vernam (XOR)</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'simple-transp')">Transposition</button>
+          <button class="cipher-btn" onclick="selectCipher(this,'vertical-transp')">Vertical</button>
         </div>
 
         <div class="input-group">
-          <label class="input-label">Відкритий текст</label>
-          <textarea class="input-field" id="plaintext" placeholder="Введіть повідомлення...">HELLO WORLD</textarea>
+          <label class="input-label" data-i18n="plaintext">Plaintext</label>
+          <textarea class="input-field" id="plaintext" data-i18n-placeholder="placeholderMsg">HELLO WORLD</textarea>
         </div>
 
         <div class="input-row">
           <div class="input-group">
-            <label class="input-label" id="key-label">Ключ (зсув)</label>
-            <input class="input-field-sm" id="key-input" value="3" placeholder="Ключ...">
+            <label class="input-label" id="key-label" data-i18n="keyShift">Key (shift)</label>
+            <input class="input-field-sm" id="key-input" value="3" placeholder="Key...">
           </div>
           <div class="input-group">
-            <label class="input-label">Режим</label>
+            <label class="input-label" data-i18n="mode">Mode</label>
             <select class="input-field-sm" id="mode-select" style="cursor:pointer;">
-              <option value="enc">Шифрування</option>
-              <option value="dec">Розшифрування</option>
+              <option value="enc" data-i18n-opt="encrypt">Encryption</option>
+              <option value="dec" data-i18n-opt="decrypt">Decryption</option>
             </select>
           </div>
         </div>
 
-        <button class="encrypt-btn" onclick="runCipher()">
-          ⟶ Виконати шифрування
-        </button>
+        <button class="encrypt-btn" onclick="runCipher()" data-i18n="runCipher">⟶ Run encryption</button>
       </div>
 
       <!-- OUTPUT PANEL -->
       <div class="demo-panel">
         <div class="demo-panel-header">
-          <span class="demo-panel-title">// результат</span>
+          <span class="demo-panel-title" data-i18n="resultTag">// result</span>
         </div>
 
-        <label class="input-label">Зашифрований текст</label>
+        <label class="input-label" data-i18n="ciphertext">Encrypted text</label>
         <div class="output-area" id="output">
-          <span class="output-placeholder">Результат з'явиться тут...</span>
+          <span class="output-placeholder" data-i18n="placeholderResult">Result will appear here...</span>
           <button class="copy-btn" onclick="copyOutput()">COPY</button>
         </div>
 
-        <label class="input-label" style="margin-bottom:0.75rem;display:block;">Кроки виконання</label>
+        <label class="input-label" style="margin-bottom:0.75rem;display:block;" data-i18n="stepsLabel">Execution steps</label>
         <div class="steps-area" id="steps">
           <div class="step-item">
             <span class="step-num">—</span>
-            <span>Оберіть алгоритм та натисніть "Виконати"</span>
+            <span data-i18n="stepHint">Select algorithm and click "Run"</span>
           </div>
         </div>
       </div>
@@ -1252,14 +1253,28 @@
 
 <!-- FOOTER -->
 <footer style="flex-direction:column;align-items:center;gap:0.6rem;text-align:center;">
-  <span style="font-size:0.75rem;">© 2026 CryptoLab — Лабораторні роботи з інформаційної безпеки</span>
-  <span style="font-size:0.72rem;color:var(--text-muted);">Виконав: Мацишин Михайло</span>
+  <span style="font-size:0.75rem;" data-i18n="footerText">© 2026 CryptoLab — Cyber Security lab work</span>
+  <span style="font-size:0.72rem;color:var(--text-muted);" data-i18n="author">By: Mykhailo Matsyshyn</span>
   <a href="https://github.com/MykhailoMatsyshyn" target="_blank" class="footer-link" style="font-size:0.72rem;display:flex;align-items:center;gap:0.4rem;">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
     github.com/MykhailoMatsyshyn
   </a>
 </footer>
 
+<script src="js/i18n.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var lang = window.CL && window.CL.i18n ? window.CL.i18n.getLang() : 'en';
+    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+      btn.addEventListener('click', function() {
+        var l = this.dataset.lang;
+        if (window.CL && window.CL.i18n) window.CL.i18n.setLang(l);
+        document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === l); });
+      });
+    });
+  });
+</script>
 <script src="js/ciphers/classical.js"></script>
 <script src="js/ciphers/polybius.js"></script>
 <script src="js/ciphers/playfair.js"></script>
@@ -1274,44 +1289,50 @@ function selectCipher(btn, cipher) {
   const label = document.getElementById('key-label');
   const keyInput = document.getElementById('key-input');
   keyInput.readOnly = false;
+  var T = window.CL && window.CL.i18n ? window.CL.i18n.t.bind(window.CL.i18n) : function(k){ return k; };
   if (cipher === 'caesar') {
-    label.textContent = 'Ключ (зсув 0–25)';
+    label.textContent = T('keyShift025');
     keyInput.value = '3';
     keyInput.placeholder = '0–25';
   } else if (cipher === 'vigenere') {
-    label.textContent = 'Ключ (слово)';
+    label.textContent = T('keyWord');
     keyInput.value = 'KEY';
-    keyInput.placeholder = 'Слово...';
+    keyInput.placeholder = 'Word...';
   } else if (cipher === 'atbash') {
-    label.textContent = 'Ключ (не потрібен)';
+    label.textContent = T('keyNone');
     keyInput.value = '—';
     keyInput.readOnly = true;
   } else if (cipher === 'gronsfeld') {
-    label.textContent = 'Ключ (числовий, напр. 1357)';
+    label.textContent = T('keyNumeric');
     keyInput.value = '1357';
     keyInput.placeholder = '0–9...';
   } else if (cipher === 'polybius') {
-    label.textContent = 'Ключове слово (для квадрату Полібія)';
+    label.textContent = T('keyPolybius');
     keyInput.value = 'KEYWORD';
-    keyInput.placeholder = 'Ключове слово...';
+    keyInput.placeholder = 'Keyword...';
   } else if (cipher === 'playfair') {
-    label.textContent = 'Ключове слово (Playfair)';
+    label.textContent = T('keyPlayfair');
     keyInput.value = 'SECRET';
-    keyInput.placeholder = 'Ключове слово...';
+    keyInput.placeholder = 'Keyword...';
   } else if (cipher === 'vernam') {
-    label.textContent = 'Ключ (така ж або більша довжина)';
+    label.textContent = T('keyVernam');
     keyInput.value = 'SECRETKEY';
-    keyInput.placeholder = 'Ключ...';
+    keyInput.placeholder = 'Key...';
   } else if (cipher === 'simple-transp') {
-    label.textContent = 'Ключ перестановки (напр. 3 1 4 2)';
+    label.textContent = T('keyTransp');
     keyInput.value = '3 1 4 2';
     keyInput.placeholder = '3 1 4 2';
   } else if (cipher === 'vertical-transp') {
-    label.textContent = 'Ключ слова/чисел (напр. 3 1 4 2 або WORD)';
+    label.textContent = T('keyVertical');
     keyInput.value = '3 1 4 2';
-    keyInput.placeholder = '3 1 4 2 або WORD';
+    keyInput.placeholder = '3 1 4 2 or WORD';
   }
 }
+
+window.onLangChange = function() {
+  var btn = document.querySelector('.cipher-btn.active');
+  if (btn && typeof currentCipher !== 'undefined') selectCipher(btn, currentCipher);
+};
 
 function runCipher() {
   const text = document.getElementById('plaintext').value;

@@ -10,7 +10,8 @@
 'use strict';
 
 // ── Toast notification ──────────────────────────────────────
-function showToast(msg = 'Скопійовано!', duration = 2000) {
+function showToast(msg, duration = 2000) {
+  if (msg == null) msg = (window.CL && window.CL.i18n ? window.CL.i18n.t('copied') : 'Copied!');
   let toast = document.getElementById('cl-toast');
   if (!toast) {
     toast = document.createElement('div');
@@ -28,9 +29,9 @@ function showToast(msg = 'Скопійовано!', duration = 2000) {
 async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text);
-    showToast('✓ Скопійовано до буфера');
+    showToast(window.CL && window.CL.i18n ? window.CL.i18n.t('copied') : '✓ Copied to clipboard');
   } catch {
-    showToast('Не вдалось скопіювати');
+    showToast(window.CL && window.CL.i18n ? window.CL.i18n.t('copyFailed') : 'Failed to copy');
   }
 }
 
@@ -54,7 +55,8 @@ function renderOutput(resultId, text, color = 'var(--green)') {
   `;
 }
 
-function clearOutput(resultId, placeholder = 'Результат з\'явиться тут...') {
+function clearOutput(resultId, placeholder) {
+  if (placeholder == null) placeholder = (window.CL && window.CL.i18n ? window.CL.i18n.t('resultEmpty') : 'Result will appear here...');
   const el = document.getElementById(resultId);
   if (el) el.innerHTML = `<span class="result-empty">${placeholder}</span>`;
 }
@@ -77,7 +79,7 @@ function renderSteps(stepsId, steps) {
 
 function clearSteps(stepsId) {
   const el = document.getElementById(stepsId);
-  if (el) el.innerHTML = '<div class="log-line"><span class="log-idx">—</span><span class="log-text">Оберіть алгоритм та натисніть «Зашифрувати»</span></div>';
+  if (el) el.innerHTML = '<div class="log-line"><span class="log-idx">—</span><span class="log-text">' + (window.CL && window.CL.i18n ? window.CL.i18n.t('selectAlgo') : 'Select algorithm and click "Encrypt"') + '</span></div>';
 }
 
 // ── Workspace tabs ──────────────────────────────────────────
