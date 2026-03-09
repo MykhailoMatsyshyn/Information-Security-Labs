@@ -1361,8 +1361,9 @@ HELLO WORLD</textarea
         html += "</div></div>";
 
         // ── Column reading strips ────────────────────────────────
+        const T = (window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t.bind(window.CL.i18n) : (k) => k;
         html +=
-          '<div style="font-size:0.65rem;color:var(--text-dim);font-family:var(--font-mono);margin-bottom:0.25rem;">// порядок зчитування стовпців:</div>';
+          '<div style="font-size:0.65rem;color:var(--text-dim);font-family:var(--font-mono);margin-bottom:0.25rem;">' + T('lab01VertColOrderLabel') + '</div>';
         html += '<div class="vert-strips" style="width:100%;max-width:600px;">';
         sortedCols.forEach((col, step) => {
           const cls = COL_CLS[step % 6];
@@ -1370,8 +1371,8 @@ HELLO WORLD</textarea
           const word = cells.join("");
           html += `<div class="vert-strip">
             <div class="vert-strip-lbl">
-              <span class="vert-strip-step ${cls}">крок ${step + 1}</span>
-              <span class="vert-strip-col">стовпець ${col + 1} &nbsp;[ключ: ${order[col]}]</span>
+              <span class="vert-strip-step ${cls}">${T('lab01VertStep')} ${step + 1}</span>
+              <span class="vert-strip-col">${T('lab01VertColKey')} ${col + 1} &nbsp;[${T('lab01VertKeyLabel')}: ${order[col]}]</span>
             </div>
             <div class="vert-strip-cells">`;
           cells.forEach((ch, ri) => {

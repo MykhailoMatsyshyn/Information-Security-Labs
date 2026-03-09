@@ -11,6 +11,10 @@
 
 'use strict';
 
+function _tr(key) {
+  return (typeof window !== 'undefined' && window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t(key) : key;
+}
+
 /* ── Алфавіти ─────────────────────────────────────────────── */
 const ALPHA_EN = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const ALPHA_UK = 'АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ';
@@ -37,21 +41,21 @@ const Caesar = {
     const upper = text.toUpperCase();
 
     const steps = [
-      { n: '01', t: `Алгоритм: Шифр Цезаря`, d: decrypt ? 'розшифрування' : 'шифрування' },
-      { n: '02', t: `Алфавіт: ${lang === 'uk' ? 'Українська' : 'English'} (${n} символів)` },
-      { n: '03', t: `Ключ: зсув = ${shift}`, d: `ефективний зсув: ${s}` },
-      { n: '04', t: `Формула: b = (a ${decrypt ? '-' : '+'} ${shift}) mod ${n}` },
+      { n: '01', t: _tr('stepAlgoCaesar'), d: decrypt ? _tr('decrypt') : _tr('encrypt') },
+      { n: '02', t: `${_tr('lab01Alphabet')}: ${lang === 'uk' ? _tr('langUk') : 'English'} (${n} ${_tr('stepAlphabetSym')})` },
+      { n: '03', t: `${_tr('stepKey')}: ${_tr('stepShift')} = ${shift}`, d: `${_tr('stepEffectiveShift')}: ${s}` },
+      { n: '04', t: `${_tr('stepFormula')}: b = (a ${decrypt ? '-' : '+'} ${shift}) mod ${n}` },
     ];
 
     const result = upper.split('').map((ch, i) => {
       const idx = alpha.indexOf(ch);
       if (idx === -1) return ch;
       const enc = alpha[(idx + s) % n];
-      if (i < 5) steps.push({ n: `0${5 + i}`, t: `'${ch}'[${idx}] → '${enc}'[${(idx + s) % n}]`, d: `зсув +${s}` });
+      if (i < 5) steps.push({ n: `0${5 + i}`, t: `'${ch}'[${idx}] → '${enc}'[${(idx + s) % n}]`, d: `${_tr('stepShift')} +${s}` });
       return enc;
     }).join('');
 
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Результат: "${result}"` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepResult')}: "${result}"` });
     return { result, steps };
   },
 };
@@ -66,8 +70,8 @@ const Atbash = {
     const upper = text.toUpperCase();
 
     const steps = [
-      { n: '01', t: `Алгоритм: Атбаш`, d: 'дзеркальна заміна' },
-      { n: '02', t: `Формула: b = ${n - 1} − a` },
+      { n: '01', t: _tr('stepAlgoAtbash'), d: _tr('lab01AtbashValMirror') },
+      { n: '02', t: `${_tr('stepFormula')}: b = ${n - 1} − a` },
       { n: '03', t: `A↔${alpha[n - 1]}, B↔${alpha[n - 2]}, C↔${alpha[n - 3]} ...` },
     ];
 
@@ -79,7 +83,7 @@ const Atbash = {
       return enc;
     }).join('');
 
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Результат: "${result}"` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepResult')}: "${result}"` });
     return { result, steps };
   },
 };
@@ -95,9 +99,9 @@ const Vigenere = {
     const key = keyword.toUpperCase().replace(new RegExp(`[^${alpha}]`, 'g'), '') || alpha[0];
 
     const steps = [
-      { n: '01', t: `Алгоритм: Шифр Виженера`, d: 'багатоалфавітна заміна' },
-      { n: '02', t: `Ключ: "${key}"`, d: `довжина ${key.length}, повторюється циклічно` },
-      { n: '03', t: `Формула: bi = (ai ${decrypt ? '−' : '+'} ki) mod ${n}` },
+      { n: '01', t: _tr('stepAlgoVigenere'), d: _tr('lab01VigenereValPoly') },
+      { n: '02', t: `${_tr('stepKey')}: "${key}"`, d: `${_tr('stepKeyLength')} ${key.length}, ${_tr('stepRepeatsCyclic')}` },
+      { n: '03', t: `${_tr('stepFormula')}: bi = (ai ${decrypt ? '−' : '+'} ki) mod ${n}` },
     ];
 
     let ki = 0;
@@ -112,7 +116,7 @@ const Vigenere = {
       return enc;
     }).join('');
 
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Результат: "${result}"` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepResult')}: "${result}"` });
     return { result, steps };
   },
 };
@@ -129,7 +133,7 @@ const SimpleTransposition = {
 
   run(text, keyStr, decrypt = false) {
     const key = this.parseKey(keyStr);
-    if (!key.length) return { result: text, steps: [{ n: '01', t: 'Помилка: невірний ключ' }] };
+    if (!key.length) return { result: text, steps: [{ n: '01', t: _tr('stepErrorKey') }] };
 
     const n = key.length;
     // Зворотній ключ для розшифрування
@@ -143,20 +147,20 @@ const SimpleTransposition = {
     for (let i = 0; i < padded.length; i += n) blocks.push(padded.slice(i, i + n));
 
     const steps = [
-      { n: '01', t: `Алгоритм: Проста перестановка` },
-      { n: '02', t: `Ключ: [${key.join(', ')}]`, d: `розмір блоку: ${n}` },
-      { n: '03', t: `Блоків: ${blocks.length}`, d: `доповнення: 'X'` },
+      { n: '01', t: _tr('stepAlgoTransp') },
+      { n: '02', t: `${_tr('stepKey')}: [${key.join(', ')}]`, d: `${_tr('stepBlockSize')}: ${n}` },
+      { n: '03', t: `${_tr('stepBlocksCount')}: ${blocks.length}`, d: `${_tr('stepPadding')}: 'X'` },
     ];
 
     const result = blocks.map((block, bi) => {
       const arr = block.split('');
       const out = new Array(n);
       useKey.forEach((pos, i) => { out[pos - 1] = arr[i]; });
-      if (bi < 2) steps.push({ n: `0${4 + bi}`, t: `Блок ${bi + 1}: "${block}" → "${out.join('')}"` });
+      if (bi < 2) steps.push({ n: `0${4 + bi}`, t: `${_tr('stepBlockNum')} ${bi + 1}: "${block}" → "${out.join('')}"` });
       return out.join('');
     }).join('');
 
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Результат: "${result}"` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepResult')}: "${result}"` });
     return { result, steps };
   },
 };
@@ -180,7 +184,7 @@ const VerticalTransposition = {
 
   run(text, keyStr, decrypt = false) {
     const order = this.parseKey(keyStr);
-    if (!order.length) return { result: text, steps: [{ n: '01', t: 'Помилка: невірний ключ' }] };
+    if (!order.length) return { result: text, steps: [{ n: '01', t: _tr('stepErrorKey') }] };
 
     const cols = order.length;
     const upper = text.toUpperCase().replace(/\s/g, '');
@@ -194,8 +198,8 @@ const VerticalTransposition = {
     }
 
     const steps = [
-      { n: '01', t: `Алгоритм: Вертикальна перестановка` },
-      { n: '02', t: `Ключ: [${order.join(', ')}]`, d: `стовпців: ${cols}, рядків: ${rows}` },
+      { n: '01', t: _tr('stepAlgoVert') },
+      { n: '02', t: `${_tr('stepKey')}: [${order.join(', ')}]`, d: `${_tr('stepCols')}: ${cols}, ${_tr('stepRows')}: ${rows}` },
     ];
 
     let result = '';
@@ -204,7 +208,7 @@ const VerticalTransposition = {
       const sortedCols = [...order].map((_, i) => i).sort((a, b) => order[a] - order[b]);
       sortedCols.forEach((col, i) => {
         const colData = table.map(row => row[col]).join('');
-        if (i < 3) steps.push({ n: `0${3 + i}`, t: `Стовпець ${col + 1} (пріоритет ${order[col]}): "${colData}"` });
+        if (i < 3) steps.push({ n: `0${3 + i}`, t: `${_tr('stepColumnPri')} ${col + 1} (${_tr('stepPriority')} ${order[col]}): "${colData}"` });
         result += colData;
       });
     } else {
@@ -223,12 +227,12 @@ const VerticalTransposition = {
       }
     }
 
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Результат: "${result}"` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepResult')}: "${result}"` });
     return { result, steps };
   },
 };
 
-/* ── Експорт ─────────────────────────────────────────────────
+/* ── Export ─────────────────────────────────────────────────
    Доступно глобально для lab1.html
    ─────────────────────────────────────────────────────────── */
 window.CL = window.CL || {};

@@ -7,6 +7,10 @@
 
 'use strict';
 
+function _tr(key) {
+  return (typeof window !== 'undefined' && window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t(key) : key;
+}
+
 /* ── Math utilities ───────────────────────────────────────────── */
 
 /** Розширений алгоритм Евкліда: повертає [g, x, y] де a*x + b*y = g */
@@ -91,10 +95,10 @@ const RSA = {
       { n: '01', t: `p = ${p}, q = ${q}` },
       { n: '02', t: `n = p × q = ${n}` },
       { n: '03', t: `φ(n) = (p−1)(q−1) = ${phi}` },
-      { n: '04', t: `e = ${e}`, d: `НСД(e, φ(n)) = ${gcd(e, phi)}` },
-      { n: '05', t: `d = e⁻¹ mod φ(n) = ${d}`, d: `перевірка: e×d mod φ(n) = ${(e * d) % phi}` },
-      { n: '06', t: `Відкритий ключ: (e=${e}, n=${n})` },
-      { n: '07', t: `Закритий ключ: (d=${d}, n=${n})` },
+      { n: '04', t: `e = ${e}`, d: `${_tr('stepGcdCheck')} = ${gcd(e, phi)}` },
+      { n: '05', t: `d = e⁻¹ mod φ(n) = ${d}`, d: `${_tr('stepVerifyEd')} = ${(e * d) % phi}` },
+      { n: '06', t: `${_tr('stepRsaPublicKey')}: (e=${e}, n=${n})` },
+      { n: '07', t: `${_tr('stepRsaPrivateKey')}: (d=${d}, n=${n})` },
     ];
 
     return { n, e, d, phi, steps };
@@ -119,7 +123,7 @@ const RSA = {
   encryptBlocks(numStr, e, n) {
     const blocks = numStr.trim().split(/\s+/).map(BigInt);
     const steps = [
-      { n: '01', t: `Шифрування RSA`, d: `c = mᵉ mod n` },
+      { n: '01', t: _tr('stepRsaEncrypt'), d: `c = mᵉ mod n` },
       { n: '02', t: `e = ${e}, n = ${n}` },
     ];
     const cipher = blocks.map((m, i) => {
@@ -132,7 +136,7 @@ const RSA = {
 
   decryptBlocks(cipherArr, d, n) {
     const steps = [
-      { n: '01', t: `Розшифрування RSA`, d: `m = cᵈ mod n` },
+      { n: '01', t: _tr('stepRsaDecrypt'), d: `m = cᵈ mod n` },
       { n: '02', t: `d = ${d}, n = ${n}` },
     ];
     const plain = cipherArr.map((c, i) => {

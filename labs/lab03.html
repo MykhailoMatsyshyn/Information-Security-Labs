@@ -76,64 +76,41 @@
             <section id="theory">
               <div class="theory-block">
                 <div class="theory-header">
-                  <span class="theory-title">Короткі теоретичні відомості</span>
+                  <span class="theory-title" data-i18n="lab03TheoryTitle">Brief theory</span>
                   <span class="theory-toggle">▼</span>
                 </div>
                 <div class="theory-body open">
                   <div class="theory-body-inner">
-                    <p>
-                      У цій лабораторній розглядаються два принципово різні
-                      підходи.
-                      <strong>Шифр Playfair</strong> шифрує не окремі літери, а
-                      <strong>пари (біграми)</strong> за спеціальними правилами
-                      у 5×5 таблиці — це унеможливлює простий частотний аналіз.
-                      <strong>Шифр Вернама (OTP)</strong> виконує побітовий
-                      <strong>XOR</strong> кожного символу тексту з відповідним
-                      символом ключа і є єдиним теоретично абсолютно стійким
-                      шифром за умови унікального випадкового ключа.
-                    </p>
+                    <div data-i18n-html="lab03TheoryBodyHtml"></div>
 
                     <div class="algo-cards">
                       <!-- Playfair -->
                       <div class="algo-card" data-target="playfair">
                         <div class="algo-card-head">
-                          <span class="algo-card-name">Шифр Playfair</span>
-                          <span class="algo-card-badge badge-bigram"
-                            >біграмний</span
-                          >
+                          <span class="algo-card-name" data-i18n="lab03PlayfairName">Playfair cipher</span>
+                          <span class="algo-card-badge badge-bigram" data-i18n="lab03PlayfairBadge">bigram</span>
                         </div>
                         <div class="algo-card-formula">
-                          [A,B] рядок → [A+1, B+1]<br />
-                          [A,B] стовп → [A↓, B↓]<br />
-                          [A,B] прямок → [A<sub>r</sub>B<sub>c</sub>,
-                          B<sub>r</sub>A<sub>c</sub>]
+                          [A,B] row → [A+1, B+1]<br />
+                          [A,B] col → [A↓, B↓]<br />
+                          [A,B] rect → [A<sub>r</sub>B<sub>c</sub>, B<sub>r</sub>A<sub>c</sub>]
                         </div>
-                        <p class="algo-card-desc">
-                          Пари літер шифруються за 3 правилами у квадраті 5×5. J
-                          замінюється на I. Якщо в парі однакові літери —
-                          вставляється X.
-                        </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <p class="algo-card-desc" data-i18n="lab03PlayfairDesc">Letter pairs encrypted by 3 rules in 5×5 square. J replaced by I. If pair has same letters — insert X.</p>
+                        <span class="algo-card-goto" data-i18n="lab01Goto">go to section ↓</span>
                       </div>
 
                       <!-- Vernam -->
                       <div class="algo-card" data-target="vernam">
                         <div class="algo-card-head">
-                          <span class="algo-card-name">Шифр Вернама</span>
-                          <span class="algo-card-badge badge-poly"
-                            >XOR / OTP</span
-                          >
+                          <span class="algo-card-name" data-i18n="lab03VernamName">Vernam cipher</span>
+                          <span class="algo-card-badge badge-poly" data-i18n="lab03VernamBadge">XOR OTP</span>
                         </div>
                         <div class="algo-card-formula">
                           y<sub>i</sub> = x<sub>i</sub> ⊕ k<sub>i</sub><br />
                           x<sub>i</sub> = y<sub>i</sub> ⊕ k<sub>i</sub>
                         </div>
-                        <p class="algo-card-desc">
-                          Побітовий XOR кожного байта тексту з відповідним
-                          байтом ключа. Симетричний: та сама операція для
-                          шифрування і розшифрування.
-                        </p>
-                        <span class="algo-card-goto">перейти до розділу ↓</span>
+                        <p class="algo-card-desc" data-i18n="lab03VernamDesc">Bitwise XOR of each text byte with corresponding key byte. Symmetric: same operation for encrypt and decrypt.</p>
+                        <span class="algo-card-goto" data-i18n="lab01Goto">go to section ↓</span>
                       </div>
                     </div>
                   </div>
@@ -259,8 +236,7 @@ HELLO WORLD</textarea
                   >
                     <div class="cvis-header">
                       <span data-i18n="lab03PlayfairCvis">// Playfair square — encrypt bigrams by 3 rules</span>
-                      <span class="cvis-shift-pill"
-                        >ключ:
+                      <span class="cvis-shift-pill"><span data-i18n="lab01ChipKey">Key:</span>
                         <strong
                           id="pf-key-disp"
                           style="color: var(--yellow); letter-spacing: 0.1em"
@@ -446,11 +422,11 @@ HELLO WORLD</textarea
     </div>
 
     <footer>
-      <span>© 2026 CryptoLab — Лаб. 03 / Шифр Playfair та шифр Вернама</span>
+      <span data-i18n="lab03Footer">© 2026 CryptoLab — Lab 03 / Playfair and Vernam ciphers</span>
       <div class="footer-links">
-        <a href="../index.html" class="footer-link">← Головна</a>
-        <a href="lab02.html" class="footer-link">Лаб. 02</a>
-        <a href="lab04.html" class="footer-link">Лаб. 04 →</a>
+        <a href="../index.html" class="footer-link" data-i18n="footerHome">← Home</a>
+        <a href="lab02.html" class="footer-link" data-i18n="lab02Link">Lab 02</a>
+        <a href="lab04.html" class="footer-link" data-i18n="lab03NavNext">Lab 04 →</a>
       </div>
     </footer>
 
@@ -474,6 +450,10 @@ HELLO WORLD</textarea
       /* ── helpers ─────────────────────────────────────────── */
       function mod(a, n) { return ((a % n) + n) % n; }
       function getVal(id) { return (document.getElementById(id)?.value ?? '').trim(); }
+      function pfRuleLabel(r) {
+        const T = (window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t.bind(window.CL.i18n) : (k) => k;
+        if (r === 'row') return T('stepOneRow'); if (r === 'column') return T('stepOneCol'); return T('stepRectangle');
+      }
 
       function copyResult(id, btn) {
         const text = document.getElementById(id)?.textContent?.trim();
@@ -590,15 +570,15 @@ HELLO WORLD</textarea
           if (pa.r === pb.r) {
             ea = sq[pa.r * 5 + mod(pa.c + d, 5)];
             eb = sq[pb.r * 5 + mod(pb.c + d, 5)];
-            rule = "рядок";
+            rule = "row";
           } else if (pa.c === pb.c) {
             ea = sq[mod(pa.r + d, 5) * 5 + pa.c];
             eb = sq[mod(pb.r + d, 5) * 5 + pb.c];
-            rule = "стовпець";
+            rule = "column";
           } else {
             ea = sq[pa.r * 5 + pb.c];
             eb = sq[pb.r * 5 + pa.c];
-            rule = "прямокутник";
+            rule = "rectangle";
           }
           bigrams.push({ a, b, ea, eb, rule, pa, pb });
         }
@@ -607,8 +587,9 @@ HELLO WORLD</textarea
         _pfBigramIdx = 0;
 
         if (!bigrams.length) {
+          const emptyT = (window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t('lab02EnterText') : 'Enter text for visualization';
           document.getElementById("pf-vis-content").innerHTML =
-            '<div style="color:var(--text-dim);font-size:0.75rem;text-align:center;padding:1rem;">Введіть текст для візуалізації</div>';
+            '<div style="color:var(--text-dim);font-size:0.75rem;text-align:center;padding:1rem;">' + emptyT + '</div>';
           return;
         }
 
@@ -632,7 +613,7 @@ HELLO WORLD</textarea
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;">
             <div id="pf-grid-wrap"></div>
-            <div id="pf-rule-badge" class="pf-rule-badge">${bg0.rule}</div>
+            <div id="pf-rule-badge" class="pf-rule-badge">${pfRuleLabel(bg0.rule)}</div>
           </div>
           <div class="pf-vis-arrow">→</div>
           <div class="pf-vis-side" id="pf-right-pair">
@@ -662,9 +643,9 @@ HELLO WORLD</textarea
 
         // Zone cells
         const zoneSet = new Set();
-        if (bg.rule === "рядок") {
+        if (bg.rule === "row") {
           for (let c = 0; c < 5; c++) zoneSet.add(bg.pa.r * 5 + c);
-        } else if (bg.rule === "стовпець") {
+        } else if (bg.rule === "column") {
           for (let r = 0; r < 5; r++) {
             zoneSet.add(r * 5 + bg.pa.c);
             zoneSet.add(r * 5 + bg.pb.c);
@@ -717,7 +698,7 @@ HELLO WORLD</textarea
           `<div class="pf-big-letter plain">${bg.a}</div><div class="pf-big-letter plain">${bg.b}</div>`;
         document.getElementById("pf-right-pair").innerHTML =
           `<div class="pf-big-letter cipher">${bg.ea}</div><div class="pf-big-letter cipher">${bg.eb}</div>`;
-        document.getElementById("pf-rule-badge").textContent = bg.rule;
+        document.getElementById("pf-rule-badge").textContent = pfRuleLabel(bg.rule);
         document.getElementById("pf-step-counter").textContent =
           `${_pfBigramIdx + 1} / ${_pfBigrams.length}`;
 

@@ -172,8 +172,8 @@
                         <div class="des-key-hint">Ключ → 64 біти → PC1 → 56 біт (C₀,D₀) → 16× зсув + PC2 → K₁…K₁₆. Кожен Kᵢ використовується в раунді i: E(R) ⊕ Kᵢ (див. секцію «Генерація підключів»).</div>
                       </div>
                       <div class="action-row">
-                        <button class="encrypt-btn" style="flex:1" onclick="runDes()">⟶ Зашифрувати</button>
-                        <button class="decrypt-btn" style="flex:1" onclick="runDesDecrypt()">⟵ Розшифрувати hex</button>
+                        <button class="encrypt-btn" style="flex:1" onclick="runDes()" data-i18n="lab04BtnDesEnc">⟶ Encrypt</button>
+                        <button class="decrypt-btn" style="flex:1" onclick="runDesDecrypt()" data-i18n="lab04BtnDesDec">⟵ Decrypt hex</button>
                       </div>
                     </div>
                     <div class="workspace-col">
@@ -182,20 +182,20 @@
                         <div style="position:relative">
                           <div class="result-box" id="des-result"
                             style="height:100px;min-height:unset;overflow-y:auto;box-sizing:border-box;font-size:.72rem;word-break:break-all">
-                            <span class="result-empty">Результат з'явиться тут...</span>
+                            <span class="result-empty" data-i18n="resultEmpty">Result will appear here...</span>
                           </div>
                           <button class="copy-btn" onclick="copyResult('des-result',this)">copy</button>
                         </div>
                         <div id="des-decrypt-hint" style="display:none;margin-top:.5rem;padding:.5rem .75rem;background:rgba(88,212,245,.06);border:1px solid rgba(88,212,245,.25);border-radius:4px;font-size:.62rem;color:var(--text-dim);line-height:1.6">
-                          <span style="color:#58d4f5;letter-spacing:.08em">// hex результат</span><br />
+                          <span style="color:#58d4f5;letter-spacing:.08em" data-i18n="lab04HexResult">// hex result</span><br />
                           <strong class="des-hint-hex" style="color:#58d4f5;font-family:var(--font-mono);letter-spacing:.08em"></strong>
                         </div>
                       </div>
                       <div class="steps-log">
-                        <div class="steps-log-header">// кроки виконання</div>
+                        <div class="steps-log-header" data-i18n="lab01Steps">// execution steps</div>
                         <div class="steps-log-body" id="des-log">
                           <div class="log-line">
-                            <span class="log-idx">—</span><span class="log-text">Натисніть «Зашифрувати»</span>
+                            <span class="log-idx">—</span><span class="log-text" data-i18n="lab01ClickEncrypt">Click "Encrypt"</span>
                           </div>
                         </div>
                       </div>
@@ -857,7 +857,8 @@
         const hexInput = document.getElementById('des-input').value.trim().replace(/\s/g, '');
         const key = document.getElementById('des-key').value || 'SECRETKE';
         if (!/^[0-9a-fA-F]+$/.test(hexInput) || hexInput.length % 16 !== 0) {
-          document.getElementById('des-result').textContent = '⚠ Введіть hex кратний 16 символам (16, 32, 48… — скопіюйте результат шифрування)';
+          const msg = (window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t('desErrHex16') : '⚠ Enter hex with length multiple of 16';
+          document.getElementById('des-result').textContent = msg;
           return;
         }
         const r = window.CL.DES.runHexMulti(hexInput, key, true);
@@ -946,11 +947,12 @@
           ' <span class="badge-des">' + (_desDecrypt ? '⟵ decrypt' : '⟶ encrypt') + '</span>';
 
         /* pipeline — показує повний результат, вхід поточного блоку */
+        const _T = (window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t.bind(window.CL.i18n) : function(k){ return k; };
         const pl = document.getElementById('des-pipeline');
         if (pl) pl.innerHTML =
-          '<div class="des-pipe-node hi">' + (_desDecrypt ? 'Шифртекст' : 'Текст') + '<br/><span class="des-pipe-hex">' + inputHex.toUpperCase() + '</span><span style="font-size:.5rem;opacity:.6;display:block;margin-top:.15rem">блок ' + (_desBlockIdx + 1) + '/' + _desBlocksData.length + '</span></div>' +
+          '<div class="des-pipe-node hi">' + (_desDecrypt ? _T('ciphertext') : _T('plaintext')) + '<br/><span class="des-pipe-hex">' + inputHex.toUpperCase() + '</span><span style="font-size:.5rem;opacity:.6;display:block;margin-top:.15rem">' + _T('desBlockOf') + ' ' + (_desBlockIdx + 1) + '/' + _desBlocksData.length + '</span></div>' +
           '<div class="des-pipe-arrow">→</div>' +
-          '<div class="des-pipe-node des-pipe-ip">IP<br/><span style="font-size:.5rem;opacity:.7">перест.</span></div>' +
+          '<div class="des-pipe-node des-pipe-ip">IP<br/><span style="font-size:.5rem;opacity:.7">' + _T('lab04PipePerm') + '</span></div>' +
           '<div class="des-pipe-arrow">→</div>' +
           '<div class="des-pipe-node" style="font-size:.55rem;color:#d2b739;padding:.4rem .5rem">L₀<br/><span style="font-size:.48rem;opacity:.8">' + _desL0 + '</span></div>' +
           '<div class="des-pipe-arrow" style="opacity:.3">│</div>' +
@@ -958,9 +960,9 @@
           '<div class="des-pipe-arrow">→</div>' +
           '<div class="des-pipe-node des-pipe-feistel">16 × Feistel<br/><span style="font-size:.5rem;opacity:.7">' + (_desDecrypt ? 'K₁₆→K₁' : 'K₁→K₁₆') + '</span></div>' +
           '<div class="des-pipe-arrow">→</div>' +
-          '<div class="des-pipe-node des-pipe-ip">IP⁻¹<br/><span style="font-size:.5rem;opacity:.7">обернена</span></div>' +
+          '<div class="des-pipe-node des-pipe-ip">IP⁻¹<br/><span style="font-size:.5rem;opacity:.7">' + _T('lab04PipeInverse') + '</span></div>' +
           '<div class="des-pipe-arrow">→</div>' +
-          '<div class="des-pipe-node hi">' + (_desDecrypt ? 'Текст' : 'Шифртекст') + '<br/><span class="des-pipe-hex">' + _desFullResult.toUpperCase() + '</span>' + (_desBlocksData.length > 1 ? '<span style="font-size:.5rem;opacity:.6;display:block;margin-top:.15rem">' + _desBlocksData.length + ' блоків</span>' : '') + '</div>';
+          '<div class="des-pipe-node hi">' + (_desDecrypt ? _T('plaintext') : _T('ciphertext')) + '<br/><span class="des-pipe-hex">' + _desFullResult.toUpperCase() + '</span>' + (_desBlocksData.length > 1 ? '<span style="font-size:.5rem;opacity:.6;display:block;margin-top:.15rem">' + _desBlocksData.length + ' ' + _T('desBlocksCount') + '</span>' : '') + '</div>';
 
         /* block selector (Feistel section + Text→Hex section) */
         const blockSelectorHtml = _desBlocksData.length > 1

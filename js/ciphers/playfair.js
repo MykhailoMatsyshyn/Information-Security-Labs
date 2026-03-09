@@ -4,6 +4,10 @@
 
 'use strict';
 
+function _tr(key) {
+  return (typeof window !== 'undefined' && window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t(key) : key;
+}
+
 /* ── Playfair ─────────────────────────────────────────────────
    Біграмний шифр на основі квадрату Полібія 5×5.
    Правила:
@@ -48,10 +52,10 @@ const Playfair = {
     if (chars.length % 2 !== 0) chars.push('X');
 
     const steps = [
-      { n: '01', t: `Алгоритм: Playfair`, d: decrypt ? 'розшифрування' : 'шифрування' },
-      { n: '02', t: `Ключ: "${keyword || '(без ключа)'}"` },
-      { n: '03', t: `Рядок 1: "${sq.slice(0, 5).join(' ')}"` },
-      { n: '04', t: `Підготовлені біграми: ${chars.join('').match(/.{2}/g).join(' ')}` },
+      { n: '01', t: _tr('stepAlgoPlayfair'), d: decrypt ? _tr('decrypt') : _tr('encrypt') },
+      { n: '02', t: `${_tr('stepKey')}: "${keyword || _tr('lab03NoKey')}"` },
+      { n: '03', t: `${_tr('stepRow1Square')}: "${sq.slice(0, 5).join(' ')}"` },
+      { n: '04', t: `${_tr('stepPreparedBigrams')}: ${chars.join('').match(/.{2}/g).join(' ')}` },
     ];
 
     let result = '';
@@ -63,20 +67,20 @@ const Playfair = {
       if (pa.r === pb.r) {
         ea = sq[pa.r * 5 + mod(pa.c + d, 5)];
         eb = sq[pb.r * 5 + mod(pb.c + d, 5)];
-        if (j < 8) steps.push({ n: `0${5 + j / 2}`, t: `[${a}${b}] один рядок → [${ea}${eb}]` });
+        if (j < 8) steps.push({ n: `0${5 + j / 2}`, t: `[${a}${b}] ${_tr('stepOneRow')} → [${ea}${eb}]` });
       } else if (pa.c === pb.c) {
         ea = sq[mod(pa.r + d, 5) * 5 + pa.c];
         eb = sq[mod(pb.r + d, 5) * 5 + pb.c];
-        if (j < 8) steps.push({ n: `0${5 + j / 2}`, t: `[${a}${b}] один стовпець → [${ea}${eb}]` });
+        if (j < 8) steps.push({ n: `0${5 + j / 2}`, t: `[${a}${b}] ${_tr('stepOneCol')} → [${ea}${eb}]` });
       } else {
         ea = sq[pa.r * 5 + pb.c];
         eb = sq[pb.r * 5 + pa.c];
-        if (j < 8) steps.push({ n: `0${5 + j / 2}`, t: `[${a}${b}] прямокутник → [${ea}${eb}]` });
+        if (j < 8) steps.push({ n: `0${5 + j / 2}`, t: `[${a}${b}] ${_tr('stepRectangle')} → [${ea}${eb}]` });
       }
       result += ea + eb;
     }
 
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Результат: "${result}"` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepResult')}: "${result}"` });
     return { result, steps };
   },
 };
@@ -96,9 +100,9 @@ const Vernam = {
     const expandedKey = key.padEnd(text.length, key).slice(0, text.length);
 
     const steps = [
-      { n: '01', t: `Алгоритм: Шифр Вернама (XOR)`, d: 'абсолютно стійкий' },
-      { n: '02', t: `Довжина тексту: ${text.length}`, d: `довжина ключа: ${key.length}` },
-      { n: '03', t: `Операція: yi = xi XOR ki` },
+      { n: '01', t: _tr('stepAlgoVernam'), d: _tr('lab03VernamBadge') },
+      { n: '02', t: `${_tr('stepTextLen')}: ${text.length}`, d: `${_tr('stepKeyLen')}: ${key.length}` },
+      { n: '03', t: _tr('stepOpXor') },
     ];
 
     const result = text.split('').map((ch, i) => {
@@ -114,7 +118,7 @@ const Vernam = {
 
     // Показуємо як hex для зрозумілості
     const hexResult = [...result].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join(' ');
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Hex результату: ${hexResult}` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepHexResult')}: ${hexResult}` });
 
     return { result, hexResult, steps, keyUsed: expandedKey };
   },

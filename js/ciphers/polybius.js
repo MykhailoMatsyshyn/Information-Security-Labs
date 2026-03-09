@@ -4,6 +4,10 @@
 
 'use strict';
 
+function _tr(key) {
+  return (typeof window !== 'undefined' && window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t(key) : key;
+}
+
 /* ── Polybius Square ──────────────────────────────────────────
    Квадрат 5×5 (EN) або 6×6 (UK).
    Кожна літера кодується координатами (рядок, стовпець).
@@ -44,9 +48,9 @@ const Polybius = {
     const upper = text.toUpperCase().replace(lang === 'en' ? /J/g : '', lang === 'en' ? 'I' : '');
 
     const steps = [
-      { n: '01', t: `Алгоритм: Квадрат Полібія` },
-      { n: '02', t: `Ключ: "${keyword || '(без ключа)'}"`, d: `розмір ${sz}×${sz}` },
-      { n: '03', t: `Рядок 1 квадрату: "${sq.slice(0, sz).join(' ')}"` },
+      { n: '01', t: _tr('stepAlgoPolybius') },
+      { n: '02', t: `${_tr('stepKey')}: "${keyword || _tr('lab03NoKey')}"`, d: `${_tr('stepBlockSize')} ${sz}×${sz}` },
+      { n: '03', t: `${_tr('stepRow1Square')}: "${sq.slice(0, sz).join(' ')}"` },
     ];
 
     let result = '';
@@ -76,7 +80,7 @@ const Polybius = {
       });
     }
 
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Результат: "${result}"` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepResult')}: "${result}"` });
     return { result, steps, square: sq, size: sz };
   },
 };
@@ -95,9 +99,9 @@ const Gronsfeld = {
     const upper = text.toUpperCase();
 
     const steps = [
-      { n: '01', t: `Алгоритм: Шифр Гронсфельда`, d: 'числовий Виженер' },
-      { n: '02', t: `Ключ: "${digits}"`, d: `цифри циклічно накладаються на текст` },
-      { n: '03', t: `Формула: bi = (ai ${decrypt ? '−' : '+'} di) mod ${n}` },
+      { n: '01', t: _tr('stepAlgoGronsfeld'), d: _tr('lab02GronsfeldBadge') },
+      { n: '02', t: `${_tr('stepKey')}: "${digits}"`, d: _tr('stepDigitsCycle') },
+      { n: '03', t: `${_tr('stepFormula')}: bi = (ai ${decrypt ? '−' : '+'} di) mod ${n}` },
     ];
 
     let di = 0;
@@ -111,7 +115,7 @@ const Gronsfeld = {
       return enc;
     }).join('');
 
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Результат: "${result}"` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepResult')}: "${result}"` });
     return { result, steps };
   },
 };

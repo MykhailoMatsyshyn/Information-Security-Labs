@@ -8,6 +8,10 @@
 
 'use strict';
 
+function _tr(key) {
+  return (typeof window !== 'undefined' && window.CL && window.CL.i18n && window.CL.i18n.t) ? window.CL.i18n.t(key) : key;
+}
+
 /* ── Таблиці ─────────────────────────────────────────────────── */
 const DES_TABLES = {
   IP: [
@@ -268,7 +272,7 @@ const DES = {
     const combined = permute([...R, ...L], DES_TABLES.IP_INV);
     const result = bitsToHex(combined);
 
-    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `Після IP⁻¹ (результат): ${result}` });
+    steps.push({ n: String(steps.length + 1).padStart(2, '0'), t: `${_tr('stepAfterIPInv')}: ${result}` });
     return { result, steps, rounds };
   },
 
@@ -293,7 +297,7 @@ const DES = {
       const r = this.runHex(textHex, keyHex, false);
       blocks.push({ textHex, resultHex: r.result, rounds: r.rounds, steps: r.steps });
       fullResult += r.result;
-      r.steps.forEach(s => allSteps.push({ n: String(allSteps.length + 1).padStart(2, '0'), t: `Блок ${blocks.length}: ${s.t}` }));
+      r.steps.forEach(s => allSteps.push({ n: String(allSteps.length + 1).padStart(2, '0'), t: `${_tr('stepBlockNum')} ${blocks.length}: ${s.t}` }));
     }
     return { result: fullResult.toUpperCase(), blocks, keyHex, steps: allSteps };
   },
@@ -316,7 +320,7 @@ const DES = {
       const r = this.runHex(blockHex, keyHex, true);
       blocks.push({ textHex: blockHex, resultHex: r.result, rounds: r.rounds, steps: r.steps });
       fullResult += r.result;
-      r.steps.forEach(s => allSteps.push({ n: String(allSteps.length + 1).padStart(2, '0'), t: `Блок ${blocks.length}: ${s.t}` }));
+      r.steps.forEach(s => allSteps.push({ n: String(allSteps.length + 1).padStart(2, '0'), t: `${_tr('stepBlockNum')} ${blocks.length}: ${s.t}` }));
     }
     const rawBytes = [];
     for (let i = 0; i < fullResult.length; i += 2) rawBytes.push(parseInt(fullResult.slice(i, i + 2), 16));
